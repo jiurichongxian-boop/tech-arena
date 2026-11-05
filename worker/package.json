@@ -5,6 +5,13 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "db:init": "wrangler d1 execute techarena-leads --local --file=./schema.sql",
+    "db:init:remote": "wrangler d1 execute techarena-leads --remote --file=./schema.sql",
+    "db:sql": "wrangler d1 execute techarena-leads --remote --command \"SELECT id, surname, username, phone, email, created_at FROM users ORDER BY id DESC LIMIT 20\"",
     "test": "node test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.158.0"
   }
 }

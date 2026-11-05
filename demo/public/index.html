@@ -200,7 +200,7 @@
   </div>
 
   <div class="debug">
-    <a href="/api/users?token=demo-token" target="_blank" rel="noopener">查看已提交的数据（后端接口）</a>
+    <a href="#" id="adminLink">查看已提交的数据（需要后台令牌）</a>
   </div>
 </main>
 
@@ -337,7 +337,7 @@
         showBanner(r.data.message || '提交失败，请稍后再试。');
       }
     }).catch(function () {
-      showBanner('连不上服务器，请确认后端已启动（node server.js）。');
+      showBanner('网络异常，提交失败，请稍后再试。');
     }).then(function () {
       submitBtn.disabled = false;
       submitBtn.textContent = '创建账号';
@@ -372,6 +372,23 @@
     }
     try { renderSuccess(JSON.parse(cached)); }
     catch (err) { showBanner('本机记录已损坏，请重新注册。'); }
+  });
+
+  var TOKEN_KEY = 'ta_admin_token';
+
+  document.getElementById('adminLink').addEventListener('click', function (e) {
+    e.preventDefault();
+    var saved = localStorage.getItem(TOKEN_KEY) || '';
+    var t = window.prompt('输入后台访问令牌（Worker 的 ADMIN_TOKEN）：', saved);
+    if (t === null) return;
+    t = t.trim();
+    if (!t) {
+      localStorage.removeItem(TOKEN_KEY);
+      showBanner('已清除本机保存的令牌。', 'info');
+      return;
+    }
+    localStorage.setItem(TOKEN_KEY, t);
+    window.open('/api/users?token=' + encodeURIComponent(t), '_blank', 'noopener');
   });
 
   var cached = localStorage.getItem(STORE);

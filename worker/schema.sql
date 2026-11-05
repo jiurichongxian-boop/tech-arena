@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- 唯一性约束（大小写不敏感）
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_users_username ON users (lower(username));
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_users_email    ON users (lower(email));
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_users_phone    ON users (phone);
 
