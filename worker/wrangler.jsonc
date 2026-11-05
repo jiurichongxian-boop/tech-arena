@@ -1,0 +1,26 @@
+{
+  // 项目名决定 worker 子域：techarena.<你的账号>.workers.dev
+  "name": "techarena",
+  "main": "src/index.js",
+  "compatibility_date": "2026-01-01",
+
+  // 静态文件直接由 Worker 托管，不用再单独建 Pages 项目
+  "assets": {
+    "directory": "../demo/public",
+    "binding": "ASSETS",
+    // 关键：/api/* 先交给 Worker，其余走静态资源
+    "run_worker_first": ["/api/*"]
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "techarena-leads",
+      "database_id": "REPLACE_WITH_YOUR_D1_ID"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+}

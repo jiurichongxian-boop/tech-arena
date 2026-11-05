@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>创建账号 · TechArena</title>
+<meta name="description" content="注册演示：姓、用户名、手机号、邮箱。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2316181d'/%3E%3Cpath d='M28 77 L50 23 L72 77' fill='none' stroke='%23fff' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M40 59 H60' fill='none' stroke='%23b6b4f5' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#f6f4f1;
+    --surface:#ffffff;
+    --ink:#16181d;
+    --muted:#6b6f76;
+    --line:#e6e2dd;
+    --accent:#3f3d9e;
+    --accent-soft:#eeedfa;
+    --danger:#a32d2d;
+    --danger-soft:#fcebeb;
+    --ok:#0f6e56;
+    --ok-soft:#e1f5ee;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+    display:flex;align-items:center;justify-content:center;padding:32px 20px;
+  }
+  .card{
+    width:100%;max-width:480px;background:var(--surface);
+    border:1px solid var(--line);border-radius:18px;
+    padding:36px 36px 28px;
+  }
+  .brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:15px;margin-bottom:26px}
+  .brand svg{display:block}
+  .head h1{font-size:26px;line-height:1.25;letter-spacing:-.02em;margin:0 0 6px;font-weight:600}
+  .head p{margin:0 0 24px;color:var(--muted);font-size:14px}
+
+  .banner{
+    display:flex;gap:8px;align-items:flex-start;
+    font-size:13px;padding:10px 13px;border-radius:9px;margin-bottom:18px;
+    background:var(--danger-soft);color:var(--danger);line-height:1.55;
+  }
+  .banner.info{background:var(--accent-soft);color:var(--accent)}
+  .banner[hidden]{display:none}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{display:flex;flex-direction:column;min-width:0}
+  .field.span2{grid-column:1 / -1}
+  .field label{font-size:13px;margin-bottom:6px;color:var(--ink)}
+  .field label .opt{color:var(--muted);font-weight:400}
+  .field input{
+    font:inherit;font-size:15px;width:100%;
+    padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:#fdfcfb;color:var(--ink);transition:border-color .15s,background .15s;
+  }
+  .field input::placeholder{color:#b3b0aa}
+  .field input:hover{border-color:#d5d0c8}
+  .field input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(63,61,158,.09)}
+  .field input[aria-invalid="true"]{border-color:var(--danger);background:#fffafa}
+  .field input[aria-invalid="true"]:focus{box-shadow:0 0 0 3px rgba(163,45,45,.08)}
+  .hint{font-size:12px;color:var(--muted);margin-top:5px}
+  .err{font-size:12px;color:var(--danger);margin-top:5px}
+  .err:empty{display:none}
+
+  .consent{
+    display:flex;gap:9px;align-items:flex-start;margin:20px 0 18px;
+    font-size:13px;color:var(--muted);line-height:1.6;cursor:pointer;
+  }
+  .consent input{margin:3px 0 0;flex:none;accent-color:var(--accent)}
+
+  .submit{
+    width:100%;font:inherit;font-size:15px;font-weight:500;
+    padding:12px;border-radius:10px;border:1px solid var(--ink);
+    background:var(--ink);color:#fff;cursor:pointer;
+    transition:opacity .15s,transform .06s;
+  }
+  .submit:hover{opacity:.86}
+  .submit:active{transform:translateY(1px)}
+  .submit[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+
+  .foot{margin:18px 0 0;text-align:center;font-size:13px;color:var(--muted)}
+  .foot a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(63,61,158,.3)}
+  .foot a:hover{border-bottom-color:var(--accent)}
+
+  .success{padding:8px 0 4px}
+  .success .mark{
+    width:46px;height:46px;border-radius:50%;background:var(--ok-soft);color:var(--ok);
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .success h2{margin:0 0 6px;font-size:22px;letter-spacing:-.01em;font-weight:600}
+  .success p{margin:0 0 22px;color:var(--muted);font-size:14px}
+  .summary{border-top:1px solid var(--line);margin-bottom:22px}
+  .summary div{display:flex;justify-content:space-between;gap:20px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .summary dt{color:var(--muted);flex:none}
+  .summary dd{margin:0;text-align:right;word-break:break-all}
+  .again{
+    width:100%;font:inherit;font-size:14px;padding:10px;border-radius:9px;cursor:pointer;
+    background:transparent;color:var(--ink);border:1px solid var(--line);
+  }
+  .again:hover{background:var(--bg)}
+
+  .debug{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);text-align:center;font-size:12px}
+  .debug a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+
+  @media (max-width:460px){
+    .card{padding:28px 22px 22px;border-radius:14px}
+    .grid{grid-template-columns:1fr}
+    .field.span2{grid-column:auto}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c0d10;--surface:#15171b;--ink:#f2f0ee;--muted:#9a9da4;
+      --line:#282a31;--accent:#b6b4f5;--accent-soft:#1e1d33;
+      --danger:#f09595;--danger-soft:#2b1618;--ok:#5dcaa5;--ok-soft:#10261f;
+    }
+    .field input{background:#101216;border-color:var(--line)}
+    .field input:hover{border-color:#3a3d45}
+    .field input:focus{background:#101216;box-shadow:0 0 0 3px rgba(182,180,245,.12)}
+    .field input::placeholder{color:#5c6068}
+    .submit{background:#f2f0ee;color:#0f1013;border-color:#f2f0ee}
+    .again:hover{background:#101216}
+  }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <div class="brand">
+    <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true">
+      <rect width="100" height="100" rx="22" fill="#16181d"/>
+      <path d="M28 77 L50 23 L72 77" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40 59 H60" fill="none" stroke="#b6b4f5" stroke-width="10" stroke-linecap="round"/>
+    </svg>
+    <span>TechArena</span>
+  </div>
+
+  <form id="form" novalidate>
+    <div class="head">
+      <h1>创建账号</h1>
+      <p>填写以下信息完成注册，带 * 的为必填项。</p>
+    </div>
+
+    <div class="banner" id="banner" role="alert" hidden></div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="surname">姓 *</label>
+        <input id="surname" name="surname" type="text" autocomplete="family-name" placeholder="张" aria-describedby="surname-err">
+        <span class="err" id="surname-err"></span>
+      </div>
+
+      <div class="field">
+        <label for="username">用户名 *</label>
+        <input id="username" name="username" type="text" autocomplete="username" placeholder="zhangsan" aria-describedby="username-err username-hint">
+        <span class="hint" id="username-hint">字母开头，3–20 位</span>
+        <span class="err" id="username-err"></span>
+      </div>
+
+      <div class="field span2">
+        <label for="phone">手机号 *</label>
+        <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="138 0000 0000" aria-describedby="phone-err">
+        <span class="err" id="phone-err"></span>
+      </div>
+
+      <div class="field span2">
+        <label for="email">邮箱 *</label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" aria-describedby="email-err">
+        <span class="err" id="email-err"></span>
+      </div>
+    </div>
+
+    <label class="consent">
+      <input type="checkbox" id="consent">
+      <span>我已阅读并同意《隐私说明》，知道信息会存储在服务端。</span>
+    </label>
+
+    <button class="submit" type="submit" id="submitBtn">创建账号</button>
+
+    <p class="foot">已经注册过了？<a href="#" id="restore">用本机记录查看</a></p>
+  </form>
+
+  <div class="success" id="success" hidden>
+    <div class="mark">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </div>
+    <h2>注册成功</h2>
+    <p>信息已提交到服务端，编号 #<span id="uid">1</span>。</p>
+    <dl class="summary">
+      <div><dt>姓</dt><dd id="s-surname">—</dd></div>
+      <div><dt>用户名</dt><dd id="s-username">—</dd></div>
+      <div><dt>手机号</dt><dd id="s-phone">—</dd></div>
+      <div><dt>邮箱</dt><dd id="s-email">—</dd></div>
+    </dl>
+    <button class="again" type="button" id="again">再注册一个</button>
+  </div>
+
+  <div class="debug">
+    <a href="/api/users?token=demo-token" target="_blank" rel="noopener">查看已提交的数据（后端接口）</a>
+  </div>
+</main>
+
+<script>
+(function () {
+  var form = document.getElementById('form');
+  var banner = document.getElementById('banner');
+  var submitBtn = document.getElementById('submitBtn');
+  var success = document.getElementById('success');
+  var STORE = 'ta_account_v1';
+
+  var RULES = {
+    surname: function (v) {
+      var s = (v || '').trim();
+      if (!s) return '请填写姓';
+      if (s.length > 20) return '不能超过 20 个字符';
+      if (/[0-9]/.test(s)) return '不能包含数字';
+      return '';
+    },
+    username: function (v) {
+      var s = (v || '').trim();
+      if (!s) return '请填写用户名';
+      if (!/^[A-Za-z][A-Za-z0-9_]{2,19}$/.test(s)) return '需字母开头，3–20 位，仅字母数字下划线';
+      return '';
+    },
+    phone: function (v) {
+      var s = (v || '').replace(/[\s-]/g, '');
+      if (!s) return '请填写手机号';
+      if (!/^1[3-9]\d{9}$/.test(s)) return '请填写 11 位手机号';
+      return '';
+    },
+    email: function (v) {
+      var s = (v || '').trim();
+      if (!s) return '请填写邮箱';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s)) return '邮箱格式不正确';
+      return '';
+    }
+  };
+
+  function setError(name, msg) {
+    var input = form.elements[name];
+    var box = document.getElementById(name + '-err');
+    if (msg) {
+      input.setAttribute('aria-invalid', 'true');
+      box.textContent = msg;
+    } else {
+      input.removeAttribute('aria-invalid');
+      box.textContent = '';
+    }
+  }
+
+  function validateField(name) {
+    var msg = RULES[name](form.elements[name].value);
+    setError(name, msg);
+    return !msg;
+  }
+
+  function showBanner(text, kind) {
+    banner.textContent = text;
+    banner.className = 'banner' + (kind === 'info' ? ' info' : '');
+    banner.hidden = false;
+  }
+
+  function clearBanner() {
+    banner.hidden = true;
+    banner.textContent = '';
+  }
+
+  ['surname', 'username', 'phone', 'email'].forEach(function (name) {
+    var el = form.elements[name];
+    el.addEventListener('blur', function () { if (el.value.trim()) validateField(name); });
+    el.addEventListener('input', function () {
+      setError(name, '');
+      clearBanner();
+    });
+  });
+
+  document.getElementById('consent').addEventListener('change', clearBanner);
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    clearBanner();
+
+    var ok = true;
+    var firstBad = null;
+    ['surname', 'username', 'phone', 'email'].forEach(function (name) {
+      if (!validateField(name)) {
+        ok = false;
+        if (!firstBad) firstBad = form.elements[name];
+      }
+    });
+
+    if (!ok) {
+      showBanner('有几项需要修改，请检查标红的地方。');
+      if (firstBad) firstBad.focus();
+      return;
+    }
+
+    if (!document.getElementById('consent').checked) {
+      showBanner('请先勾选同意隐私说明。');
+      document.getElementById('consent').focus();
+      return;
+    }
+
+    var payload = {
+      surname: form.elements.surname.value.trim(),
+      username: form.elements.username.value.trim(),
+      phone: form.elements.phone.value.replace(/[\s-]/g, ''),
+      email: form.elements.email.value.trim()
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中…';
+
+    fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      return res.json().then(function (data) { return { status: res.status, data: data }; });
+    }).then(function (r) {
+      if (r.status === 201 && r.data.ok) {
+        localStorage.setItem(STORE, JSON.stringify(r.data.user));
+        renderSuccess(r.data.user);
+        return;
+      }
+      if (r.status === 409 && r.data.errors) {
+        Object.keys(r.data.errors).forEach(function (k) { setError(k, r.data.errors[k]); });
+        showBanner(r.data.message || '有一项已经存在，请修改。');
+      } else if (r.status === 400 && r.data.errors) {
+        Object.keys(r.data.errors).forEach(function (k) { setError(k, r.data.errors[k]); });
+        showBanner(r.data.message || '提交的信息不完整。');
+      } else {
+        showBanner(r.data.message || '提交失败，请稍后再试。');
+      }
+    }).catch(function () {
+      showBanner('连不上服务器，请确认后端已启动（node server.js）。');
+    }).then(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '创建账号';
+    });
+  });
+
+  function renderSuccess(user) {
+    document.getElementById('uid').textContent = user.id;
+    document.getElementById('s-surname').textContent = user.surname;
+    document.getElementById('s-username').textContent = user.username;
+    document.getElementById('s-phone').textContent = user.phone;
+    document.getElementById('s-email').textContent = user.email;
+    form.hidden = true;
+    success.hidden = false;
+  }
+
+  document.getElementById('again').addEventListener('click', function () {
+    form.reset();
+    ['surname', 'username', 'phone', 'email'].forEach(function (n) { setError(n, ''); });
+    clearBanner();
+    form.hidden = false;
+    success.hidden = true;
+    form.elements.surname.focus();
+  });
+
+  document.getElementById('restore').addEventListener('click', function (e) {
+    e.preventDefault();
+    var cached = localStorage.getItem(STORE);
+    if (!cached) {
+      showBanner('本机还没有注册记录。', 'info');
+      return;
+    }
+    try { renderSuccess(JSON.parse(cached)); }
+    catch (err) { showBanner('本机记录已损坏，请重新注册。'); }
+  });
+
+  var cached = localStorage.getItem(STORE);
+  if (cached) {
+    try {
+      var u = JSON.parse(cached);
+      showBanner('这台设备上次注册过：' + u.username + '（点击下方“用本机记录查看”）', 'info');
+    } catch (e) {}
+  }
+})();
+</script>
+</body>
+</html>
