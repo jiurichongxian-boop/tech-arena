@@ -11,8 +11,39 @@ https://techarena.<你的账号>.workers.dev
 └── /api/health    GET    → Worker
 ```
 
-`worker/wrangler.jsonc`<u> 已经配好了 `assets.directory = ../demo/public` 和 `d1_databases.binding = DB`，  
-所以 `demo/` 不需要单独部署，也不需</u>要改前端里的 `fetch('/api/register')`。
+`worker/wrangler.jsonc` 已经配好了 `assets.directory = ../demo/public` 和 `d1_databases.binding = DB`，  
+所以 `demo/` 不需要单独部署，也不需要改前端里的 `fetch('/api/register')`。
+
+---
+
+## 零、命令在哪执行？控制台做什么？
+
+### 打开终端（Windows）
+
+按 `Win` 键 → 输入 `PowerShell`（或 `Windows Terminal`）→ 回车，然后：
+
+```bash
+cd C:\projects\tech-arena\worker
+```
+
+之后每条命令粘进去回车即可。命令必须在这个目录里执行，否则 `wrangler` 找不到 `wrangler.jsonc`。
+
+### 每条命令对应的控制台操作
+
+| 命令                                       | 在 Cloudflare 控制台怎么点                                                                     |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- |
+| `npx wrangler login`                     | **没有等价操作**。登录凭证只能在本机生成（浏览器弹授权页点 Allow）                                                  |
+| `npx wrangler d1 create techarena-leads` | 侧边栏 `Storage & Databases`（存储和数据库）→ `D1 SQL Database` → `Create database`                |
+| `npm run db:init:remote`                 | 进 D1 库 → `Console` 标签 → 把 `worker/schema.sql` 全文粘进去 → `Execute`                         |
+| `npx wrangler secret put ADMIN_TOKEN`    | Worker → `Settings` → `Variables and Secrets` → `Add` → 类型选 **Secret**，名字 `ADMIN_TOKEN` |
+| `npm run deploy`                         | **没有等价操作**。代码（含 `demo/public` 静态文件）只能由 wrangler 上传，或走 Git 自动部署                          |
+| 绑域名（`routes` 配置）                         | Worker → `Settings` → `Domains & Routes` → `Add` → `Custom domain`                      |
+
+结论：**建库、建表、加密钥、绑域名都能在控制台点完**，但「登录」和「上传代码」这两步绕不开 wrangler 或 Git 集成。  
+不想在本地装 wrangler 的话，走第五节的 GitHub 自动部署，让 Cloudflare 的服务器替你跑 `wrangler deploy`。
+
+> 控制台文案会微调，认关键词即可：D1 / Variables and Secrets / Domains & Routes。  
+> 没有账号先去 <https://dash.cloudflare.com/sign-up> 注册，免费计划够用。
 
 ---
 
@@ -33,6 +64,9 @@ npx wrangler d1 create techarena-leads
 
 把上一步输出里的 `database_id` 填到 `worker/wrangler.jsonc` 的  
 `REPLACE_WITH_YOUR_D1_ID` 位置（`database_name` 不用改）。
+
+> 新的 wrangler 会追问一句 `Would you like Wrangler to add it on your behalf?`，  
+> 选 **Yes** 就会自动把 `database_id` 写进 `wrangler.jsonc`，可以跳过手动编辑这步。
 
 ```bash
 # 3. 建表（远程库）
@@ -56,6 +90,21 @@ curl https://techarena.<子域>.workers.dev/api/health
 或直接访问 `/api/export.csv?token=<ADMIN_TOKEN>` 下载 CSV。
 
 > `ADMIN_TOKEN` 没有设置时，`/api/users` 和 `/api/export.csv` 一律 401，这是设计如此。
+
+### 如果 `wrangler login` 卡住或打不开浏览器
+
+走 API Token（不用浏览器回调，公司网络/代理环境更稳）：
+
+1. 控制台右上角头像 → `My Profile` → `API Tokens` → `Create Token`
+2. 选模板 **Edit Cloudflare Workers**，Account Resources 选你的账号，`Create`
+3. 复制 token，在终端里设置（PowerShell）：
+
+```powershell
+$env:CLOUDFLARE_API_TOKEN = "你的token"
+npx wrangler whoami      # 能看到账号就说明好了
+```
+
+Git Bash 用 `export CLOUDFLARE_API_TOKEN=...`。这个变量只对当前终端窗口有效，关掉就要重设。
 
 ---
 
@@ -104,8 +153,8 @@ Cloudflare 控制台 → Workers & Pages → Create → 连接 Git 仓库，填�
 | Build command  | `npm install`         |
 | Deploy command | `npx wrangler deploy` |
 
-注意 `wrangler.jsonc` 里的 `assets.directory` 是 `../demo/public`，构建时必须能看到仓库根的 `demo/`，  
-所以 Root directory 只能是 `worker`，不能是仓库根目录（否则 `main: src/index.js` 找不到）。
+注`意 wrangler.jsonc 里的 assets.directory 是 ../demo/public，构建时必须能看到仓库根的 demo/，
+所以 Root directory 只`能是 `worker`，不能是仓库根目录（否则 `main: src/index.js` 找不到）。
 
 Secret 和 D1 绑定在控制台的 Settings 里配置一次即可，之后 push 就自动上线。
 
