@@ -2,13 +2,9 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tech Arena Arts &amp; Design 2026</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<script>
-/* 首帧前先定语言，避免英文用户先看到俄文再被切换（也保证动态生成的成员行 placeholder 用对语言） */
-(function(){try{var l=localStorage.getItem('ta-lang')==='en'?'en':'ru';document.documentElement.setAttribute('data-lang',l);document.documentElement.lang=l}catch(e){}})();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -70,15 +66,15 @@ p{margin:0}
 
 /* buttons */
 .btn{--h:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:var(--h);padding:0 26px;border-radius:999px;border:0;font:600 15px/1 var(--f-body);cursor:pointer;text-decoration:none;white-space:nowrap;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,background-color .25s ease}
-.btn-primary{background:linear-gradient(120deg,var(--accent),var(--accent-2));color:var(--on-accent);box-shadow:0 10px 30px -8px var(--glow),inset 0 1px 0 rgba(255,255,255,.25)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px var(--accent)}
+.btn-primary{background:linear-gradient(120deg,var(--accent),var(--accent-2));color:var(--on-accent);box-shadow:0 6px 16px -8px var(--glow),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px -10px var(--glow),inset 0 1px 0 rgba(255,255,255,.25);filter:brightness(1.04)}
 .btn-primary svg{transition:transform .25s ease}
 .btn-primary:hover svg{transform:translateX(3px)}
 .btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
 .btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
 .btn-sm{--h:42px;padding:0 18px;font-size:14px}
 .btn-light{background:#fff;color:#16131A}
-.btn-light:hover{transform:translateY(-2px)}
+.btn-light:hover{transform:translateY(-1px)}
 
 /* header */
 .site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--header);backdrop-filter:saturate(1.4) blur(16px);-webkit-backdrop-filter:saturate(1.4) blur(16px);border-bottom:1px solid var(--line)}
@@ -199,15 +195,16 @@ section{position:relative}
 .opt-list li b{font-weight:600}
 .track-art{min-width:0;position:relative;display:flex;justify-content:center}
 .track.alt{grid-template-columns:1fr 1fr}
-.track.alt .track-art{order:-1}
+/* track 2: text left, art right (same as track 1) */
 @media (max-width:900px){.track,.track.alt{grid-template-columns:1fr;padding:28px 20px;gap:32px;border-radius:28px}.track.alt .track-art{order:0}}
 
 /* foldable */
-.fold-stage{width:100%;max-width:440px;aspect-ratio:1/1;display:grid;place-items:center;position:relative;perspective:1100px;background:
+.fold-stage{width:100%;max-width:396px;aspect-ratio:1/1;display:grid;place-items:center;position:relative;perspective:1100px;background:
   radial-gradient(circle at 50% 55%,var(--glow),transparent 60%),
   linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:auto,24px 24px,24px 24px;border-radius:24px}
-.device{position:relative;width:260px;height:290px;transform-style:preserve-3d;transform:rotateX(14deg) rotateY(-22deg) rotateZ(2deg)}
+.device{--ds:1.04;position:relative;width:260px;height:290px;transform-style:preserve-3d;transform:scale(var(--ds)) rotateX(14deg) rotateY(-22deg) rotateZ(2deg)}
+@media (max-width:1100px){.device{--ds:1.04}}@media (max-width:520px){.device{--ds:.85}}
 .panel{position:absolute;top:0;width:130px;height:290px;transform-style:preserve-3d}
 .panel.l{left:0}
 .panel.r{left:130px;transform-origin:0 50%;animation:fold 6s cubic-bezier(.65,0,.35,1) infinite}
@@ -254,15 +251,15 @@ section{position:relative}
 /* banner */
 .banner{position:relative;overflow:hidden;border-radius:40px;color:#fff;background:
   radial-gradient(circle at 85% 20%,rgba(255,255,255,.22),transparent 40%),
-  linear-gradient(125deg,#9E0718 0%,#E0102A 45%,#FF6A3D 100%);padding:64px 56px;display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;isolation:isolate}
+  linear-gradient(125deg,#9E0718 0%,#E0102A 45%,#FF6A3D 100%);padding:64px 56px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;isolation:isolate}
 .banner::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:28px 28px}
-.banner h2{font-size:clamp(28px,3.8vw,48px);font-weight:900;text-transform:uppercase}
+.banner h2{font-size:clamp(24px,3vw,38px);font-weight:900;text-transform:uppercase;line-height:1.15}
 .banner p{font-size:18px;opacity:.92;max-width:30em}
 .banner-copy{display:flex;flex-direction:column;gap:22px;min-width:0}
 .banner .meta{display:flex;flex-wrap:wrap;gap:10px}
 .banner .meta span{font:500 12px/1 var(--f-mono);letter-spacing:.08em;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
 .banner-art{min-width:0}
-.banner-art svg{width:100%;max-width:360px;height:auto;display:block;margin-inline:auto}
+.banner-art svg{width:100%;max-width:500px;height:auto;display:block;margin:-30px auto}
 @media (max-width:860px){.banner{grid-template-columns:1fr;padding:40px 24px;border-radius:28px}.banner-art{display:none}}
 
 /* process */
@@ -285,7 +282,7 @@ section{position:relative}
 .examples{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}
 .ex{padding:16px 14px;border-radius:var(--r-md);background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:10px;min-width:0}
 .ex svg{width:56px;height:56px}
-.ex b{font-size:14px;font-weight:600;line-height:1.25}
+.ex b{font-size:14px;font-weight:600;line-height:1.25;hyphens:manual}
 @media (max-width:1100px){.examples{grid-template-columns:repeat(2,1fr)}}
 
 .dirs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -366,15 +363,15 @@ section{position:relative}
 @media (max-width:860px){.format{grid-template-columns:1fr}}
 
 /* apply */
-.apply{position:relative;overflow:hidden;border-radius:40px;padding:64px 56px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);isolation:isolate}
+.apply{position:relative;overflow:hidden;border-radius:40px;padding:64px 56px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:stretch;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);isolation:isolate}
 .apply::before{content:"";position:absolute;z-index:-1;inset:auto -200px -300px auto;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 62%)}
 .apply-copy{display:flex;flex-direction:column;gap:22px;min-width:0}
-.apply h2{font-size:clamp(32px,4.4vw,56px);font-weight:900;text-transform:uppercase}
+.apply h2{font-size:clamp(28px,3.4vw,44px);font-weight:900;text-transform:uppercase;line-height:1.05;margin-bottom:14px}
 .apply h2 .red{color:var(--accent)}
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
 .steps li{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start;font-size:16px}
 .steps li::before{counter-increment:s;content:counter(s);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-mono);background:var(--ink);color:var(--bg)}
-.steps li span{padding-top:6px}
+.steps li span{padding-top:0;line-height:1.45;margin-top:-2px}
 .mail-card{border-radius:var(--r-lg);padding:32px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:18px;min-width:0}
 .mail-card .lab{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .mail{font:500 15px/1.3 var(--f-body);color:var(--accent);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;word-break:break-all;align-self:flex-start}
@@ -497,7 +494,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 .af-members-head{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
 .af-members-head small{color:var(--muted);font-size:13px}
 .af-members{display:grid;gap:8px}
-.af-row{display:grid;grid-template-columns:28px 1fr 1fr 1.1fr 1.1fr 1.3fr 36px;gap:8px;align-items:center}
+.af-row{display:grid;grid-template-columns:28px 1fr 1fr 1.2fr 1.4fr 36px;gap:8px;align-items:center}
 .af-n{font:700 13px/1 var(--f-mono);color:var(--accent);text-align:center}
 .af-del{width:36px;height:36px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:20px;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
 .af-add{align-self:flex-start;border:0;background:transparent;color:var(--accent);font:600 14px/1 var(--f-body);cursor:pointer;padding:6px 0}
@@ -509,37 +506,13 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 .af-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .af-msg{font-size:13px;color:var(--accent)}
 .linkish{border:0;background:none;padding:0;color:var(--accent);font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-/* 手机端：每个成员变成一张卡 —— 序号/删除在首行，姓名与姓氏并排，其余逐行铺满 */
-@media (max-width:860px){
-  .af-grid{grid-template-columns:1fr 1fr}.af-grid .af-f:first-child{grid-column:1/-1}
-  .app-form .af-row{grid-template-columns:1fr 1fr;gap:10px;padding:14px;border-radius:14px;
-    box-shadow:inset 0 0 0 1px var(--line);align-items:center}
-  .app-form .af-row .af-n{grid-area:1/1/2/2;justify-self:start;align-self:center;font-size:12px;letter-spacing:.06em}
-  .app-form .af-row .af-del{grid-area:1/2/2/3;justify-self:end;width:34px;height:34px}
-  .app-form .af-row input{height:48px;font-size:16px;padding:0 13px}
-  .app-form .af-row input[data-k="n"]{grid-area:2/1/3/2}
-  .app-form .af-row input[data-k="s"]{grid-area:2/2/3/3}
-  .app-form .af-row input[data-k="u"]{grid-area:3/1/4/2}
-  .app-form .af-row input[data-k="f"]{grid-area:3/2/4/3}
-  .app-form .af-row input[data-k="c"]{grid-area:4/1/5/3}
-}
-@media (max-width:640px){.app-form{padding:20px 16px}.af-members-head{gap:2px 10px}}
-/* 窄屏手机：成员卡改成单列铺满，并收紧外层内边距，让输入框真的够宽 */
-@media (max-width:560px){
-  .apply{padding:34px 14px}
-  .app-form{padding:18px 12px;gap:14px}
-  .app-form .af-row{grid-template-columns:1fr;gap:8px;padding:12px}
-  .app-form .af-row .af-n{grid-area:1/1/2/2;justify-self:start}
-  .app-form .af-row .af-del{grid-area:1/1/2/2;justify-self:end;width:32px;height:32px}
-  .app-form .af-row input[data-k]{grid-area:auto;grid-column:1/-1}
-}
-/* placeholder 显式给颜色：默认灰在深色主题的卡片上几乎看不见 */
-.app-form input::placeholder,.cn-fields input::placeholder{color:var(--muted);opacity:1}
+@media (max-width:860px){.af-grid{grid-template-columns:1fr 1fr}.af-grid .af-f:first-child{grid-column:1/-1}
+  .af-row{grid-template-columns:24px 1fr 36px;padding:10px;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line)}
+  .af-row input{grid-column:2}.af-row .af-n{grid-row:1;grid-column:1}.af-row .af-del{grid-row:1;grid-column:3}}
 
 .consent{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(6,3,5,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .modal-open body{overflow:hidden}
 .consent-card{width:min(940px,100%);max-height:100%;display:flex;flex-direction:column;border-radius:28px;background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 40px 120px -20px rgba(255,20,50,.45);overflow:hidden}
-.consent-card:focus{outline:none}
 .consent-top{padding:30px 34px 18px;border-bottom:1px solid var(--line);background:radial-gradient(circle at 100% 0%,rgba(255,40,70,.18),transparent 50%)}
 .consent-kicker{font:600 11px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .consent-top h2{font:900 clamp(26px,3.6vw,44px)/1.05 var(--f-display);margin-top:10px;text-wrap:balance}
@@ -571,7 +544,81 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 .prize .note-s{font-size:12px;color:var(--muted)}
 .foot-links{display:flex;gap:16px;flex-wrap:wrap}
 
+/* registration lock until 9 Nov */
+.reg-cta.is-locked{background:var(--line)!important;color:var(--muted,#8a8790)!important;box-shadow:none!important;cursor:not-allowed;transform:none!important}
+.reg-cta.is-locked svg{display:none}
+.reg-soon{display:none;margin:12px 0 0;font:600 13px/1.4 var(--f-mono);letter-spacing:.04em;color:var(--accent)}
+:root.reg-locked .reg-soon{display:block}
+
+/* apply tidy-up */
+.reg-lock{gap:16px}
+.reg-lock .reg-steps{list-style:none;padding:0;counter-reset:r;gap:10px;font-size:15px;line-height:1.4}
+.reg-lock .reg-steps li{display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start}
+.reg-lock .reg-steps li::before{counter-increment:r;content:counter(r);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 12px/1 var(--f-mono);color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.reg-lock .reg-steps li span{padding-top:0;line-height:1.4;margin-top:-2px}
+.reg-lock>p:not(.reg-soon){margin:0;font-size:15px;line-height:1.5}
+.reg-lock .reg-cta{margin-top:auto}
+.reg-soon{margin:0!important;display:none;align-items:flex-start;gap:8px;color:var(--muted)!important;font:500 12px/1.4 var(--f-mono)!important;letter-spacing:.06em!important}
+.reg-soon::before{content:"";width:8px;height:8px;margin-top:4px;border-radius:50%;background:var(--accent);flex:none}
+:root.reg-locked .reg-soon{display:flex}
+@media (max-width:860px){.reg-lock .reg-cta{width:100%;margin-top:8px}}
+
+/* hero motion v2 */
+.hero-art .intro{animation:heroIn 1.1s cubic-bezier(.2,.8,.2,1) both}
+.hero-art .i1{animation-delay:.05s}.hero-art .i2{animation-delay:.25s}.hero-art .i3{animation-delay:.55s}.hero-art .i4{animation-delay:.7s}.hero-art .i5{animation-delay:.85s}.hero-art .i6{animation-delay:1.2s}
+@keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.hero-art .par{translate:calc(var(--px,0) * var(--d,1) * 1px) calc(var(--py,0) * var(--d,1) * 1px);transition:translate .6s cubic-bezier(.2,.8,.2,1)}
+.phone-float{animation:phoneFloat 8s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+@keyframes phoneFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(.6deg)}}
+.bud-float{transform-box:fill-box;transform-origin:50% 30%}
+.bud-float.ba{animation:budA 6s ease-in-out infinite}
+.bud-float.bb{animation:budB 6.8s ease-in-out infinite}
+@keyframes budA{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(-5deg)}}
+@keyframes budB{0%,100%{transform:translateY(-6px) rotate(0)}50%{transform:translateY(8px) rotate(4deg)}}
+.bud-shadow{transform-box:fill-box;transform-origin:center;animation:budSh 6s ease-in-out infinite}
+@keyframes budSh{0%,100%{transform:scaleX(1);opacity:.26}50%{transform:scaleX(.86);opacity:.16}}
+.orbit-run{stroke-dasharray:70 930;animation:orbitRun 6s linear infinite}
+@keyframes orbitRun{from{stroke-dashoffset:0}to{stroke-dashoffset:-1000}}
+.glow-pulse{transform-box:fill-box;transform-origin:center;animation:glowP 5s ease-in-out infinite}
+@keyframes glowP{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.75;transform:scale(1.08)}}
+.sheen{animation:sheen 7s cubic-bezier(.5,0,.3,1) infinite 1.6s}
+@keyframes sheen{0%{translate:0 0}35%,100%{translate:560px 0}}
+@media (prefers-reduced-motion: reduce){.hero-art .intro,.phone-float,.bud-float,.bud-shadow,.orbit-run,.glow-pulse,.sheen{animation:none!important}.orbit-run{opacity:0}.hero-art .par{translate:none}}
+/* calmer buttons */
+.btn{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,filter .18s ease}
+.btn:active{transform:translateY(0) scale(.98)!important;filter:brightness(.96)}
+.btn-primary:active{box-shadow:0 3px 8px -6px var(--glow),inset 0 1px 0 rgba(255,255,255,.2)}
+.banner .reg-cta.is-locked{background:rgba(255,255,255,.18)!important;color:rgba(255,255,255,.75)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)!important}
+/* prize rings for 2nd / 3rd */
+.prize.second::after,.prize.third::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;pointer-events:none;z-index:0}
+.prize.second::after{border:1px solid rgba(224,16,42,.16);box-shadow:0 0 0 30px rgba(224,16,42,.045),0 0 0 60px rgba(224,16,42,.025)}
+.prize.third::after{border:1px solid rgba(110,106,120,.18);box-shadow:0 0 0 30px rgba(110,106,120,.05),0 0 0 60px rgba(110,106,120,.03)}
+.prize.second>*,.prize.third>*{position:relative;z-index:1}
+.reg-soon .rs-end{display:none}:root.reg-ended .reg-soon .rs-pre{display:none}:root.reg-ended .reg-soon .rs-end{display:inline}
+.rl-terms h4{margin-top:22px}.rl-terms h4:first-child{margin-top:0}.rl-terms p{margin:0 0 10px}.rl-terms a{color:var(--accent);word-break:break-all}
 /* round 3 */
+.pr-label{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:36px 0 0;font-size:17px}
+.pr-label .ex-tag{font:700 12px/1 var(--f-mono);letter-spacing:.12em;padding:7px 11px;border-radius:999px;background:var(--accent);color:#fff}
+
+.rl-tw{max-width:none;overflow-x:auto;margin:8px 0 10px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--line)}
+.rl-t{border-collapse:collapse;width:100%;min-width:620px;font-size:13.5px;line-height:1.45}
+.rl-t th{text-align:left;font:700 12px/1.3 var(--f-body);color:var(--ink);background:var(--bg);padding:10px 12px;border-bottom:1px solid var(--line)}
+.rl-t td{padding:9px 12px;vertical-align:top;border-top:1px solid var(--line);color:var(--muted)}
+.rl-t td:first-child{color:var(--ink);font-weight:600}
+#submit-rules{scroll-margin-top:90px}
+.dv-more{align-self:flex-start;margin-top:auto;font-weight:600;font-size:14px;color:var(--accent);text-decoration:none}
+.dv-more:hover{text-decoration:underline}
+
+.reg-steps{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--ink);font-size:15px}
+
+.af-note{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:14px;background:rgba(224,16,42,.08);box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--ink);font-size:14px;line-height:1.5}
+.af-note b{color:var(--accent);font-size:18px;line-height:1}
+.af-me{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.af-me .af-f{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.ipm-card{width:min(720px,100%)}
+.ipm-text{font-size:16px;line-height:1.65;color:var(--ink)!important}
+@media (max-width:600px){.af-me{grid-template-columns:1fr}}
+
 .brand{cursor:pointer;transition:opacity .2s ease}.brand:hover{opacity:.8}
 .admin-btn svg{width:17px;height:17px}.admin-btn:hover{transform:none;color:var(--accent)}
 .admin-foot{text-decoration:none}
@@ -601,10 +648,13 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 .rl-b ul,.rl-b ol{margin:0 0 6px;padding-left:20px;display:grid;gap:4px}
 .rl-b code{font:500 13px/1.4 var(--f-mono);background:var(--bg);padding:1px 6px;border-radius:6px;color:var(--ink)}
 .rl-b p+p{margin-top:8px}
+#terms{scroll-margin-top:90px}
+#terms .rl-b{max-width:70em}
 .reg-lock{border-radius:var(--r-lg);padding:32px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:14px;align-items:flex-start;min-width:0}
 .reg-lock .lab{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .reg-lock-t{font:800 22px/1.2 var(--f-display)}
 .reg-lock p{color:var(--muted)}
+.af-row{grid-template-columns:28px 1fr 1fr 1.1fr 1.1fr 1.3fr 36px}
 .af-hint{display:block;margin-top:6px;font-size:12px;color:var(--muted)}
 .af-del:hover{color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .af-del:disabled{opacity:.35;cursor:not-allowed}
@@ -647,7 +697,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
         <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <a class="btn btn-primary btn-sm" href="#apply">
+      <a class="btn btn-primary btn-sm reg-cta" href="#apply">
         <span class="long"><span data-l="ru">Регистрация</span><span data-l="en">Registration</span></span><span class="short"><span data-l="ru">Заявка</span><span data-l="en">Apply</span></span>
         <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
@@ -669,7 +719,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
         <span data-l="en"><strong>Propose an idea that millions of people might use.</strong> Go through a real product development cycle: from a first idea to a worked-out concept of a phone, an interface, earbuds or an accessory.</span>
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#apply"><span data-l="ru">Регистрация и подача</span><span data-l="en">Registration &amp; submission</span>
+        <a class="btn btn-primary reg-cta" href="#apply"><span data-l="ru">Регистрация и подача</span><span data-l="en">Registration &amp; submission</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-ghost" href="#tracks"><span data-l="ru">Смотреть треки</span><span data-l="en">Explore tracks</span></a>
       </div>
@@ -695,9 +745,12 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
           </linearGradient>
           <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient>
           <filter id="blur18"><feGaussianBlur stdDeviation="18"/></filter>
+          <filter id="phShadow" x="-30%" y="-30%" width="160%" height="160%"><feOffset dy="14"/><feGaussianBlur stdDeviation="14"/></filter>
           <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".22"/></filter>
           <clipPath id="screenClip"><rect x="8" y="8" width="224" height="494" rx="34"/></clipPath>
           <clipPath id="frontHalf" clipPathUnits="userSpaceOnUse"><rect x="-100" y="330" width="800" height="300"/></clipPath>
+          <linearGradient id="frontFadeG" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="0" y2="366"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="1"/></linearGradient>
+          <mask id="frontFade" maskUnits="userSpaceOnUse" x="-100" y="-100" width="800" height="800"><rect x="-100" y="-100" width="800" height="800" fill="url(#frontFadeG)"/></mask>
         </defs>
 
         <g class="s-draft" stroke-width="1" stroke-dasharray="3 5" opacity=".7">
@@ -712,16 +765,20 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
         <text class="svg-mono s-muted" transform="translate(130 330) rotate(-90)" text-anchor="middle">161.2 mm</text>
         <text class="svg-mono s-muted" x="290" y="20" text-anchor="middle">74.5 mm</text>
 
-        <g transform="rotate(-14 290 330)">
+        <g class="intro i2"><g transform="rotate(-14 290 330)">
           <ellipse cx="290" cy="330" rx="272" ry="66" fill="none" style="stroke:var(--accent)" stroke-width="2" opacity=".35"/>
-          <ellipse cx="290" cy="330" rx="252" ry="58" fill="none" class="s-glass" stroke-width="10" opacity=".9"/>
-        </g>
+          <ellipse cx="290" cy="330" rx="252" ry="58" fill="none" class="s-glass" stroke-width="12" opacity=".85" filter="url(#ringBlur)"/>
+          <ellipse cx="290" cy="330" rx="262" ry="62" fill="none" stroke="#FF2A44" stroke-width="4" pathLength="1000" class="orbit-run" filter="url(#glowF)" opacity=".7"/>
+          <ellipse cx="290" cy="330" rx="262" ry="62" fill="none" stroke="#FF6B7C" stroke-width="1.4" stroke-linecap="round" pathLength="1000" class="orbit-run"/>
+        </g></g>
 
-        <g transform="translate(170 52)" filter="url(#soft)">
+        <g class="intro i1"><g class="par" style="--d:.6"><g class="phone-float">
+        <rect x="170" y="52" width="240" height="510" rx="42" fill="#000" opacity=".22" filter="url(#phShadow)"/>
+        <g transform="translate(170 52)" shape-rendering="geometricPrecision">
           <rect width="240" height="510" rx="42" fill="url(#metal)"/>
           <rect x="8" y="8" width="224" height="494" rx="34" fill="url(#scr)"/>
           <g clip-path="url(#screenClip)">
-            <circle cx="210" cy="420" r="150" fill="none" stroke="#FF2A44" stroke-width="34" opacity=".55" filter="url(#blur18)"/>
+            <circle cx="210" cy="420" r="150" fill="none" stroke="#FF2A44" stroke-width="34" opacity=".55" filter="url(#blur18)" class="glow-pulse"/>
             <circle cx="210" cy="420" r="128" fill="none" stroke="#FF8A70" stroke-width="2" opacity=".5"/>
             <text x="28" y="38" fill="#fff" font-size="12" font-weight="600" class="svg-ui">09:41</text>
             <circle cx="120" cy="32" r="6.5" fill="#050405" stroke="#2A272E"/>
@@ -757,33 +814,36 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
               <rect x="176" y="449" width="32" height="32" rx="9" fill="url(#red)" stroke="none"/>
               <path d="M185 470l7-12 7 12zM188.5 465h7"/>
             </g>
+            <rect x="-160" y="-60" width="120" height="640" fill="url(#sheenG)" transform="rotate(18 120 255)" class="sheen"/>
           </g>
           <rect x="-3" y="120" width="3" height="46" rx="1.5" style="fill:var(--metal-3)"/>
           <rect x="240" y="150" width="3" height="70" rx="1.5" style="fill:var(--metal-3)"/>
-        </g>
+        </g></g></g></g>
 
-        <g transform="rotate(-14 290 330)">
-          <ellipse cx="290" cy="330" rx="252" ry="58" fill="none" class="s-glass" stroke-width="10" clip-path="url(#frontHalf)"/>
-          <ellipse cx="290" cy="330" rx="272" ry="66" fill="none" style="stroke:var(--accent)" stroke-width="2" opacity=".6" clip-path="url(#frontHalf)"/>
+        <g class="intro i2"><g transform="rotate(-14 290 330)">
+          <ellipse cx="290" cy="330" rx="252" ry="58" fill="none" class="s-glass" stroke-width="12" opacity=".6" filter="url(#ringBlur)" mask="url(#frontFade)"/>
+          <ellipse cx="290" cy="330" rx="262" ry="62" fill="none" stroke="#FF2A44" stroke-width="4" pathLength="1000" class="orbit-run" filter="url(#glowF)" opacity=".7" mask="url(#frontFade)"/>
+          <ellipse cx="290" cy="330" rx="262" ry="62" fill="none" stroke="#FF6B7C" stroke-width="1.4" stroke-linecap="round" pathLength="1000" class="orbit-run" mask="url(#frontFade)"/>
+          <ellipse cx="290" cy="330" rx="272" ry="66" fill="none" style="stroke:var(--accent)" stroke-width="2" opacity=".6" mask="url(#frontFade)"/>
           <circle cx="40" cy="342" r="5" class="s-accent"/>
-        </g>
+        </g></g>
 
-        <g transform="translate(392 86)"><g class="floaty">
+        <g class="intro i3"><g class="par" style="--d:1.2"><g transform="translate(392 86)"><g class="floaty">
           <rect width="176" height="96" rx="20" class="s-glass" filter="url(#soft)"/>
-          <g transform="translate(22 18)">
-            <circle cx="14" cy="14" r="12" fill="url(#bud)"/><rect x="9" y="18" width="10" height="34" rx="5" fill="url(#bud)"/><rect x="13" y="24" width="2.2" height="22" rx="1" class="s-accent"/>
+          <g transform="translate(18 14)">
+            <use href="#nbBud" transform="scale(.32)"/>
           </g>
-          <g transform="translate(94 18)">
-            <circle cx="14" cy="14" r="12" fill="url(#bud)"/><rect x="9" y="18" width="10" height="34" rx="5" fill="url(#bud)"/><rect x="13" y="24" width="2.2" height="22" rx="1" class="s-accent"/>
+          <g transform="translate(90 14)">
+            <use href="#nbBud" transform="scale(.32)"/>
           </g>
           <text x="56" y="44" class="svg-mono s-ink" font-size="12">L</text>
           <text x="56" y="62" class="svg-mono s-accent" font-size="12">100%</text>
           <text x="128" y="44" class="svg-mono s-ink" font-size="12">R</text>
           <text x="128" y="62" class="svg-mono s-accent" font-size="12">100%</text>
           <rect x="22" y="78" width="132" height="4" rx="2" style="fill:var(--line)"/><rect x="22" y="78" width="132" height="4" rx="2" fill="url(#red)"/>
-        </g></g>
+        </g></g></g></g>
 
-        <g transform="translate(6 236)"><g class="floaty d2">
+        <g class="intro i4"><g class="par" style="--d:1.4"><g transform="translate(6 236)"><g class="floaty d2">
           <rect width="190" height="70" rx="18" class="s-glass" filter="url(#soft)"/>
           <g transform="translate(18 20)" fill="none" style="stroke:var(--ink)" stroke-width="1.8" stroke-linecap="round">
             <path d="M2 14c0-8 6-13 12-13s12 5 12 13"/><rect x="0" y="13" width="7" height="12" rx="3"/><rect x="21" y="13" width="7" height="12" rx="3"/>
@@ -792,64 +852,62 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
           <text x="58" y="31" class="svg-ui s-ink" font-size="12" font-weight="600" data-l="en">Noise control</text>
           <text x="58" y="48" class="svg-mono s-muted" font-size="10">ANC · −42 dB</text>
           <rect x="140" y="25" width="36" height="20" rx="10" fill="url(#red)"/><circle cx="166" cy="35" r="7" fill="#fff"/>
-        </g></g>
+        </g></g></g></g>
 
-        <g transform="translate(22 440)"><g class="floaty d3">
+        <g class="intro i5"><g class="par" style="--d:1.1"><g transform="translate(22 440)"><g class="floaty d3">
           <rect width="164" height="76" rx="18" class="s-glass" filter="url(#soft)"/>
           <g id="wave2" transform="translate(16 38)"></g>
           <text x="16" y="66" class="svg-mono s-muted" font-size="10">250–400 ms · ease-out</text>
-        </g></g>
+        </g></g></g></g>
 
         <defs>
-          <radialGradient id="pearl" cx=".36" cy=".3" r=".78">
-            <stop offset="0" stop-color="#FFFFFF"/><stop offset=".38" style="stop-color:var(--metal-1)"/>
-            <stop offset=".78" style="stop-color:var(--metal-2)"/><stop offset="1" style="stop-color:var(--metal-3)"/>
+          <linearGradient id="streak" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF2A44" stop-opacity="0"/><stop offset=".6" stop-color="#FF2A44"/><stop offset="1" stop-color="#FFD0D6"/></linearGradient>
+          <linearGradient id="sheenG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <filter id="glowF" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ringBlur" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="3.5"/></filter>
+          <radialGradient id="nbHead" cx=".38" cy=".3" r=".85">
+            <stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#F4F3F7"/><stop offset=".8" stop-color="#D9D7DF"/><stop offset="1" stop-color="#B8B5C0"/>
           </radialGradient>
-          <linearGradient id="stemG" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" style="stop-color:var(--metal-3)"/><stop offset=".3" stop-color="#FFFFFF"/>
-            <stop offset=".62" style="stop-color:var(--metal-1)"/><stop offset="1" style="stop-color:var(--metal-3)"/>
+          <linearGradient id="nbStem" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#C9C6D0"/><stop offset=".35" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#ECEBF0"/><stop offset="1" stop-color="#B3B0BB"/>
           </linearGradient>
-          <radialGradient id="tipG" cx=".4" cy=".35" r=".75">
-            <stop offset="0" stop-color="#E9E8EC"/><stop offset=".6" stop-color="#B9B7C0"/><stop offset="1" stop-color="#77747F"/>
+          <radialGradient id="nbTip" cx=".35" cy=".3" r=".9">
+            <stop offset="0" stop-color="#F3F2F6"/><stop offset=".6" stop-color="#D4D2DA"/><stop offset="1" stop-color="#A9A6B2"/>
           </radialGradient>
-          <radialGradient id="nozG" cx=".5" cy=".5" r=".5">
-            <stop offset="0" stop-color="#3A3840"/><stop offset="1" stop-color="#121116"/>
+          <radialGradient id="nbGrill" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#ABA8B4"/><stop offset="1" stop-color="#8E8B98"/>
           </radialGradient>
-          <linearGradient id="capG" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#6E6B75"/><stop offset=".4" stop-color="#E6E5EA"/><stop offset="1" stop-color="#5B5862"/>
-          </linearGradient>
-          <filter id="blur3" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+          <linearGradient id="nbCap" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4D5E"/><stop offset="1" stop-color="#D0122A"/></linearGradient>
           <filter id="blur7" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
-          <pattern id="meshP" width="3.2" height="3.2" patternUnits="userSpaceOnUse"><circle cx="1.6" cy="1.6" r=".75" fill="#6B6872"/></pattern>
-          <g id="budShape">
+  <filter id="nbSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.4"/></filter>
+          <g id="nbBud">
             <!-- stem -->
-            <path d="M57 62 C64 70 76 70 82 60 L77 170 Q76.5 182 67.5 182 Q58.5 182 58 170 Z" fill="url(#stemG)"/>
-            <path d="M60 78 L61 168" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>
-            <path d="M73.5 82 L71.5 160" stroke="url(#red)" stroke-width="3.6" stroke-linecap="round"/>
-            <ellipse cx="67.5" cy="176" rx="8.6" ry="3.4" fill="url(#capG)"/>
-            <ellipse cx="67.5" cy="176" rx="2" ry=".9" fill="#1A191E"/>
+            <path d="M62 64 C68 70 80 70 86 62 L80 168 Q79 184 70 184 Q61 184 60.5 168 Z" fill="url(#nbStem)"/>
+            <path d="M60.6 160 L80.4 160 L80 168 Q79 184 70 184 Q61 184 60.5 168 Z" fill="url(#nbCap)"/>
+            <path d="M65 76 L64.4 150" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>
             <!-- head -->
-            <path d="M16 42 C12 18 32 3 55 4 C80 6 96 24 92 48 C89 68 72 80 53 81 C36 82 19 66 16 42 Z" fill="url(#pearl)"/>
-            <path d="M58 72 C66 76 77 74 83 64" fill="none" style="stroke:var(--metal-3)" stroke-width="1" opacity=".55"/>
-            <ellipse cx="46" cy="20" rx="17" ry="7" transform="rotate(-14 46 20)" fill="#fff" opacity=".9" filter="url(#blur3)"/>
-            <ellipse cx="76" cy="38" rx="4.2" ry="3.2" fill="#1C1B21" opacity=".85"/>
-            <ellipse cx="75" cy="37" rx="1.4" ry="1" fill="#fff" opacity=".6"/>
-            <!-- silicone ear tip -->
-            <g transform="rotate(-38 24 58)">
-              <ellipse cx="24" cy="58" rx="20" ry="15" fill="url(#tipG)"/>
-              <ellipse cx="24" cy="58" rx="20" ry="15" fill="none" stroke="#5E5B66" stroke-width=".8" opacity=".6"/>
-              <ellipse cx="20" cy="60" rx="9.5" ry="7" fill="url(#nozG)"/>
-              <ellipse cx="20" cy="60" rx="8" ry="5.6" fill="url(#meshP)" opacity=".9"/>
-              <ellipse cx="28" cy="50" rx="7" ry="3" fill="#fff" opacity=".5" filter="url(#blur3)"/>
+            <path d="M18 44 C16 20 36 6 58 7 C82 8 98 26 95 49 C92 70 75 82 56 82 C36 82 20 66 18 44 Z" fill="url(#nbHead)"/>
+            <path d="M18 44 C16 20 36 6 58 7 C82 8 98 26 95 49 C92 70 75 82 56 82 C36 82 20 66 18 44 Z" fill="none" stroke="#A7A4AF" stroke-width=".8" opacity=".5"/>
+            <ellipse cx="48" cy="22" rx="20" ry="8" transform="rotate(-12 48 22)" fill="#fff" filter="url(#nbSoft)"/>
+            <rect x="74" y="30" width="5" height="12" rx="2.5" transform="rotate(18 76 36)" fill="#3A3842" opacity=".55"/>
+            <!-- ear tip -->
+            <g transform="rotate(-34 26 58)">
+              <ellipse cx="26" cy="58" rx="19" ry="14" fill="url(#nbTip)"/>
+              <ellipse cx="22" cy="59" rx="7.8" ry="5.6" fill="url(#nbGrill)"/>
+              <ellipse cx="22" cy="59" rx="7.8" ry="5.6" fill="none" stroke="#fff" stroke-width=".8" opacity=".5"/>
+              <ellipse cx="30" cy="51" rx="7" ry="2.6" fill="#fff" opacity=".7" filter="url(#nbSoft)"/>
             </g>
           </g>
         </defs>
-        <ellipse cx="492" cy="602" rx="70" ry="9" fill="#000" opacity=".28" filter="url(#blur7)"/>
-        <use href="#budShape" transform="translate(398 424) rotate(-18 50 90) scale(.92)"/>
-        <use href="#budShape" transform="translate(574 452) scale(-.86 .86) rotate(-12 50 90)"/>
-        <g class="s-draft" stroke-width="1"><path d="M436 486l44-56h50"/></g>
+        
+        <g class="intro i5"><g class="par" style="--d:1.6">
+          <ellipse class="bud-shadow" cx="492" cy="606" rx="74" ry="9" fill="#000" opacity=".26" filter="url(#blur7)"/>
+          <g class="bud-float ba"><use href="#nbBud" transform="translate(398 418) rotate(-18 50 90) scale(.92)"/></g>
+          <g class="bud-float bb"><use href="#nbBud" transform="translate(574 446) scale(-.86 .86) rotate(-12 50 90)"/></g>
+        </g></g>
+        <g class="intro i6"><g class="par" style="--d:1.6"><g class="s-draft" stroke-width="1"><path d="M436 486l44-56h50"/></g>
         <circle cx="436" cy="486" r="3" class="s-accent"/>
-        <text x="534" y="424" class="svg-mono s-muted">Ø12.8</text>
+        <text x="534" y="424" class="svg-mono s-muted">Ø12.8</text></g></g>
       </svg>
     </div>
   </div>
@@ -983,7 +1041,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
           </div>
           <div class="ex">
             <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="9"/><path d="M22 28v22" stroke-width="6" style="stroke:var(--accent)"/><circle cx="44" cy="20" r="9"/><path d="M42 28v22" stroke-width="6"/><path d="M28 12c4-3 4-3 8 0" opacity=".5"/></svg>
-            <b data-l="ru">Инновационные наушники</b><b data-l="en">Innovative earbuds</b>
+            <b data-l="ru">Инно&shy;ва&shy;ци&shy;он&shy;ные наушники</b><b data-l="en">Innovative earbuds</b>
           </div>
           <div class="ex">
             <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="6" width="34" height="52" rx="7"/><rect x="18" y="30" width="22" height="20" rx="3" style="stroke:var(--accent)"/><path d="M22 36h14M22 41h10M22 46h12" opacity=".6"/><path d="M46 18h6v16h-6" style="stroke:var(--accent)"/></svg>
@@ -1025,7 +1083,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
       <div class="meta"><span>TRACK 01 · UX MOTION</span><span>TRACK 02 · NEW FORMS</span></div>
       <h2><span data-l="ru">Ваша идея может оказаться в устройствах миллионов</span><span data-l="en">Your idea could ship to millions of devices</span></h2>
       <p><span data-l="ru">Лучшие проекты могут быть реализованы в серийных устройствах. Регистрация и приём работ открыты с 9 ноября по 20 декабря.</span><span data-l="en">The best projects may be built into mass-produced devices. Registration and submissions are open from November 9 to December 20.</span></p>
-      <div><a class="btn btn-light" href="#apply"><span data-l="ru">Регистрация и подача</span><span data-l="en">Registration &amp; submission</span>
+      <div><a class="btn btn-light reg-cta" href="#apply"><span data-l="ru">Регистрация и подача</span><span data-l="en">Registration &amp; submission</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
     </div>
     <div class="banner-art" aria-hidden="true">
@@ -1212,28 +1270,32 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
       <div class="dv">
         <span class="vol" data-l="ru">1 страница</span><span class="vol" data-l="en">1 page</span>
         <h3 data-l="ru">Описание идеи</h3><h3 data-l="en">Design statement</h3>
-        <p data-l="ru">Вдохновение, целевая аудитория и история сценария использования.</p>
-        <p data-l="en">Inspiration, target users and the scenario story.</p>
+        <ul class="dv-tracks" data-l="ru"><li><b>Идея:</b> какую проблему пользователя она решает и почему это важно</li><li><b>Аудитория и сценарий:</b> кто, где и как пользуется решением</li></ul>
+        <ul class="dv-tracks" data-l="en"><li><b>Idea:</b> which user problem it solves and why it matters</li><li><b>Users and scenario:</b> who uses it, where and how</li></ul>
+        <a class="dv-more" href="#submit-rules" data-open-rule="submit-rules"><span data-l="ru">Подробные требования</span><span data-l="en">Detailed</span> →</a>
       </div>
       <div class="dv">
         <span class="vol" data-l="ru">Демо / видео / 3D</span><span class="vol" data-l="en">Demo / video / 3D</span>
         <h3 data-l="ru">Визуализация</h3><h3 data-l="en">Visualisation</h3>
-        <ul data-l="ru"><li><b>Трек 1:</b> демо-проект в Blender, After Effects и т. п. или видео</li><li><b>Трек 2:</b> эскизы, 3D-модель или 3D CAD-модель, физический прототип или рендеры</li></ul>
-        <ul data-l="en"><li><b>Track 1:</b> a demo project in Blender, After Effects etc. or a video</li><li><b>Track 2:</b> concept sketches, a 3D model or 3D CAD model, a physical prototype or renders</li></ul>
+        <ul class="dv-tracks" data-l="ru"><li><b>Трек 1:</b> видео демо MP4 1080p, 15–90 с; исходники по желанию</li><li><b>Трек 2:</b> эскизы, 3D/CAD-модель (STEP, GLB), рендеры или фото и видео прототипа</li></ul>
+        <ul class="dv-tracks" data-l="en"><li><b>Track 1:</b> MP4 demo video, 1080p, 15–90 s; source files optional</li><li><b>Track 2:</b> sketches, a 3D/CAD model (STEP, GLB), renders or prototype photos and video</li></ul>
+        <a class="dv-more" href="#submit-rules" data-open-rule="submit-rules"><span data-l="ru">Подробные требования</span><span data-l="en">Detailed</span> →</a>
       </div>
       <div class="dv">
         <span class="vol" data-l="ru">0,5 страницы</span><span class="vol" data-l="en">0.5 page</span>
         <h3 data-l="ru">Анализ реализуемости</h3><h3 data-l="en">Feasibility analysis</h3>
-        <p data-l="ru">Как идея доходит до устройства: батарея, вычисления, задержки, материалы, производство.</p>
-        <p data-l="en">How the idea gets onto a device: battery, compute, latency, materials, manufacturing.</p>
+        <ul class="dv-tracks" data-l="ru"><li><b>Технологии:</b> батарея, вычисления, задержки, материалы</li><li><b>Путь к устройству:</b> что работает уже сейчас и что нужно доработать</li></ul>
+        <ul class="dv-tracks" data-l="en"><li><b>Technology:</b> battery, compute, latency, materials</li><li><b>Path to a device:</b> what works today and what still needs engineering</li></ul>
+        <a class="dv-more" href="#submit-rules" data-open-rule="submit-rules"><span data-l="ru">Подробные требования</span><span data-l="en">Detailed</span> →</a>
       </div>
     </div>
 
+    <div class="pr-label"><span class="ex-tag">TRACK 02</span><b data-l="ru">Принципы визуализации</b><b data-l="en">Key principles for visualisation</b></div>
     <div class="principles" style="margin-top:16px">
-      <div class="pr"><span class="mono">ONE ARTIFACT · ONE QUESTION</span><b data-l="ru">Один артефакт, один вопрос</b><b data-l="en">One artifact, one question</b><p data-l="ru">Подпишите на каждом листе, на какой вопрос он отвечает. Эскиз без вопроса становится декорацией.</p><p data-l="en">State on each artifact which question it answers. A sketch with no question is decoration.</p></div>
-      <div class="pr"><span class="mono">SHOW, DON'T TELL</span><b data-l="ru">Каждое утверждение показано</b><b data-l="en">Every claim anchored</b><p data-l="ru">«Крепится на магнит и поворачивается на 180°» нужно показать на модели, а не только написать.</p><p data-l="en">"Attaches magnetically and rotates 180°" must be shown by the artifact, not just written.</p></div>
-      <div class="pr"><span class="mono">LOOK + HAND</span><b data-l="ru">Для глаза и для руки</b><b data-l="en">For the eye and the hand</b><p data-l="ru">Жюри будет смотреть, брать в руки и вращать. Дизайн должен работать с любого ракурса.</p><p data-l="en">Judges will view, pick up and rotate it. It has to work from every angle.</p></div>
-      <div class="pr"><span class="mono">TRACEABILITY</span><b data-l="ru">Прослеживаемость</b><b data-l="en">Traceability</b><p data-l="ru">Сохраняйте пометки, отброшенные варианты и причины решений от первого эскиза до рендера.</p><p data-l="en">Keep annotations, rejected directions and reasons from the first sketch to the final render.</p></div>
+      <div class="pr"><span class="mono">01</span><b data-l="ru">Один артефакт — один вопрос</b><b data-l="en">One artifact, one question</b><p data-l="ru">Каждый эскиз, рендер или макет отвечает на один вопрос: форма, механизм или материалы. Подпишите его.</p><p data-l="en">Each sketch, render or mock-up answers one question: form, proportion, mechanism or materials. State it on the sheet.</p></div>
+      <div class="pr"><span class="mono">02</span><b data-l="ru">Каждое утверждение показано</b><b data-l="en">Every claim anchored</b><p data-l="ru">«Крепится на магнит и поворачивается на 180°» нужно показать на модели или в видео, а не только написать рядом.</p><p data-l="en">"Attaches magnetically and rotates 180°" must be shown by the model or video, not just written next to it.</p></div>
+      <div class="pr"><span class="mono">03</span><b data-l="ru">Для глаза и для руки</b><b data-l="en">For the eye and the hand</b><p data-l="ru">Жюри будет смотреть, брать в руки и вращать модель. Дизайн должен выглядеть верно с любого ракурса.</p><p data-l="en">Judges will view, pick up and rotate the model. The design has to look right from every angle.</p></div>
+      <div class="pr"><span class="mono">04</span><b data-l="ru">Прослеживаемость</b><b data-l="en">Traceability</b><p data-l="ru">Сохраняйте пометки, отброшенные варианты и причины решений — от первого эскиза до финального рендера.</p><p data-l="en">Keep annotations, rejected directions and the reasons behind decisions — from the first sketch to the final render.</p></div>
     </div>
   </div>
 </section>
@@ -1252,12 +1314,12 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
         <span class="amount">¥20 000</span>
         <span class="who" data-l="ru"><b>2 команды</b> · по одной в каждом треке</span><span class="who" data-l="en"><b>2 teams</b> · one per track</span>
       </div>
-      <div class="prize">
+      <div class="prize second">
         <span class="place" data-l="ru">2 место</span><span class="place" data-l="en">Second prize</span>
         <span class="amount">¥10 000</span>
         <span class="who" data-l="ru"><b>2 команды</b> · по одной в каждом треке</span><span class="who" data-l="en"><b>2 teams</b> · one per track</span>
       </div>
-      <div class="prize">
+      <div class="prize third">
         <span class="place" data-l="ru">3 место</span><span class="place" data-l="en">Third prize</span>
         <span class="amount">¥5 000</span>
         <span class="who" data-l="ru"><b>2 команды</b> · по одной в каждом треке</span><span class="who" data-l="en"><b>2 teams</b> · one per track</span>
@@ -1376,37 +1438,268 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     <div class="rules">
       <details class="rl"><summary><span data-l="ru">1. Кто может участвовать</span><span data-l="en">1. Who can take part</span></summary><div data-l="ru" class="rl-b"><p>Студенты московских дизайн-вузов (бакалавриат, специалитет, магистратура, аспирантура и др.). Участие индивидуальное или командой, размер команды не ограничен. Один участник может состоять только в одной команде.</p><p><b>Обратите внимание:</b> даже если вы участвуете в одиночку, у вас должно быть название команды.</p></div><div data-l="en" class="rl-b"><p>Students of Moscow design universities (bachelor, specialist, master, PhD programmes, etc.). Individually or in teams; team size is not limited. A participant may be a member of one team only.</p><p><b>Please mind:</b> when participating alone, you still need to have a team name.</p></div></details>
       <details class="rl"><summary><span data-l="ru">2. Как подать заявку</span><span data-l="en">2. How to apply</span></summary><div data-l="ru" class="rl-b"><p>Нажмите «Регистрация и подача», примите согласие на обработку персональных данных и заполните форму заявки. Согласие принимает каждый участник команды.</p><p>После регистрации вы получите письмо. Вся важная информация будет приходить на этот адрес.</p></div><div data-l="en" class="rl-b"><p>Click "Registration &amp; submission", accept the personal data consent and fill in the application form. Every team member accepts the consent.</p><p>After registration you will receive an email. All relevant information will be sent by that email.</p></div></details>
-      <details class="rl"><summary><span data-l="ru">3. Что сдать: подробные требования</span><span data-l="en">3. What to submit: detailed criteria</span></summary><div data-l="ru" class="rl-b"><h4>Общие требования</h4><ul>
-<li>Все тексты на русском или английском языке.</li>
-<li>Видео без водяных знаков сервисов и без посторонней музыки, на которую у вас нет прав.</li>
-<li>На изображениях не должно быть чужих логотипов и брендов.</li>
-<li>Организаторы могут скачать копии файлов для оценки и архива конкурса.</li></ul>
+      <details class="rl" id="submit-rules"><summary><span data-l="ru">3. Технические требования к работам</span><span data-l="en">3. Technical Requirements for Competition Submissions</span></summary><div data-l="ru" class="rl-b"><p>Одна команда присылает одно письмо: описание идеи, анализ реализуемости и визуализацию. Файлы тяжелее 20 МБ — ссылкой на Яндекс Диск.</p>
 <h4>Что входит в заявку</h4><ol>
 <li><b>Описание идеи</b> — PDF, 1 страница.</li>
 <li><b>Анализ реализуемости</b> — PDF, до 0,5 страницы.</li>
-<li><b>Визуализация</b> — файлы по требованиям трека или ссылка на папку на Яндекс Диске. Трек 1: демо-проект (Blender, After Effects и др.) или видео. Трек 2: эскизы, 3D-модель или 3D CAD-модель, прототип или рендеры.</li></ol>
+<li><b>Визуализация</b> — файлы по требованиям трека ниже или ссылка на папку на Яндекс Диске.</li></ol>
 <h4>Тяжёлые файлы — через Яндекс Диск</h4><ul>
 <li>Если вложения весят больше 20 МБ, загрузите всё в одну папку на Яндекс Диске и пришлите в письме ссылку на неё.</li>
 <li>Доступ к папке: «Все, у кого есть ссылка», только просмотр и скачивание. Проверьте ссылку в окне инкогнито: она должна открываться без запроса доступа.</li>
 <li>Ничего не меняйте и не удаляйте в папке после дедлайна (20 декабря, 23:59 по Москве) и до объявления итогов. Файлы, изменённые после дедлайна, не оцениваются.</li></ul>
 <p><b>Названия файлов:</b> <code>Трек_Команда_Что.расширение</code>, латиницей, без пробелов. Например: <code>T1_NeonFold_demo.mp4</code>, <code>T2_NeonFold_render_01.png</code>, <code>T2_NeonFold_statement.pdf</code>.</p>
-<p><b>Тема письма:</b> <code>Tech Arena 2026 — Трек 1 — Название команды</code></p></div><div data-l="en" class="rl-b"><h4>General requirements</h4><ul>
-<li>All texts in Russian or English.</li>
-<li>Videos without service watermarks and without third-party music you have no rights to.</li>
-<li>No third-party logos or brands on images.</li>
-<li>The organisers may download copies of the files for judging and for the competition archive.</li></ul>
+<p><b>Тема письма:</b> <code>Tech Arena 2026 — Трек 1 — Название команды</code></p>
+
+<h4>Трек 1: анимация интерфейса</h4>
+<p>Главный файл — видео демо MP4 1080p длиной 15–90 секунд; исходники по желанию.</p>
+<p><b>Обязательно</b></p><ul>
+<li><b>Видео демо:</b> MP4 (H.264), 1920×1080 или вертикально 1080×1920 под экран телефона; 30 или 60 кадров в секунду; 15–90 секунд; до 300 МБ. Анимация показана в реальной скорости, звук не обязателен.</li>
+<li>Если сценариев несколько (раскрытие, поворот, перенос приложения), покажите каждый отдельным фрагментом с подписью.</li></ul>
+<p><b>По желанию</b></p><ul>
+<li>То же видео в замедлении ×0,5, чтобы жюри рассмотрело кривые движения.</li>
+<li>Исходники (как их подготовить — в таблице «Программы и форматы» ниже).</li>
+<li>GIF-превью до 10 МБ: его можно показать на сайте и в итогах.</li>
+<li>Раскадровка: 3–6 ключевых кадров в PNG.</li></ul>
+
+<h4>Трек 2: новые формы и опыт</h4>
+<p>Пришлите то, что есть у вашего проекта: эскизы, 3D- или 3D CAD-модель, рендеры, физический прототип.</p>
+<div class="rl-tw"><table class="rl-t"><thead><tr><th>Что</th><th>Формат</th><th>Требования</th></tr></thead><tbody><tr><td>Эскизы</td><td>Один PDF до 20 МБ или JPG/PNG</td><td>Сканы 300 dpi или чёткие фото при ровном свете. На каждом листе подпишите, на какой вопрос он отвечает: форма, пропорции, механизм или материалы (CMF).</td></tr><tr><td>3D CAD-модель</td><td>STEP (<code>.step</code>/<code>.stp</code>) обязательно + исходник <code>.f3d</code>, <code>.sldprt</code>, <code>.ipt</code></td><td>Габаритный чертёж или скриншот с основными размерами в мм.</td></tr><tr><td>3D-модель</td><td><code>.glb</code> (предпочтительно), <code>.fbx</code> или <code>.obj</code></td><td>С текстурами.</td></tr><tr><td>Рендеры</td><td>3–8 изображений PNG или JPG, не меньше 1920 px по длинной стороне</td><td>Ракурсы спереди, сбоку и в руке или в сценарии. По желанию — видео с вращением, MP4 1080p, 10–30 с.</td></tr><tr><td>Физический прототип</td><td>Фото JPG не меньше 1920 px + видео MP4 15–60 с</td><td>Фото с 5 и более ракурсов; видео показывает механизм или взаимодействие: как крепится, складывается, поворачивается.</td></tr></tbody></table></div><p>Сам прототип можно будет показать на церемонии награждения; подробности сообщим по почте.</p>
+
+<h4>Программы и форматы: Трек 1</h4>
+<p>Работайте в любой программе: жюри всегда получает видео MP4, а рабочий файл — дополнение по желанию.</p>
+<div class="rl-tw"><table class="rl-t"><thead><tr><th>Программа</th><th>Для чего подходит</th><th>Рабочий файл (по желанию)</th><th>Что прислать жюри</th></tr></thead><tbody><tr><td>Blender</td><td>3D-анимация устройства и экранов, складывание, движение шарнира</td><td><code>.blend</code>, текстуры упакованы: File → External Data → Pack Resources</td><td>MP4: Output → FFmpeg Video, контейнер MPEG-4, кодек H.264</td></tr><tr><td>Adobe After Effects</td><td>2D / 2.5D-анимация интерфейса, переходы, состояния ИИ-ассистента</td><td><code>.aep</code> + собранные файлы: File → Dependencies → Collect Files</td><td>MP4 H.264 через Adobe Media Encoder; по желанию Lottie <code>.json</code> через плагин Bodymovin</td></tr><tr><td>Cinema 4D</td><td>3D-анимация, кадры устройства с интерфейсом на экране</td><td><code>.c4d</code>, сохранён через File → Save Project with Assets</td><td>MP4 H.264</td></tr><tr><td>Figma (Smart Animate)</td><td>Кликабельные прототипы интерфейса с переходами</td><td>Ссылка на файл или прототип, доступ «Все, у кого есть ссылка, могут смотреть»</td><td>Запись экрана прототипа в MP4</td></tr><tr><td>ProtoPie</td><td>Интерактивные прототипы с датчиками телефона: гироскоп, наклон, несколько экранов — хорошо для складных</td><td>Файл <code>.pie</code> или ссылка ProtoPie Cloud</td><td>Запись экрана в MP4, лучше на реальном телефоне</td></tr><tr><td>Rive</td><td>Интерактивные анимации с состояниями (ожидание, слушание, ответ)</td><td>Файл <code>.riv</code> + ссылка</td><td>Экспорт MP4 или GIF</td></tr><tr><td>Unity / Unreal Engine</td><td>Демо в реальном времени на устройстве</td><td>Ссылка на проект или сборку</td><td>Запись демо в MP4</td></tr><tr><td>Запись экрана (OBS, QuickTime, запись на телефоне)</td><td>Запись любого прототипа в действии</td><td>—</td><td>MP4, 1080p, 30/60 кадров в секунду</td></tr></tbody></table></div><p>Настройки экспорта видео для любой программы: MP4, H.264, 1920×1080 или 1080×1920, 30 или 60 кадров в секунду, до 300 МБ.</p>
+
+<h4>Программы и форматы: Трек 2</h4>
+<p>Присылайте файлы, которые жюри откроет без платных программ: PDF, PNG/JPG, MP4, STEP и GLB. Рабочий файл добавьте, если он есть.</p>
+<div class="rl-tw"><table class="rl-t"><thead><tr><th>Этап</th><th>Программа</th><th>Рабочий файл (по желанию)</th><th>Что прислать жюри</th></tr></thead><tbody><tr><td>Эскизы</td><td>Бумага, Procreate, Photoshop, Sketchbook, Concepts</td><td><code>.procreate</code>, <code>.psd</code></td><td>Один PDF или листы JPG/PNG, 300 dpi</td></tr><tr><td>CAD-модель</td><td>Autodesk Fusion</td><td><code>.f3d</code></td><td>STEP (<code>.step</code>/<code>.stp</code>) + скриншоты с размерами</td></tr><tr><td>CAD-модель</td><td>SolidWorks</td><td><code>.sldprt</code> / <code>.sldasm</code></td><td>STEP</td></tr><tr><td>CAD-модель</td><td>Autodesk Inventor</td><td><code>.ipt</code> / <code>.iam</code></td><td>STEP</td></tr><tr><td>CAD / поверхности</td><td>Rhino (+ Grasshopper)</td><td><code>.3dm</code></td><td>STEP или IGES + OBJ</td></tr><tr><td>Моделирование в стиле CAD</td><td>Plasticity, Shapr3D</td><td><code>.plasticity</code>, <code>.shapr</code></td><td>STEP</td></tr><tr><td>Полигональная модель</td><td>Blender, Cinema 4D, 3ds Max, Maya</td><td><code>.blend</code> (упакованный), <code>.c4d</code>, <code>.max</code>, <code>.mb</code></td><td>GLB (предпочтительно), FBX или OBJ с текстурами</td></tr><tr><td>Рендеры</td><td>KeyShot</td><td>пакет <code>.ksp</code></td><td>PNG/JPG не меньше 1920 px; видео с вращением MP4, 10–30 с</td></tr><tr><td>Рендеры</td><td>Blender (Cycles / Eevee), Cinema 4D (Redshift, Octane), V-Ray</td><td>как выше</td><td>PNG/JPG не меньше 1920 px; видео с вращением MP4</td></tr><tr><td>Физический прототип</td><td>3D-печать, бумага, пена, пластик, электроника</td><td>STL или 3MF для печати (по желанию)</td><td>Фото JPG с 5+ ракурсов, не меньше 1920 px; видео MP4 15–60 с с механизмом</td></tr></tbody></table></div><p>Почему эти форматы: STEP открывается в любой CAD-программе и в бесплатных просмотрщиках, например Autodesk Viewer; GLB открывается в браузере и в «Просмотр 3D» в Windows. Если программа не выгружает STEP (например, Blender), пришлите GLB, FBX или OBJ.</p>
+
+<h4>Общие требования</h4><ul>
+<li>Все тексты на русском или английском языке.</li>
+<li>Видео без водяных знаков сервисов и посторонней музыки, на которую у вас нет прав.</li>
+<li>На изображениях не должно быть чужих логотипов и брендов.</li>
+<li>Организаторы могут скачать копии файлов для оценки и архива конкурса.</li></ul></div><div data-l="en" class="rl-b"><p>Each team sends one email with the design statement, the feasibility analysis and the visualisation. Files over 20 MB go as a Yandex Disk link.</p>
 <h4>What the submission includes</h4><ol>
 <li><b>Design statement</b> — PDF, 1 page.</li>
 <li><b>Feasibility analysis</b> — PDF, up to 0.5 page.</li>
-<li><b>Visualisation</b> — files that meet your track&#39;s requirements below, or a link to a Yandex Disk folder. Track 1: a demo project (Blender, After Effects, etc.) or a video. Track 2: sketches, a 3D model or 3D CAD model, a prototype or renders.</li></ol>
+<li><b>Visualisation</b> — files that meet your track&#39;s requirements below, or a link to a Yandex Disk folder.</li></ol>
 <h4>Large files go via Yandex Disk</h4><ul>
 <li>If your attachments exceed 20 MB, upload everything into one Yandex Disk folder and send its link in the email.</li>
 <li>Folder access: "Anyone with the link", view and download only. Check the link in an incognito window: it must open without a request for access.</li>
 <li>Do not change or delete anything in the folder after the deadline (December 20, 23:59 Moscow time) until the results are announced. Files changed after the deadline are not assessed.</li></ul>
 <p><b>File names:</b> <code>Track_Team_Content.extension</code>, Latin letters, no spaces. For example: <code>T1_NeonFold_demo.mp4</code>, <code>T2_NeonFold_render_01.png</code>, <code>T2_NeonFold_statement.pdf</code>.</p>
-<p><b>Email subject:</b> <code>Tech Arena 2026 — Track 1 — Team name</code></p></div></details>
+<p><b>Email subject:</b> <code>Tech Arena 2026 — Track 1 — Team name</code></p>
+
+<h4>Track 1: UI animation</h4>
+<p>The main file is an MP4 demo video, 1080p, 15–90 seconds; source files are optional.</p>
+<p><b>Required</b></p><ul>
+<li><b>Demo video:</b> MP4 (H.264), 1920×1080 or vertical 1080×1920 for a phone screen; 30 or 60 fps; 15–90 seconds; up to 300 MB. Show the animation at real speed; sound is optional.</li>
+<li>If you have several scenarios (unfolding, rotation, moving an app), show each one as a separate captioned clip.</li></ul>
+<p><b>Optional</b></p><ul>
+<li>The same video slowed down ×0.5 so the jury can see the motion curves.</li>
+<li>Source files (how to prepare them — see "Software and formats" below).</li>
+<li>A GIF preview up to 10 MB: it can be shown on the website and in the results.</li>
+<li>Storyboard: 3–6 key frames as PNG.</li></ul>
+
+<h4>Track 2: new forms and experience</h4>
+<p>Send whatever your project has: sketches, a 3D or 3D CAD model, renders, a physical prototype.</p>
+<div class="rl-tw"><table class="rl-t"><thead><tr><th>What</th><th>Format</th><th>Requirements</th></tr></thead><tbody><tr><td>Sketches</td><td>One PDF up to 20 MB, or JPG/PNG</td><td>300 dpi scans or sharp photos in even light. On each sheet, note which question it answers: form, proportions, mechanism or materials (CMF).</td></tr><tr><td>3D CAD model</td><td>STEP (<code>.step</code>/<code>.stp</code>) required + source file <code>.f3d</code>, <code>.sldprt</code>, <code>.ipt</code></td><td>An overall dimension drawing or a screenshot with the main dimensions in mm.</td></tr><tr><td>3D model</td><td><code>.glb</code> (preferred), <code>.fbx</code> or <code>.obj</code></td><td>With textures.</td></tr><tr><td>Renders</td><td>3–8 PNG or JPG images, at least 1920 px on the long side</td><td>Front, side and in-hand or in-use views. Optional: a turntable video, MP4 1080p, 10–30 s.</td></tr><tr><td>Physical prototype</td><td>JPG photos of at least 1920 px + MP4 video, 15–60 s</td><td>Photos from 5 or more angles; the video shows the mechanism or interaction: how it attaches, folds, rotates.</td></tr></tbody></table></div><p>You will be able to show the prototype itself at the award ceremony; we will send details by email.</p>
+
+<h4>Software and formats: Track 1</h4>
+<p>Use any tool you like: the jury always gets an MP4 video, and the working file is an optional extra.</p>
+<div class="rl-tw"><table class="rl-t"><thead><tr><th>Software</th><th>Good for</th><th>Working file (optional)</th><th>What to send the jury</th></tr></thead><tbody><tr><td>Blender</td><td>3D animation of the device and its screens, folding and hinge movement</td><td><code>.blend</code>, textures packed: File → External Data → Pack Resources</td><td>MP4 render: Output → FFmpeg Video, container MPEG-4, codec H.264</td></tr><tr><td>Adobe After Effects</td><td>2D / 2.5D interface motion, transitions, AI-assistant states</td><td><code>.aep</code> + assets collected: File → Dependencies → Collect Files</td><td>MP4 H.264 via Adobe Media Encoder; optionally Lottie <code>.json</code> via the Bodymovin plugin</td></tr><tr><td>Cinema 4D</td><td>3D motion, product shots with UI on screen</td><td><code>.c4d</code>, saved with File → Save Project with Assets</td><td>MP4 H.264</td></tr><tr><td>Figma (Smart Animate)</td><td>Click-through UI prototypes with transitions</td><td>Link to the file or prototype, "Anyone with the link can view"</td><td>MP4 screen recording of the prototype</td></tr><tr><td>ProtoPie</td><td>Interactive prototypes using phone sensors: gyroscope, tilt, multi-screen — good for foldables</td><td><code>.pie</code> file or ProtoPie Cloud link</td><td>MP4 screen recording, ideally on a real phone</td></tr><tr><td>Rive</td><td>Interactive animations with states (idle, listening, speaking)</td><td><code>.riv</code> file + share link</td><td>MP4 or GIF export</td></tr><tr><td>Unity / Unreal Engine</td><td>Real-time demos running on a device</td><td>Project or build link</td><td>MP4 recording of the demo</td></tr><tr><td>Screen recorder (OBS, QuickTime, phone recorder)</td><td>Recording any prototype in action</td><td>—</td><td>MP4, 1080p, 30/60 fps</td></tr></tbody></table></div><p>Video export settings for every tool: MP4, H.264, 1920×1080 or 1080×1920, 30 or 60 fps, up to 300 MB.</p>
+
+<h4>Software and formats: Track 2</h4>
+<p>Send files the jury can open without paid software: PDF, PNG/JPG, MP4, STEP and GLB. Add the working file if you have it.</p>
+<div class="rl-tw"><table class="rl-t"><thead><tr><th>Stage</th><th>Software</th><th>Working file (optional)</th><th>What to send the jury</th></tr></thead><tbody><tr><td>Sketches</td><td>Paper, Procreate, Photoshop, Sketchbook, Concepts</td><td><code>.procreate</code>, <code>.psd</code></td><td>One PDF or JPG/PNG sheets, 300 dpi</td></tr><tr><td>CAD model</td><td>Autodesk Fusion</td><td><code>.f3d</code></td><td>STEP (<code>.step</code>/<code>.stp</code>) + screenshots with dimensions</td></tr><tr><td>CAD model</td><td>SolidWorks</td><td><code>.sldprt</code> / <code>.sldasm</code></td><td>STEP</td></tr><tr><td>CAD model</td><td>Autodesk Inventor</td><td><code>.ipt</code> / <code>.iam</code></td><td>STEP</td></tr><tr><td>CAD / surfaces</td><td>Rhino (+ Grasshopper)</td><td><code>.3dm</code></td><td>STEP or IGES + OBJ</td></tr><tr><td>CAD-style modelling</td><td>Plasticity, Shapr3D</td><td><code>.plasticity</code>, <code>.shapr</code></td><td>STEP</td></tr><tr><td>Polygon model</td><td>Blender, Cinema 4D, 3ds Max, Maya</td><td><code>.blend</code> (packed), <code>.c4d</code>, <code>.max</code>, <code>.mb</code></td><td>GLB (preferred), FBX or OBJ with textures</td></tr><tr><td>Renders</td><td>KeyShot</td><td><code>.ksp</code> package</td><td>PNG/JPG, at least 1920 px; MP4 turntable 10–30 s</td></tr><tr><td>Renders</td><td>Blender (Cycles / Eevee), Cinema 4D (Redshift, Octane), V-Ray</td><td>as above</td><td>PNG/JPG, at least 1920 px; MP4 turntable</td></tr><tr><td>Physical prototype</td><td>3D printing, paper, foam, plastic, electronics</td><td>STL or 3MF for printing (optional)</td><td>JPG photos from 5+ angles, at least 1920 px; MP4 video 15–60 s showing the mechanism</td></tr></tbody></table></div><p>Why these formats: STEP opens in any CAD program and in free viewers such as Autodesk Viewer; GLB opens in a browser and in the Windows 3D Viewer. A tool with no STEP export (for example Blender) → send GLB, FBX or OBJ instead.</p>
+
+<h4>General requirements</h4><ul>
+<li>All texts in Russian or English.</li>
+<li>Videos without service watermarks and without third-party music you have no rights to.</li>
+<li>No third-party logos or brands on images.</li>
+<li>The organisers may download copies of the files for judging and for the competition archive.</li></ul></div></details>
       <details class="rl"><summary><span data-l="ru">4. Оценка</span><span data-l="en">4. Judging</span></summary><div data-l="ru" class="rl-b"><p>Работы оценивает жюри по критериям трека. По каждому критерию ставится уровень A–E с комментарием. Результаты публикуются 30 декабря 2026 года. Решение жюри окончательное.</p></div><div data-l="en" class="rl-b"><p>A jury judges the entries against the track criteria, assigning a level A–E with comments for each criterion. Results are published on 30 December 2026. The jury&#39;s decision is final.</p></div></details>
       <details class="rl"><summary><span data-l="ru">5. Призы и награждение</span><span data-l="en">5. Prizes and awards</span></summary><div data-l="ru" class="rl-b"><p>Денежные призы присуждаются проекту и делятся между участниками команды. Количество поощрительных призов ограничено в каждом треке. Церемония награждения пройдёт в январе 2027 года; победители получат приглашения по электронной почте.</p></div><div data-l="en" class="rl-b"><p>Cash prizes are awarded per project and split among the team members. Consolation prizes are limited per track. The award ceremony will be held in January 2027; The winners will receive the invitations by email.</p></div></details>
+      <details class="rl" id="terms"><summary><span data-l="ru">6. Условия участия</span><span data-l="en">6. Terms and Conditions of Participation</span></summary><div data-l="ru" class="rl-b rl-terms">
+<h4>1. Общие положения</h4>
+<p>Настоящие правила (далее – «Правила») регулируют условия участия в Конкурсе 2026 Tech Arena Arts &amp; Design (далее – «Конкурс»), проводимом Обществом с ограниченной ответственностью «Техкомпания Хуавэй» (ОГРН: 1027739023212, ИНН: 7714186804, место нахождения: 121614, Российская Федерация, г. Москва, ул. Крылатская, д. 17, корп. 2) (далее – «Организатор»).</p>
+<p>Регистрируясь для участия в Конкурсе, Участник соглашается соблюдать настоящие Правила.</p>
+<p>Для целей настоящих Правил под «Аффилированными лицами» будут пониматься организации, которые контролируются или контролируются компанией HUAWEI или находятся под общим контролем. Для целей данного определения &quot;контроль&quot; (включая термины &quot;контролируется&quot; и &quot;под общим контролем с&quot;) означает прямое или косвенное владение не менее чем пятьюдесятью процентами (50%) голосующих акций, уставного капитала или других ценных бумаг контролируемого или контролируемого юридического лица, или обладание полномочиями принимать решения, влияющие на управление таким юридическим лицом, будь то в результате владения голосующими ценными бумагами, договорами или иным образом.</p>
+<h4>2. Цель Конкурса</h4>
+<p>Цель Конкурса состоит в том, чтобы предоставить талантам мирового уровня в области алгоритмов возможность изучения сложных алгоритмических задач в реальных отраслевых сценариях и выдвижения идей, а также создания для них платформы для практики, обучения и конкуренции.</p>
+<h4>3. Условия участия</h4>
+<p>Участие открыто для всех лиц физических лиц (i) достигших совершеннолетия в соответствии с действующим законодательством их страны проживания (если иное не согласовано Организатором с соответствующим согласием родителей/опекунов), (ii) имеющих банковский счет в стране налогового резидентства, (iii) не относящихся к исключенным категориям, указанным в настоящей статье ниже или находящихся под ограничениями, связанными с договорными или законодательными запретами, которые препятствуют участию, и (iv) имеющих собственное компьютерное оборудование, исправно функционирующее на протяжении всего срока проведения Конкурса, а также интернет-соединение, оплачиваемое ими самостоятельно и исключительно за их счет и под их ответственность; (v) зарегистрировавшихся на платформе Конкурса в качестве участника Конкурса (далее именуемых «Участники» или «Участник»).</p>
+<p>В Конкурсе не могут участвовать (i) действующие работники, а также работники контрагентов Организатора; (ii) члены Жюри; (iii) лица, принимающие участие в организации Конкурса; (iv) лица, принимавшие участие в подготовке материалов для Конкурса, управлении и/или реализации Конкурса (совместно именуемые &quot;Подрядчики&quot;); и (v) близкие родственники лиц, указанных в подпунктах (i)-(iv) выше, определяемые в соответствии с действующим законодательством.</p>
+<p>Регистрируясь на участие в Конкурсе, Участник заверяет и гарантирует, что (i) соответствует требованиям к участию, изложенным выше; (ii) готов по запросу предоставить Организатору и Организатору доказательства соответствия требованиям; (iii) несет ответственность за соблюдение критериев участия; и (iv) соглашается с тем, что Организатор оставляют за собой право дисквалифицировать Участника по своему усмотрению в случае несоответствия вышеуказанному.</p>
+<p>Конкурс проводится онлайн, и Участник может принять участие в нем из любой точки мира. Конкурс начнется в конце ноября 2026 года и продлится 14 дней. Конкретное расписание и другие подробности будут объявлены на веб-сайте <a href="https://techarena.design/" target="_blank" rel="noopener">https://techarena.design/</a> (далее – «Веб-сайт Конкурса»). Окно регистрации и участия в Конкурсе начинается с даты публикации на веб-сайте Конкурса и действует до окончания срока подачи заявок на участие в Конкурсе. Регистрации и участие, выполненные по истечении этого периода, будут недействительными.</p>
+<h4>4. Требования к результатам</h4>
+<p>Участники должны будут создать и представить решения, включая, но не ограничиваясь кодом, программными модулями, подготовительными материалами и документацией (далее – «Результат» или «Результаты») в качестве решения задачи, поставленной в Конкурсе, в соответствии с Правилами.</p>
+<p>a. Каждый Участник может зарегистрироваться и отправить Результат только через один аккаунт. Результат должен быть подготовлен независимо. Несоблюдение требований может привести к дисквалификации Участника.</p>
+<p>b. При участии в Конкурсе разрешено использование инструментов ИИ, включая генеративный ИИ и инструменты кодирования с поддержкой ИИ. Участники несут полную ответственность за правильность, оригинальность и соответствие представленных ими материалов всем применимым правилам. Разрешенное использование инструментов ИИ не отменяет право Жюри дисквалифицировать Участника, как указано в п. (f) ниже, включая случаи, когда использование инструментов искусственного интеллекта приводит к тому, что Результат идентичен или по существу схож с Результатом другого Участника.</p>
+<p>Участники обязаны предоставить все Материалы без компенсации и без каких-либо ограничений для использования в соответствии с настоящими Правилами. Участник признает и соглашается с тем, что любые Материалы, предоставленные в ходе Конкурса, не являются конфиденциальными и законно раскрываются без нарушения прав третьих лиц или нарушения обязательств по сохранению конфиденциальности.</p>
+<p>d. Неудачные, использующие уязвимости, мошеннические, вводящие в заблуждение, вредные, недействительные, не отвечающие требованиям, неполные (полностью или частично), нарушающие требования кибербезопасности или недобросовестные представления могут быть дисквалифицированы. Тот факт, что Результат представлен во время Конкурса, не означает, что Результат как таковой либо представивший Результат Участник имеют право на участие в Конкурсе. Обязательным условием получения номинации и присуждения соответствующего приза является прохождение Участником и завершение всех этапов Конкурса. Если Участник прекратит участие в Конкурсе, будет дисквалифицирован, исключен из участия в Конкурсе или каким-либо иным образом не сможете пройти весь Конкурс, Участник не сможете получить номинацию или выиграть приз.</p>
+<p>е. Кроме того, участвуя в данном Конкурсе, Участник настоящим заявляет, гарантирует и обязуется предоставить письменные доказательства этого по запросу, что:</p>
+<p>(i) Любая работа, представленная в качестве Результата полностью или частично, является оригинальной разработкой и, следовательно, оригинальной для Конкурса (т.е. не была разработана в какой-либо существенной форме/формате до начала Конкурса) и не нарушает какие-либо ограничения, следующие из действующего законодательства или из договора с третьими лицами (включая, но не ограничиваясь, авторские права, товарные знаки, патенты, коммерческую тайну и личные или моральные права);</p>
+<p>(ii) Результат в целом или частично передается на Конкурс с согласия или разрешения всех лиц (живых или умерших) и/или организаций, которые работали над ним, были привлечены к работе над ним или внесли любой вклад в участие или его часть, которые изображены (прямо или косвенно) в Результатах, названы по имени, либо приведен их внешний вид, используется голос, изображение или любая другая информация, относящаяся к физическому лицу, либо имеют иную заинтересованность в Результате (включая, но не ограничиваясь правами, возникающими из отношений наемного труда), и все такие лица и/или организации предоставили свое письменное согласие на представление Результата его и использование в соответствии с условиями данного Конкурса;</p>
+<p>(iii) Участник обладает всеми правами, лицензиями, разрешениями и согласиями, необходимыми для отправки Результата, а также для предоставления всех прав, предоставленных в соответствии с настоящим Соглашением;</p>
+<p>(iv) Результат не содержит вредоносных программ, включая вирусы, трояны, черви, ошибки, шпионские программы или другие вредоносные программы, коды или другие устройства;</p>
+<p>(v) Результат не содержит (и не выражает явное или неявное одобрение) порнографических, откровенных сексуальных (включая наготу), клеветнических, оскорбительных, насильственных, вредных, дискриминационных, жестоких, оскорбительных, политических, религиозных, чувствительных, незаконных, либо используемых без необходимых разрешений или иных материалов (включая, в том числе, технологии или другое содержимое, которые могут противоречить применимым законам об интеллектуальной собственности, экспортном контроле и защите конфиденциальности), а также материалов, нарушающих общепринятые нормы морали и нравственности.</p>
+<p>f. Организатор не дает никаких гарантий, заверений или обещаний, явных или подразумеваемых, в отношении своей способности каким-либо образом способствовать, развивать, продвигать или рекламировать Участника, Результат, а также идеи или технологии, воплощенные или изложенные в Результате, полностью или частично.</p>
+<p>Участник понимает, признает и принимает, что другие Участники, возможно, предоставили или предали гласности или могут в будущем представить или обнародовать материалы, сходные до степени смешения с Результатом Участника. В случае, если Результат Участника достаточно похож на Результат другого Участника, Жюри оставляет за собой право поставить одну работу выше, чем другую, в соответствии с изложенными здесь критериями оценки, на усмотрение Жюри. Во избежание сомнений, в случае, если Результат идентичен или по существу сходен с Результатом другого Участника, Жюри оставляет за собой право дисквалифицировать обоих Участников.</p>
+<p>Организатор не принимается на себя никаких обязательств по обеспечению конфиденциальности либо иного режима охраняемой законом тайны в отношении получаемых Результатов. Отправка Результата не создает конфиденциальных отношений или обязательств по сохранению тайны между Организатором и любой другой стороной. Участник не будет иметь права ни сейчас, ни в будущем на получение какого-либо разрешения, права на компенсацию или любые другие выплаты, если не будет объявлен Победителем в соответствии с настоящими Правилами и условиями Конкурса.</p>
+<p>Кроме того, Участник соглашается с тем, что, подача заявки на участие в Конкурсе и (или) получение приза в нём НЕ создает, прямо или косвенно, отношений работодатель/работник, совместного предприятия или товарищества, отношений принципал/агент или любого другого трудового, фидуциарного или иного отношения между Участником и любой другой стороной.</p>
+<h4>5. Определение Победителей</h4>
+<p>Победители будут выбраны из числа Участников, которые:</p>
+<ul>
+<li>Соответствуют настоящим Правилам;</li>
+<li>Приняли участие в Конкурсе;</li>
+<li>Отправили свой Результат в соответствии с требованиями настоящих Правил в сроки, указанные на Веб-сайте Конкурса.</li>
+</ul>
+<p>Жюри Конкурса самостоятельно и независимо принимает решение о полноте и корректности представленных участниками материалов. Жюри Конкурса может принимать во внимание непредвиденные события и условия, и выносить решения в соответствии с ними. Решения Жюри окончательны. Подробная информация о рейтинге и оценках содержится в описании задач.</p>
+<p>Организатор вправе, но не обязан, выбрать больше указанного количества победителей, если их работы будут признаны исключительно качественными по единоличному и абсолютному усмотрению Жюри. Организатор оставляет за собой право выбрать меньше заявленного количества Победителей в случае недостаточного количества подходящих и квалифицированных заявок/Участников. В качестве примера, Организатор сохраняет абсолютное право по своему усмотрению дисквалифицировать заявки, которые, по мнению Организатора, не предоставляют достоверного или осуществимого технологического решения, представляются недобросовестно или ненадлежащим образом поданными, либо иным образом не соответствуют требованиям.</p>
+<h4>6. Призы</h4>
+<p>Победители понимают и соглашаются, что для выплаты приза Организатору будет необходимо получить у Победителей согласие на обработку персональных данных, включая информацию о банковском счёте Победителей, и на передачу персональных данных Победителей третьему лицу, уполномоченному Организатором на перечисление вознаграждения (приза). Непредставление такого согласие может привести к невозможности для Организатора перечислить Победителю вознаграждение.</p>
+<p>Предоставляемые призы (i) являются непередаваемыми (не могут быть выданы третьим лицам вместо Победителей); и (ii) не подлежат ни обмену, ни замене денежной выплатой (в случае выдачи призов в не-денежной форме). Тем не менее, Организатор оставляет за собой право, если того потребуют обстоятельства, заменить призы другими равной ценности без какой-либо ответственности.</p>
+<p>Сумма призовых выплат, объявленная на Веб-сайте Конкурса, включает применимые налоги. Организатор либо третье лицо, привлечённое Организатором для выплаты приза, действуя в качестве налогового агента, удержит подлежащие уплате налоги и перечислит суммы налогов в бюджет в соответствии с требованиями российского налогового законодательства. Участник понимает и соглашается, что Победителем будет фактически получена сумма за вычетом применимых налогов, т.е. отличающаяся в меньшую сторону от указанного на Веб-сайте Конкурса.</p>
+<p>Если Участник (i) является гражданином или резидентом таких стран или регионов, как Иран, Сирия, Судан, Куба, Северная Корея; (ii) использует счёт в вышеуказанных регионах или (iii) подвержен ограничениям, в силу которых не имеет возможности использовать банковские, почтовые услуги, либо не имеет возможности получить приз по иной причине, Организатор не сможет не предоставить Участнику приз. Организатор самостоятельно принимает окончательное решение о том, применяется ли такое ограничение к любому Участнику.</p>
+<p><b>Распределение призовых средств:</b></p>
+<p>После объявления результатов Организатор свяжется с победителями для выплаты призовых средств.</p>
+<p>Это единственный способ распределения призовых денег.</p>
+<p>Денежный приз будет переведен на банковский счет, указанный победителем.</p>
+<h4>7. Изменение, приостановление и прекращение Конкурса</h4>
+<p>Организатор оставляет за собой право сокращать, продлевать, изменять или прекращать Конкурс или его часть в связи с наступлением обстоятельств непреодолимой силы, не неся в результате этого никакой ответственности.</p>
+<p>В этом случае Организатор уведомит участников об этом любым способом по своему выбору (включая электронное письмо и/или публикацию на Веб-сайте Конкурса), и, если возникнет необходимость, свяжется с участниками для получения информации о новых применимых правилах или новой дате окончания Конкурса, в зависимости от обстоятельств. Участник может уведомить Организатора по электронной почте о том, что отказывается от новых условий Правил, и в этом случае Участник будет исключен из участия с согласия Участника. В противном случае, Участник считаешься согласившимся с изменением. Если Организатору не будет сообщено об отказе в течение 72 часов после получения такого уведомления от Организатора, новые условия Положений и условий будут считаться принятыми.</p>
+<p>В случае изменения Условий, отмены или прерывания Заявки, сокращения или увеличения ее продолжительности Организатор не будет нести никакой ответственности, и Участник не будете иметь права на какую-либо компенсацию.</p>
+<h4>8. Недобросовестные действия</h4>
+<p>Организатор может частично или полностью отстранить Участника от участия в Конкурсе, если выяснится, что во время Конкурса имели место недобросовестные действия или злоупотребление в любой форме, включая, в том числе, регистрацию нескольких аккаунтов, неоригинальные Результаты и злоупотребления в области компьютерной информации.</p>
+<p>В этом случае Организатор оставляет за собой право не присуждать призы лицам, совершающим такие действия, дисквалифицировать соответствующие Результаты и/или, по усмотрению Оператора, принять меры юридической защиты по отношению к лицам, совершающим такие действия. Организатор не несет никакой ответственности перед Участниками из-за совершенных другими Участниками недобросовестных действий.</p>
+<p>Кроме того, Организатор не несет ответственности за ущерб, материальный или нематериальный, причиненный во время Конкурса и после этого Участнику, компьютерному оборудованию Участника или данным, включая последствия, которые могут возникнуть в связи с личной, профессиональной или коммерческой деятельностью Участника.</p>
+<h4>9. Право пользования и интеллектуальная собственность</h4>
+<p>Участник получит доступ к определенному проприетарному исходному коду, программному обеспечению, API или другим материалам, защищенным авторским правом, включая графический, аудио-, видео- или аудиовизуальный контент или всё вышеперечисленное («Материалы Организатора»), принадлежащее Организатору. Участник должен использовать Материалы Организатора добросовестно, исключительно для цели участия в Конкурсе, не сохранять Материалы Организатора после завершения Конкурса, и не передавать Материалы Организатора третьим лицам.</p>
+<p>Во время Конкурса Участник должен использовать только элементы, которые соответствуют применимым политикам и законам. Любые сторонние элементы, включенные в Материалы, включая программное обеспечение с открытым исходным кодом, должны быть четко идентифицированы по их версии, условиям применимой лицензии и другим деталям, касающимся их использования. Участник понимает, что эта информация учитывается при оценке при присуждении приза. «Лицензия с открытым исходным кодом» означает любую лицензию, которая: (a) требует от лицензиара разрешения на обратный инжиниринг лицензионного программного обеспечения или другого программного обеспечения, встроенного в такое лицензионное программное обеспечение, созданного на его основе или распространяемого вместе с ним, или (b) которое требует, чтобы лицензионное программное обеспечение или другое программное обеспечение, встроенное в такое лицензионное программное обеспечение, производное на его основе или распространяемое вместе с ним (i) распространялось в виде исходного кода; или (ii) распространялось бесплатно. Лицензии с открытым исходным кодом включают, в том числе: (a) Универсальную общественную лицензию GNU (GPL) или Уменьшенную/Библиотечную лицензию (LGPL), (b) Лицензию на искусство (например, PERL), (c) Общественная лицензия Mozilla, (d) Общественная лицензия Netscape, (e) Лицензия Sun Community Source License (SCSL), (f) Лицензия Sun Industry Standards Source License (SISL), (g) Лицензия Apache Server, (h) Лицензия QT Free Edition и (i) Публичная лицензия IBM. «Программное обеспечение с открытым исходным кодом» – любой исходный или объектный код, на который распространяется Лицензия с открытым исходным кодом. По запросу Организатора Участник должен предоставить Организатору и (или) его Аффилированным лицам список всего Программного обеспечения с открытым исходным кодом, содержащегося в Результатах. Участник заявляет и гарантирует, что приведенный им список Программного обеспечения с открытым исходным кодом является точным и исчерпывающим.</p>
+<p><b>Предоставление Результатов не должно нарушать какие-либо права интеллектуальной собственности, коммерческую тайну или права на изображения. Участник заявляет и гарантирует Организатору, что предоставление Результатов никоим образом не нарушает права третьих лиц, и что Участник получил, при необходимости, необходимое разрешение от любого третьего лица.</b> <b>Ни при каких обстоятельствах Организатор не несёт ответственности за нарушение прав третьих лиц в связи с предоставлением Результатов.</b></p>
+<p>В соответствии с настоящими Правилами Участник не приобретает никаких полных или частичных прав любого рода на наименование и товарный знак &quot;Huawei&quot;, а также на любые имена и/или бренды, связанные с Huawei, используемые отдельно, в сочетании с другим словом или именем или как часть другого слова или имени, или любые права на товарные знаки, имена или логотипы Huawei или любых ее Аффилированных или связанных компаний. Участник соглашается, что без письменного согласия Организатора не вправе публиковать или передавать третьим лицам информацию, связанную с участием в Конкурсе.</p>
+<p><b>Участник заявляет и гарантирует, что владеет правами, необходимыми для</b> <b>отправки</b> <b>Результата, и отправка не нарушает прав каких-либо лиц. Участник будет дисквалифицирован, если у Организатора будут какие-либо основания полагать, что Участник нарушили настоящее условие. Участнику рекомендуется</b> <b>проконсультироваться с соответствующими консультантами, если у Участника есть какие-либо сомнения относительно того, будет ли предоставление Результата соответствовать требованиям настоящих Условий.</b></p>
+<p>Участник в полном объёме передает Организатору и его Аффилированным лицам исключительные права на все результаты интеллектуальной деятельности, созданные Участником самостоятельно или совместно с другими участниками в ходе проведения Конкурса, включая программы для ЭВМ, их исходный и объектный код, отдельные программные модули, подготовительные материалы и документацию (далее – «Результаты интеллектуальной деятельности», «РИД»).</p>
+<p>Исключительное право на соответствующий Результат интеллектуальной деятельности переходит к Организатору с момента создания такого результата.</p>
+<p>Передача исключительного права осуществляется безвозмездно. Участник понимает и соглашается, что участвует в Конкурсе, руководствуясь соображениями профессионального интереса и расширения круга профессиональных контактов, и что отчуждение исключительных прав на РИД в составе Результатов не преследует коммерческого интереса. Соответственно, передача Результата и содержащихся в нём РИД Организатору не является для Участника основанием требовать у Организатора какого-либо встречного предоставления.</p>
+<p>Участник гарантирует, что передаваемые им исключительные права принадлежат ему на законном основании, а также обязуется обеспечить получение необходимых согласий и оформление передачи исключительных прав от иных лиц, являющихся соавторами соответствующего Результата интеллектуальной деятельности (при наличии таковых).</p>
+<p>В случае использования сторонних программных компонентов, исключительные права на которые принадлежат третьим лицам, Участник обязуется: (i) при представлении Организатору Результата уведомить об этом Организатора с указанием перечня таких сторонних компонентов и (ii) привести подробные условия их использования.</p>
+<p>С момента перехода исключительного права Организатор вправе самостоятельно, без получения дополнительных согласований с Участником, использовать соответствующие Результаты интеллектуальной деятельности любыми не противоречащими законодательству Российской Федерации способами, в том числе воспроизводить, распространять, перерабатывать, модифицировать, адаптировать, доводить до всеобщего сведения, включать в состав иных программных продуктов, использовать РИД и разработанные на основе РИД технологии в составе продуктов, производимых Организатором и его Аффилированными лицами (мобильные телефоны, планшеты, и прочее), а также разрешать или запрещать их использование третьими лицами.</p>
+<p>Организатор не обязан предоставлять Участнику отчёты, сведения или иную информацию об использовании Результатов интеллектуальной деятельности, включая сведения об объёме, способах, сроках и территории их использования, а также о полученных от такого использования доходах.</p>
+<p>Участник даёт согласие на использование созданных им Результатов интеллектуальной деятельности без указания имени Участника. Организатор самостоятельно определяет необходимость и способ указания сведений об авторах при использовании и распространении соответствующих Результатов интеллектуальной деятельности.</p>
+<p>Участник даёт согласие на внесение Организатором и его Аффилированными лицами изменений, сокращений и дополнений в Результаты интеллектуальной деятельности, их переработку, адаптацию, исправление ошибок, модернизацию, объединение с другими программами и программными компонентами, а также на снабжение их необходимыми комментариями и пояснениями.</p>
+<h4>10. Конфиденциальность</h4>
+<p>Участник понимает и соглашается с тем, что вся непубличная информация, раскрытая или предоставляемая Организатором и/или его Аффилированными лицами, включая, в том числе, данные, алгоритмы (если есть), модели (если есть), код (если есть) и вопросы конкурса, связанные с Конкурсом, которые напрямую предоставляются или доступны для скачивания на всех этапах, непубличная информация Организатора и/или его соответствующих Аффилированных лиц, о которых Участнику стало известно, а также информация, которую Организатор и/или его соответствующие Аффилированные лица получают от третьих лиц и обязаны хранить в тайне, является конфиденциальной информацией, и Участник обязаны соблюдать конфиденциальность такой конфиденциальной информации. В противном случае Участник будет нести ответственность за все убытки, причиненные Организатору и/или его соответствующим Аффилированным лицам в результате нарушения таких обязательств по конфиденциальности, в соответствии с применимым законодательством. Участник должен сознательно защищать вышеуказанную конфиденциальную информацию, не разглашать такую конфиденциальную информацию и принимать все необходимые меры по защите конфиденциальности, чтобы не допустить разглашения такой конфиденциальной информации общественности или третьим лицам.</p>
+<h4>11. Защита персональных данных</h4>
+<p>Обязательным условием участия в Конкурсе является предоставление Участником согласия на обработку персональных данных, которое Организатор запрашивает у Участника в процессе регистрации.</p>
+<p>Для выплаты приза Организатор также запрашивает у Участника согласие на обработку персональных данных в части банковских реквизитов.</p>
+<h4>12. Ответственность</h4>
+<p>Организатор напоминает о характеристиках, ограничениях и рисках сети Интернет и не несет ответственности за любые последствия, которые могут возникнуть во время подключения к сайтам Конкурса и в ходе участия в Конкурсе.</p>
+<p>Организатор не несет ответственности, если Участник не сможете подключиться к Веб-сайту Конкурса из-за технической неисправности или в случае возникновения проблем, связанных, но не ограничивающихся: (1) перегрузкой сети; (2) электрической или человеческой ошибкой; (3) злонамеренным вмешательством; (4) проблемой, связанной с линией связи; (5) проблемой, связанной с аппаратным или программным обеспечением; (6) неисправностью аппаратного или программного обеспечения; (7) чрезвычайной ситуацией; (8) сбоями, которые могут повлиять на бесперебойное проведение Конкурса.</p>
+<p>Участник несет ответственность за выбор и приобретение необходимых материалов (компьютеров, устройств доступа в Интернет) и доступа к сетевым сервисам за свой собственный счет, расходы и риски для участия в Конкурсе.</p>
+<p>Участник несет ответственность за принятие надлежащих мер для защиты собственных данных и/или программного обеспечения, размещенного на своем компьютерном оборудовании, от любых нарушений. Подключение к Веб-сайту мероприятий и участие в Конкурсе осуществляется исключительно под ответственность Участника. Организатор и не несет ответственности за возможное заражение компьютерного оборудования вирусами или за проникновение третьих лиц в систему Участника.</p>
+<p>Организатор и Организатор не несут ответственности, если по какой-либо причине данные Участника, связанные с регистрацией, окажутся нечитаемыми или невозможными для обработки.</p>
+<p>Организатор оставляет за собой право исключить любого Участника или лицо, препятствующее нормальному проведению Конкурса. Организатор оставляет за собой право использовать любые средства правовой защиты, включая предъявление иска любому лицу, которое подозревается в мошенничестве, фальсификации или срыве процесса, описанного в Правилах, или подозревается в попытке совершения таких действий. Любой Участник, который, по мнению Организатора, сорвал Конкурс любым из вышеперечисленных способов, будет лишен права на получение приза, и, следовательно, никакая претензия связанная с этим не будет принята.</p>
+<p>Участник несете единоличную и полную ответственность за ущерб, нанесенный вами или вашим оборудованием товарам или людям во время Конкурса. Участник будете стремиться покрыть свои риски за счет собственной страховки и отказываетесь от любого права обращаться в этой связи к Организатору и Организатору.</p>
+<p>В разрешенных законом рамках Участник соглашается освобождать, возмещать ущерб, защищать и ограждать от ответственности Организатора его должностных лиц, работников и Подрядчиков в случае любых требований о возмещении убытков возмещении потерь, компенсации издержек и расходы (включая разумные юридические расходы), связанные с судебным разбирательством, возникшим в любое время в связи с участием в Конкурсе, подачей Результатов (полностью или частично), обстоятельствами, связанными с получением призов.</p>
+<p><b>НИ В КОЕМ СЛУЧАЕ ОРГАНИЗАТОР НЕ ВОЗМЕЩАЕТ УПУЩЕННУЮ ВЫГОДУ И НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА КОСВЕННЫЕ, СЛУЧАЙНЫЕ, ПОСЛЕДУЮЩИЕ УБЫТКИ, ВОЗНИКАЮЩИЕ В СВЯЗИ С ДАННЫМ КОНКУРСОМ, УЧАСТИЕМ В ЛЮБЫХ ДЕЯТЕЛЬНОСТЯХ, СВЯЗАННЫХ С КОНКУРСОМ, ИЛИ ЕГО ЭЛЕМЕНТАМИ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ПОДАЧЕЙ РЕЗУЛЬТАТА, ДОСТУПОМ УЧАСТНИКА К ВЕБ-САЙТУ КОНКУРСА И ЕГО ИСПОЛЬЗОВАНИЕМ, А ТАКЖЕ ЗАГРУЗКОЙ МАТЕРИАЛОВ НА ВЕБ-САЙТ КОНКУРСА, И/ИЛИ ДОСТАВКОЙ, ПРИНЯТИЕМ И/ИЛИ ИСПОЛЬЗОВАНИЕМ ПРИЗА.</b></p>
+<h4>13. Общие положения</h4>
+<p>Данный документ доступен на Веб-сайте конкурса в течение всего срока его проведения.</p>
+<p>Участие в Конкурсе подразумевает, что Участник полностью безоговорочно принял настоящие правила. Участие в Конкурсе является сугубо личным, и один Участник не может действовать в интересах другого ни при каких обстоятельствах.</p>
+<p>Данные Положения и условия, а также вопросы, связанные с их исполнением и действительностью, будут толковаться, применяться и регулироваться во всех отношениях в соответствии с законодательством Российской Федерации без применения коллизионных норм.</p>
+<p>Все споры, разногласия и разногласия между Организатором и Участником, возникающие в связи с настоящими Правилами или в связи с участием в Конкурсе, включая любые вопросы, касающиеся применимости Правил, их действительности или прекращения действия, должны разрешаться мирным путем с помощью переговоров в духе доброй воли. Контактный адрес электронной почты Организатора: <a href="mailto:techarenaartdesign@163.com" target="_blank" rel="noopener">techarenaartdesign@163.com</a>.</p>
+<p>В случае недостижения согласия путём переговоров спор подлежит рассмотрению в суде общей юрисдикции по месту нахождения Организатора (Кунцевский районный суд г. Москвы).</p>
+</div><div data-l="en" class="rl-b rl-terms">
+<h4>1. General conditions</h4>
+<p>These Terms and conditions (hereinafter referred to as the &quot;Terms&quot;) govern the conditions for participation in the Challenge 2026 Tech Arena Arts &amp; Design (hereinafter referred to as the &quot;Challenge&quot;), organized by the Huawei Technologies Co., Ltd. (OGRN: 1027739023212, INN: 7714186804, location: 121614, Russian Federation, Moscow, Krylatskaya st., 17, building 2) (hereinafter referred to as the &quot;Organizer&quot;).</p>
+<p>By signing in to participate in the Challenge, the Participant commits to abide by these Terms.</p>
+<p>For the purposes of this Terms and Conditions, “Affiliates” shall mean entities that Control, or are Controlled by, or are under common Control with Huawei. For the purposes of this definition, “Control” (including the terms “Controlled by” and “under Common Control with”) means direct or indirect ownership of at least fifty percent (50%) of the voting power, capital or other securities of controlled or commonly controlled entity, or the possession of the power to direct or cause the direction of the management policies of such entity, whether through the ownership of voting securities or by contract or otherwise.</p>
+<h4>2. Objective of the Challenge</h4>
+<p>The aim of the Challenge is to provide opportunities to global algorithmic talents to explore algorithmic challenging problems in real industry scenarios and inspire ideas, and to build up a platform for them to practice, learn and compete.</p>
+<h4>3. Participation</h4>
+<p>The Challenge is open to all individuals (i) who have obtained the age of majority in his/her jurisdiction of residence (unless otherwise agreed to by Organizer and Organizer, with appropriate parental/guardian consent), (ii) who hold a bank account in their country of tax residence, (iii) who are not be ineligible (as provided in Article 3 herein) or under a conflicting contractual or legal restriction to enter and (iv) who have their own computer hardware in working order throughout the duration of the Challenge and internet connection with subscription from local telecom operator at their own and sole costs and expenses, and under their own and sole responsibility; (v) who has registered in the platform of the Challenge as a participant in the Challenge (hereafter referred to as “Participants” or “Participant”).</p>
+<p>The Challenge is not open to (i) current employees and employees of counterparties of the Organizer; (ii) the Jury; (iii) Challenge organizers; (iv) individuals involved in the preparation of materials for, administration and/or execution of the Challenge (collectively, the “Promotion Entities”); and (v) the immediate family members of any of the persons identified in (i)-(iv) above, as defined by the current legislation.</p>
+<p>By registering for the Challenge, the Participant represents and warrants that they: (i) meet the eligibility requirements set forth above; (ii) are willing to provide proof of eligibility to Organizer; (iii) are solely responsible for compliance with eligibility criteria; and (iv) agree that Organizer reserve the right to disqualify the Participant who fails to meet the above criteria at the sole discretion.</p>
+<p>This is an online Challenge and the Participant can participate in the Challenge from anywhere. The Challenge will commence at the end of November 2026 and last for 14 days. The specific schedule and other details will be announced on website of <a href="https://techarena.design/" target="_blank" rel="noopener">https://techarena.design/</a> (“Challenge Website”). The registration and participation window for the Challenge is from the date of Challenge Website is published until the Submission deadline for the Challenge. Registrations and participations made after this window period will be invalid.</p>
+<h4>4. Submission requirements</h4>
+<p>Participants will have to create and submit solutions, including but not limited to code, software modules, supporting materials and documentation (“Submissions” or “Submission”) to the problem posed in the Challenge in accordance with the Terms.</p>
+<p>a. Each participant is only allowed to register and submit Submission by using one account, and Submission must be made independently. Failure to comply may result in the participant&#x27;s disqualification.</p>
+<p>b. The use of AI tools, including generative AI and AI-assisted coding tools, is permitted during the Challenge. Participants shall be fully responsible for the correctness, originality, and compliance of their Submissions with all applicable rules. The permitted use of AI tools does not constitute any exception to the Jury&#x27;s right to disqualify a Participant, as set out in the item (f) below, including where the use of AI tools causes a Submission to be identical or substantially similar to the Submission of another Participant.</p>
+<p>c. Participant must make all Submissions available free of charge and without any restriction for use as described herein. Participant acknowledge and agree that any Submissions provided during the Challenge are not confidential and are lawfully disclosed without infringing any third party’s rights or violating any confidentiality obligations.</p>
+<p>d. Unsuccessful, exploitational, fraudulent, misleading, harmful, non-functioning, invalid, non-compliant, incomplete (in whole or in part), Submissions, violating cybersecurity requirements or those not deemed to be submitted in good faith may be disqualified. Proof that a Submission is presented during the Challenge is not proof or evidence that the Submission and/or Participant is eligible for the Challenge. Participant must attend and complete the entire Challenge in order to be eligible to receive recognition or win a prize in the Challenge. If Participant quit, are disqualified, ejected, or otherwise fail to complete the entire Challenge, Participant will not be eligible to receive recognition or win a prize in the Challenge.</p>
+<p>e. Further, by entering this Challenge, Participant hereby represent, warrant, and covenant, and agree to produce written evidence of such if requested, that:</p>
+<p>(i) Any Submission, in whole and in part, is Participant original work and therefore is original to the Challenge (i.e. was not developed in any substantive form/format prior to the Challenge) and does not violate or infringe upon any applicable laws or agreements (including, but not limited to, copyrights, trademarks, patents, trade secrets and personal or moral rights);</p>
+<p>(ii) The Submission, in whole and in part, is submitted to the Challenge by or with the permission of all individuals (living or deceased), venues and/or entities who worked on, were engaged to work on, or contributed in any respect to the entry or any part thereof, who are depicted (directly or indirectly) in the entry by name, likeness, voice, image or any other information or indicia of persona, or who otherwise have any right, title and interest in and to the entry or any part thereof (including but not limited to rights arising from a work for hire relationship), and all such individuals, venues, and/or entities have provided their written consent to Submission of the entry and the use pursuant to these Challenge terms;</p>
+<p>(iii) Participant have all rights, licenses, permissions, and consents necessary to submit the Submission and to grant all of the rights granted hereunder;</p>
+<p>(iv) The Submission contains no malware, including viruses, trojans, worms, bugs, spyware, or any other harmful software, code, or other device;</p>
+<p>(v) The Submission contains no (and does not otherwise appear to condone) pornographic, sexually explicit (including nudity), defamatory, offensive, violent, harmful, discriminatory, cruel, abusive, highly political, religious, sensitive, illegal, unauthorized, or other content (including but not limited to technology or other content that may contradict applicable laws regarding intellectual property, export restriction, and privacy protection) that offends reasonable standards of taste and decency.</p>
+<p>f. Organizer make no warranty, representation, or guarantee, express or implied, in connection with its ability to in any way enable, develop, market, or promote the participant, the Submission, or the ideas or technology embodied or set forth in the Submission, in whole or in part.</p>
+<p>Participant understand, recognize, and accept that other Participants may have provided or made public, or may in the future submit, or make public, materials that are reasonably similar to Participant Submission. If the Participant’s Submission is reasonably similar to the Submission of another Participant, the Jury reserve the right to score one entry higher than the other, subject to the judging criteria set forth herein, at the discretion of the Jury. For the avoidance of doubt, in the Challenge that Participant Submission is identical or substantially similar to the Submission of another Participant, the Jury reserves the right to disqualify Participant and the foregoing Participant.</p>
+<p>Submissions may not be acknowledged and will not be received or held “in confidence” or “in trust” and submitting a Submission does not create a confidential relationship or obligation of secrecy between Organizer and any other party. Participant will not now or in the future be entitled to any approval, rights of compensation, or any other payment unless adjudged and verified a Winner pursuant to these Challenge Terms and Conditions.</p>
+<p>Further, Participant agree that by entering a Submission and/or receiving a prize in the Challenge do NOT give rise to or in any way create, either expressly or implied, any employer/employee, joint or co-venture, principle/agent, or any other employment, fiduciary, or other relationship, between Participant and any other party.</p>
+<h4>5. Determination of Winners</h4>
+<p>The Winners will be selected from among the Participants who actually:</p>
+<ul>
+<li>Satisfy the Terms and Conditions for participation as set forth in the present terms;</li>
+<li>Participated in the Challenge session;</li>
+<li>Have submitted their Submission in accordance with the requirements of this Terms and Conditions within the time specified by the Challenge.</li>
+</ul>
+<p>The Challenge Jury are solely responsible for determining the correctness and accuracy of Submissions. The Challenge Jury is empowered to adjust for or adjudicate unforeseen events and conditions. Their decisions are final. Scoring and ranking details are provided with the Problem Set.</p>
+<p>Organizer may, but without obligation, select more than the stated number of Winners if found to be of exceptional quality in Jury’s sole and absolute discretion. Organizer and Organizer reserve the right to select fewer than the stated number of Winners due to insufficient eligible and qualified entries/Participants. By way of example only, Organizer reserves the absolute right in its sole discretion to disqualify as ineligible entries that do not provide (in Organizer’s sole determination) a credible or feasible use of the solution technologies, appear not to have been submitted honestly, in good faith, or are otherwise lacking or non-compliant.</p>
+<h4>6. Prizes</h4>
+<p>The Winners understand and agree that for the purpose of awarding the prize, the Organizer will need to obtain consent from the Winners for the processing of personal data, including information about the Winners&#x27; bank accounts, and for the transfer of the Winners&#x27; personal data to a third party authorized by the Organizer to disburse the reward (prize). Failure to provide such consent may result in the Organizer being unable to disburse the reward to the Winner.</p>
+<p>The gained prizes are (i) non-transferable; and (ii) neither exchangeable nor refundable against their cash value (for non-monetary prizes). Organizer reserves the right, if circumstances so require, to replace the prizes with others of equal value, without liability being incurred thereby.</p>
+<p>The total prize payout amount announced on the Challenge Website does not include taxes. The Organizer or a third party engaged by the Organizer as a payment agent will be responsible for withholding applicable taxes at the source of payment and transferring the tax amounts to the budget in accordance with the requirements of Russian tax legislation.</p>
+<p>If Participant are (i) a national or resident of countries or regions such as Iran, Syria, Sudan, Cuba, North Korea; (ii) using an account in the above regions, or(iii) limited with the restriction of bank payment, mail service, laws and regulations, or any other prize payment issues, the Organizer may not be able to provide Participant with the prizes. The Organizer shall make the final determination on whether such a restriction applies for any Participant.</p>
+<p><b>Prize-money allocation:</b></p>
+<p>After the results are announced, Organizer will contact with the winners for the prize-money payment.</p>
+<p>This is the only way of prize-money allocation.</p>
+<p>Prize-money will be sent to the bank account designated by the Winner.</p>
+<h4>7. Modification, interruption and termination of the Challenge</h4>
+<p>The Organizer reserves the right to shorten, extend, modify or terminate the Challenge, or a part of the Challenge, as a result of a force majeure event without incurring liability as a result thereof.</p>
+<p>In such case, the Organizer will provide notice thereof to the participants by any means of its choice (including email and/or publication on the Challenge Website), and, if the need arises, will communicate with the participants for the new rules applicable or the new ending date of the Challenge, as the case may be. The Participant may notify the Organizer by email that Participant refuse the new conditions of the Terms and Conditions, in which case Participant will be excluded from participation, and Participant thereby expressly accept such exclusion. If no refusal is communicated to the Organizer within 72 hours upon receipt of such notice from the Organizer, the new conditions of the Terms and Conditions will be deemed to have been accepted.</p>
+<p>In case of a modification to the Terms and Conditions, cancellation or interruption of the Challenge, or a reduction or an extension of its length, the Organizer shall not shoulder any liability and Participant will not be entitled to any compensation.</p>
+<h4>8. Fraud and cheating</h4>
+<p>The Organizer may disqualify part or all of participation in the Challenge if it appears that fraud or cheating has occurred in any form whatsoever during the Challenge, including but not limited to multiple accounts, non-original Submissions and computer fraud.</p>
+<p>In this case, the Organizer reserves the right not to award prizes to fraudsters or cheaters, to disqualify the concerned algorithm project and/or to bring actions against the authors of these frauds and cheatings. The Organizer shall not incur any responsibility towards the Participants because of the committed frauds and cheatings.</p>
+<p>Furthermore, the Organizer cannot be liable in case of damage, whether material or immaterial, caused during the Challenge and thereafter, to you, to your computing equipment, or to the data, including consequences which may ensue from it on your personal, professional or commercial activity.</p>
+<h4>9. Exploration rights and intellectual property</h4>
+<p>Participant will receive access to certain proprietary source code, software, APIs, or other copyrighted materials or both, including pictorial, audio, video or audio-visual content or both (“Organizer Materials”) owned by Organizer, and must comply with all the requirements associated with such Organizer Materials. The Participant shall use the Organizer Materials in good faith, solely for the purpose of participating in the Contest, shall not retain the Organizer Materials after the Contest has ended, and shall not transfer the Organizer&#x27;s Materials to third parties.</p>
+<p>During the Challenge, Participant shall only use elements that comply with applicable Policies and Laws. Any third-party elements included in the Submission, including open-source software, must be clearly identified with their version, the terms of the applicable license, and any other details regarding their use. Participant understand that this information is considered in the assessment for the allocation of a prize. “Open Source License” shall mean any license that: (a) requires the licensor to permit reverse engineering of the licensed software or other software incorporated into, derived from, or distributed with such licensed software, or (b) that requires the licensed software or other software incorporated into, derived from, or distributed with such licensed software (i) be distributed in source code form; or (ii) be distributed at no charge. Open Source Licenses include but not limited to: (a) GNU General Public License (GPL) or Lesser/Library GPL (LGPL), (b) The Artistic License (e.g., PERL), (c) the Mozilla Public License, (d) the Netscape Public License, (e) the Sun Community Source License (SCSL), (f) the Sun Industry Standards Source License (SISL), (g) the Apache Server license, (h) QT Free Edition License and (i) IBM Public License. “Open Source Software” shall mean any source or object code that is subject to an Open Source License. Upon request by Organizer and/or its Affiliates, Participant shall provide Organizer and/or its Affiliates with a list of any and all of the Open Source Software contained in Submission. Participant represent and warrant that the above list Participant provided herein is accurate and exhaustive. Winners shall sign and return all prize acceptance documents as may be required by Organizer and/or its Affiliates. The Participant represents and warrants that the list of Open Source Software provided by it is accurate and complete.</p>
+<p><b>The Submission shall not infringe any intellectual property right, trade secrets or images right. Participant represent and warrant to the Organizer that your Submission does not infringe in any way any third-party rights, and that Participant obtained, where necessary, the authorization of any third party.</b> <b>In no event shall the Organizer</b> <b>and</b> <b>the Organizer be responsible or liable for any infringement of third-party rights by the Submission.</b></p>
+<p>Under this Terms and Conditions, Participant shall not acquire any full or partial right of any kind on the name and trademark “Huawei” nor on any names and/or brands associated with Huawei, used alone, in association with or as part of another word or name, or any rights on trademarks, names or logos of Huawei, or any of its associated or related companies.</p>
+<p><b>Participant represent and warrant that Participant own the rights to submit the Submission and grant a non-exclusive license to Organizer and its Affiliates. Participant will be disqualified if Organizer has any reason to believe that Participant have violated this Terms and Conditions. Participant should consult with appropriate advisors or legal counsel if Participant have any doubt as to whether Participant meet the requirements of the Terms and Conditions. </b></p>
+<p>The Participant fully transfers to the Organizer and its Affiliates the exclusive rights to all intellectual property results created by the Participant independently or jointly with other participants during the Contest, including computer programs, their source and object code, individual software modules, preparatory materials, and documentation (hereinafter referred to as &quot;Intellectual Property Results&quot; or &quot;IPR&quot;).</p>
+<p>The exclusive right to the corresponding Intellectual Property Result transfers to the Organizer from the moment such result is created.</p>
+<p>The transfer of exclusive rights is carried out free of charge. The Participant understands and agrees that they are participating in the Contest for professional interest and to expand their professional network, and that the alienation of exclusive rights to IPR within the Results does not pursue commercial interests. Accordingly, the transfer of the Result and the IPR contained therein to the Organizer does not entitle the Participant to demand any reciprocal consideration from the Organizer.</p>
+<p>The Participant warrants and represents that the exclusive rights being transferred belong to them on a lawful basis and undertakes to obtain the necessary consents and formalize the transfer of exclusive rights from other persons who are co-authors of the corresponding Intellectual Property Result (if any).</p>
+<p>In the case of using third-party software components, the exclusive rights to which belong to third parties, the Participant undertakes to: (i) notify the Organizer upon submission of the Result, specifying the list of such third-party components, and (ii) provide detailed conditions for their use.</p>
+<p>From the moment the exclusive right is transferred, the Organizer has the right to independently, without obtaining additional approvals from the Participant, use the corresponding Intellectual Property Results in any manner not contrary to the legislation of the Russian Federation, including reproducing, distributing, processing, modifying, adapting, making publicly available, incorporating into other software products, using the IPR and technologies developed based on the IPR in products manufactured by the Organizer and its Affiliates (mobile phones, tablets, etc.), as well as permitting or prohibiting their use by third parties.</p>
+<p>The Organizer is not obligated to provide the Participant with reports, information, or other details regarding the use of the Intellectual Property Results, including information about the scope, methods, duration, and territory of their use, as well as income derived from such use.</p>
+<p>The Participant consents to the use of the Intellectual Property Results created by them without indicating the Participant’s name. The Organizer independently determines the necessity and method of indicating authorship information when using and distributing the corresponding Intellectual Property Results.</p>
+<p>The Participant consents to the Organizer and its Affiliates making changes, reductions, and additions to the Intellectual Property Results, their processing, adaptation, correction of errors, modernization, integration with other programs and software components, as well as providing them with necessary comments and explanations.</p>
+<h4>10. Confidentiality</h4>
+<p>The Participant understands and agree that all non-public information disclosed or provided by the Organizer and the Organizer, and/or their respective Affiliates, including but not limited to the data, algorithms (if any), models (if any), code (if any), and competition questions related to the Challenge that are directly provided or made available for downloading in all phases, the non-public information of the Organizer, the Organizer, and/or their respective Affiliates of which the Participant becomes aware, and the information that the Organizer and the Organizer, and/or their respective Affiliates obtain from any third party and are obliged to keep confidential, shall be confidential information and that the Participant is obliged to maintain the confidentiality of such confidential information. Otherwise, the Participant shall be liable for all losses caused to the Organizer and/or their respective Affiliates as a result of your breach of such confidentiality obligations, in accordance with applicable law. Participant shall consciously protect the foregoing confidential information, shall not disclose such confidential information, and shall take all necessary confidentiality measures to prevent the disclosure of such confidential information to the public or to any third parties.</p>
+<h4>11. Protection of personal data</h4>
+<p>A mandatory condition for participation in the Challenge is the Participant&#x27;s provision of consent for the processing of personal data, which the Organizer requests from the Participant during the registration process.</p>
+<p>For the payment of the prize, the Organizer also requests the Participant&#x27;s consent for the processing of personal data regarding banking details.</p>
+<h4>12. Responsibility</h4>
+<p>Organizer reminds Participant about the characteristics, limitations and risks of the Internet network and accepts no responsibility for any consequences that may occur while they are connected to the event websites and during your participation in the Challenge.</p>
+<p>Organizer and Organizer shall not be made responsible if Participant cannot connect to the website of the event due to a technical fault or in the event of any problem linked namely and not exclusively to (1) network overload; (2) an electric or human error; (3) any malicious intervention; (4) an issue related to a phone line; (5) an issue related to hardware or software; (6) a hardware or software malfunction; (7) a case of emergency; (8) disruptions that may affect the smooth running of the Challenge.</p>
+<p>It is your responsibility to select and acquire necessary material (computer, internet access devices) and access to network services at your own costs, expenses and risks to participate in the Challenge.</p>
+<p>It is your responsibility to take appropriate measures to protect your own data and/or software located on your computer equipment, against any violation. Your connection to the event websites and your participation in the Challenge is made under your own sole responsibility. Organizer and Organizer shall not be held responsible for any infection by potential viruses on your computer equipment, or of the intrusion of a third party on your system.</p>
+<p>Organizer and Organizer shall not be held responsible if, for any reason, data related to your registration is illegible or impossible to process.</p>
+<p>Organizer reserves the right to exclude any Participant or person disrupting the Challenge’s smooth running. Organizer reserves the right to use any recourse, including suing anyone suspected of cheating, falsifying, or disrupting the process described in the Terms and Conditions, or suspected of trying to accomplish such actions. Any Participant deemed by the Organizer to have disrupted the Challenge in any of the ways stated above, will be deprived of the right to obtain any prize, and no claim will be accepted consequently.</p>
+<p>Participant remain solely and entirely responsible for the damages caused by yourself or your equipment to goods or people during the Challenge. Participant will seek to cover your risks on your own insurance and renounce any right to resort to the Organizer and the Organizer in that respect.</p>
+<p>To the maximum extent permitted by law, Participant agree to release, indemnify, defend and hold harmless (“Release”) Organizer and Organizer and their parents, Affiliates, subsidiaries and divisions, and its respective directors, officers, employees and agents (“Released Parties”) from and against any and all threatened or actual actions, liabilities, claims, demands, losses, settlements, fines, damages, costs and expenses (including reasonable attorney’s fees) whether or not litigation is commenced (a “Dispute”) arising at any time from participation in the Challenge, the entry (in whole or in part), Challenge and/or prize-related activity</p>
+<p><b>IN NO EVENT WILL THE ORGANIZER BE RESPONSIBLE OR LIABLE FOR THE LOSS OF PROFIT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF THIS CONTEST, PARTICIPATION IN ANY CONTEST RELATED ACTIVITIES OR ELEMENTS THEREOF, INCLUDING BUT NOT LIMITED TO THE SUBMISSION OF AN ENTRY, PARTICIPANT’S ACCESS TO AND USE OF THE PROMOTIONAL WEBSITES OR THE UPLOADING OF MATERIALS TO THE WEBSITE, AND/OR THE DELIVERY, ACCEPTANCE AND/OR USE/MISUSE OF A PRIZE.</b></p>
+<h4>13. Recitals</h4>
+<p>This document is accessible on the Challenge Website during the full duration of the Challenge.</p>
+<p>Participation in the Challenge implies that you have full accepted the present regulation without reservation. Participation in the Challenge is strictly personal and you cannot, under any circumstances, be replaced.</p>
+<p>This Terms and Conditions and matters related to the performance and validity thereof shall be construed, interpreted, applied, and governed in all respects in accordance with the laws of China without giving effect to principles of conflicts of law.</p>
+<p>All disputes, controversies and differences between Organizer and you, or between Organizer and you arising out of or related to this Terms and Conditions, including any question regarding its existence, validity or termination shall be settled amicably through negotiations in good faith. Contact email address of the Organizer is: <a href="mailto:techarenaartdesign@163.com" target="_blank" rel="noopener">techarenaartdesign@163.com</a></p>
+<p>In the event that no agreement is reached through negotiations, the dispute shall be submitted to the court of general jurisdiction at the location of the Organizer (Kuntsevsky District Court of Moscow).</p>
+</div></details>
     </div>
   </div>
   </div>
@@ -1417,18 +1710,20 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   <div class="apply">
     <div class="apply-copy">
       <div class="eyebrow"><span data-l="ru">Регистрация</span><span data-l="en">Registration</span></div>
-      <h2><span data-l="ru">Регистрация<br><span class="red">и подача</span></span><span data-l="en">Registration<br><span class="red">&amp; submission</span></span></h2>
+      <h2><span data-l="ru">Регистрация<br><span class="red">и подача</span></span><span data-l="en">Registration<br><span class="red" style="white-space:nowrap">&amp; submission</span></span></h2>
       <ol class="steps">
-        <li><span data-l="ru">Нажмите «Регистрация и подача» и примите согласие на обработку персональных данных. Его принимает каждый участник команды.</span><span data-l="en">Click "Registration &amp; submission" and accept the personal data consent. Every team member accepts it.</span></li>
-        <li><span data-l="ru">Заполните форму: название команды (оно нужно и при участии в одиночку), трек и участники с вузом, факультетом и контактами.</span><span data-l="en">Fill in the form: team name (needed even if you take part alone), track and members with university, faculty and contacts.</span></li>
+        <li><span data-l="ru">Нажмите «Регистрация и подача» и пройдите три шага: права на результаты, согласие на обработку данных, Правила и Условия участия.</span><span data-l="en">Click "Registration &amp; submission" and complete three steps: rights to the Results, personal data consent, Rules and Terms and Conditions.</span></li>
+        <li><span data-l="ru">Заполните форму за себя: название и размер команды (нужны и при участии в одиночку), трек, вуз, факультет, телефон и почта.</span><span data-l="en">Fill in the form for yourself: team name and size (needed even if you take part alone), track, university, faculty, phone and email.</span></li>
         <li><span data-l="ru">После регистрации вы получите письмо. Вся важная информация будет приходить на этот адрес. Работы принимаются до 20 декабря.</span><span data-l="en">After registration you will receive an email. All relevant information will be sent by that email. Submissions close on December 20.</span></li>
       </ol>
     </div>
     <div class="reg-lock" id="reg-lock">
-      <span class="lab"><span data-l="ru">Шаг 1 из 2</span><span data-l="en">Step 1 of 2</span></span>
-      <b class="reg-lock-t"><span data-l="ru">Сначала — согласие на обработку персональных данных</span><span data-l="en">First, the personal data consent</span></b>
-      <p data-l="ru">Форма заявки и адрес для отправки работ откроются после того, как вы примете согласие. Это обязательное условие участия.</p><p data-l="en">The application form and the submission address open once you accept the consent. This is a precondition to participate.</p>
-      <button type="button" class="btn btn-primary" data-open-consent><span data-l="ru">Регистрация и подача</span><span data-l="en">Registration &amp; submission</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <span class="lab"><span data-l="ru">Перед регистрацией</span><span data-l="en">Before you sign in</span></span>
+      <b class="reg-lock-t"><span data-l="ru">Три обязательных шага</span><span data-l="en">Three mandatory steps</span></b>
+      <ol class="reg-steps"><li><span data-l="ru">Согласие с передачей прав на результаты Организатору</span><span data-l="en">Agree to the transfer of rights to the Results to the Organiser</span></li><li><span data-l="ru">Согласие на обработку персональных данных</span><span data-l="en">Consent to the processing of personal data</span></li><li><span data-l="ru">Подтверждение Правил и Условий участия</span><span data-l="en">Confirm the Rules and Terms and Conditions of Participation</span></li></ol>
+      <p data-l="ru">Форма заявки откроется после всех трёх шагов. Каждый участник проходит их сам.</p><p data-l="en">The application form opens after all three steps. Every participant completes them personally.</p>
+      <button type="button" class="btn btn-primary reg-cta" data-open-consent><span data-l="ru">Регистрация и подача</span><span data-l="en">Registration &amp; submission</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <p class="reg-soon"><span class="rs-pre"><span data-l="ru">Регистрация откроется 9 ноября в 00:00 (МСК)</span><span data-l="en">Registration opens on 9 November at 00:00 (Moscow time)</span></span><span class="rs-end"><span data-l="ru">Регистрация закрыта</span><span data-l="en">Registration is closed</span></span></p>
     </div>
     <div class="mail-card" id="reg-mail" hidden>
       <span class="lab" data-l="ru">Адрес для заявки и работ</span><span class="lab" data-l="en">Address for applications and work</span>
@@ -1445,21 +1740,27 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     <form class="app-form" id="app-form" novalidate hidden>
       <div class="af-head">
         <b data-l="ru" class="af-title">Форма заявки</b><b data-l="en" class="af-title">Application form</b>
-        <p data-l="ru">Шаг 2 из 2. Заполните поля: письмо с заявкой соберётся автоматически. Его можно отправить кнопкой или скопировать.</p><p data-l="en">Step 2 of 2. Fill in the fields and the application email is assembled for you. Send it with the button or copy it.</p>
+        <p data-l="ru">Шаг 3 из 3. Каждый участник заполняет форму только за себя. Письмо с заявкой соберётся автоматически — отправьте его кнопкой или скопируйте.</p><p data-l="en">Step 3 of 3. Each participant fills in the form for themselves only. The application email is assembled for you — send it with the button or copy it.</p>
       </div>
+      <div class="af-note" role="note"><b>*</b> <span data-l="ru">Если вы участвуете командой, каждый участник заполняет свою анкету сам. Пожалуйста, укажите одинаковые название и размер команды.</span><span data-l="en">If you participate as a Team, each Team member must fill in his own information — in this case please pay attention to mention same team name and size.</span></div>
       <div class="af-grid">
         <label class="af-f"><span><span data-l="ru">Название команды *</span><span data-l="en">Team name *</span></span><input id="af-team" type="text" placeholder="Neon Fold" autocomplete="off" required><small class="af-hint"><span data-l="ru">Нужно и при участии в одиночку</span><span data-l="en">Needed even if you take part alone</span></small></label>
         <label class="af-f"><span><span data-l="ru">Размер команды</span><span data-l="en">Team size</span></span><input id="af-size" type="number" min="1" max="20" value="1" inputmode="numeric"></label>
         <label class="af-f"><span><span data-l="ru">Трек</span><span data-l="en">Track</span></span><select id="af-track"><option value="1">Track 01 · UX</option><option value="2">Track 02 · Forms</option></select></label>
       </div>
-      <div class="af-members-head"><b data-l="ru">Участники команды</b><b data-l="en">Team members</b><small><span data-l="ru">имя, фамилия, вуз, факультет, Telegram / телефон / e-mail</span><span data-l="en">name, surname, university, faculty, Telegram / phone / email</span></small></div>
-      <div class="af-members" id="af-members"></div>
-      <button type="button" class="af-add" id="af-add">+ <span data-l="ru">Добавить участника</span><span data-l="en">Add member</span></button>
+      <div class="af-members-head"><b data-l="ru">Ваши данные</b><b data-l="en">Your details</b></div>
+      <div class="af-me">
+        <label class="af-f"><span><span data-l="ru">Имя *</span><span data-l="en">Name *</span></span><input id="af-name" type="text" placeholder="" autocomplete="given-name" required></label>
+        <label class="af-f"><span><span data-l="ru">Фамилия *</span><span data-l="en">Surname *</span></span><input id="af-surname" type="text" placeholder="" autocomplete="family-name" required></label>
+        <label class="af-f"><span><span data-l="ru">Вуз *</span><span data-l="en">University *</span></span><input id="af-uni" type="text" placeholder="" autocomplete="off" required></label>
+        <label class="af-f"><span><span data-l="ru">Факультет *</span><span data-l="en">Faculty *</span></span><input id="af-fac" type="text" placeholder="" autocomplete="off" required></label>
+        <label class="af-f"><span><span data-l="ru">Телефон *</span><span data-l="en">Phone *</span></span><input id="af-phone" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required></label>
+        <label class="af-f"><span><span data-l="ru">Электронная почта *</span><span data-l="en">Email *</span></span><input id="af-email" type="email" placeholder="name@example.com" autocomplete="email" required></label>
+      </div>
       <div class="af-preview-wrap">
         <span class="af-plab"><span data-l="ru">Текст письма</span><span data-l="en">Email text</span></span>
         <pre class="af-preview" id="af-preview"></pre>
       </div>
-      <label class="af-check"><input type="checkbox" id="af-consent"> <span><span data-l="ru">Подтверждаю, что каждый участник команды сам принял <button type="button" class="linkish" data-open-consent>согласие на обработку персональных данных</button> на этом сайте.</span><span data-l="en">I confirm that every team member has accepted the <button type="button" class="linkish" data-open-consent>personal data consent</button> on this website themselves.</span></span></label>
       <div class="af-actions">
         <a class="btn btn-primary" id="af-send" href="mailto:techarenaartdesign@163.com"><span data-l="ru">Отправить заявку</span><span data-l="en">Send application</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <button type="button" class="btn btn-ghost" id="af-copy"><span data-l="ru">Скопировать текст</span><span data-l="en">Copy text</span></button>
@@ -1479,16 +1780,16 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 </footer>
 
 <div class="consent" id="consent" role="dialog" aria-modal="true" aria-labelledby="consent-title" hidden>
-  <div class="consent-card" tabindex="-1">
+  <div class="consent-card">
     <div class="consent-top">
-      <span class="consent-kicker"><span data-l="ru">Регистрация и подача · шаг 1 из 2</span><span data-l="en">Registration &amp; submission · step 1 of 2</span></span>
+      <span class="consent-kicker"><span data-l="ru">Регистрация · шаг 2 из 3</span><span data-l="en">Registration · step 2 of 3</span></span>
       <h2 id="consent-title"><span data-l="ru">Согласие на обработку персональных данных</span><span data-l="en">Consent to Process Personal Data</span></h2>
       <p data-l="ru" class="consent-lead">Это обязательное условие участия и обработки ваших данных. Согласие даёт каждый участник: если вы в команде, каждый из вас открывает это окно и подтверждает его сам.</p><p data-l="en" class="consent-lead">This is a precondition to participate and for us to process the data. Consent is obtained from every participant: in a team, each member opens this window and accepts it personally.</p>
     </div>
     <div class="consent-body">
       <div class="cn-fields">
-        <label class="af-f"><span><span data-l="ru">Фамилия, имя, отчество *</span><span data-l="en">Full name *</span></span><input id="cn-name" type="text" autocomplete="name"><small class="af-hint"><span data-l="ru">Фамилия и имя, от 2 до 80 символов</span><span data-l="en">Surname and first name, 2–80 characters</span></small></label>
-        <label class="af-f"><span><span data-l="ru">Адрес места жительства *</span><span data-l="en">Residential address *</span></span><input id="cn-addr" type="text" autocomplete="street-address"><small class="af-hint"><span data-l="ru">От 5 до 200 символов</span><span data-l="en">5–200 characters</span></small></label>
+        <label class="af-f"><span><span data-l="ru">Фамилия, имя, отчество *</span><span data-l="en">Full name *</span></span><input id="cn-name" type="text" autocomplete="name"></label>
+        <label class="af-f"><span><span data-l="ru">Адрес места жительства *</span><span data-l="en">Residential address *</span></span><input id="cn-addr" type="text" autocomplete="street-address"></label>
       </div>
       <div class="cn-text" data-l="ru">
         <p>Я, <b class="cn-who">[фамилия, имя, отчество]</b>, проживающий (ая) по адресу: <b class="cn-where">[адрес места жительства]</b>, в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» свободно, своей волей и в своем интересе предоставляю конкретное, предметное, информированное, сознательное и однозначное согласие оператору персональных данных – Обществу с ограниченной ответственностью «Техкомпания Хуавэй» (далее – Общество) (адрес местонахождения – 121614, г. Москва, ул. Крылатская, дом 17, корп. 2) на обработку моих персональных данных в целях моего участия в мероприятии «2026 Tech Arena Arts &amp; Design · Student Innovative Challenge», проводимом Обществом.</p>
@@ -1513,11 +1814,31 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     </div>
     <div class="consent-foot">
       <label class="cbox"><input type="checkbox" id="c1"> <span><span data-l="ru">Я прочитал(а) текст и даю согласие на обработку моих персональных данных на условиях выше</span><span data-l="en">I have read the text and give my consent to process my personal data on the terms above</span></span></label>
-      <label class="cbox"><input type="checkbox" id="c2"> <span><span data-l="ru">Принимаю <a href="#rules" data-close-consent>правила участия</a></span><span data-l="en">I accept the <a href="#rules" data-close-consent>rules of participation</a></span></span></label>
+      <label class="cbox"><input type="checkbox" id="c2"> <span><span data-l="ru">Принимаю <a href="#terms" data-close-consent data-open-terms>Условия участия</a></span><span data-l="en">I accept the <a href="#terms" data-close-consent data-open-terms>Terms and Conditions of Participation</a></span></span></label>
       <div class="consent-actions">
         <button type="button" class="btn btn-primary" id="consent-ok" disabled><span data-l="ru">Согласен(на), перейти к форме</span><span data-l="en">I agree, continue to the form</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         <button type="button" class="btn btn-ghost" id="consent-later"><span data-l="ru">Отмена</span><span data-l="en">Cancel</span></button>
         <span class="cn-msg" id="cn-msg" aria-live="polite"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="consent" id="ipm" role="dialog" aria-modal="true" aria-labelledby="ipm-title" hidden>
+  <div class="consent-card ipm-card">
+    <div class="consent-top">
+      <span class="consent-kicker"><span data-l="ru">Регистрация · шаг 1 из 3</span><span data-l="en">Registration · step 1 of 3</span></span>
+      <h2 id="ipm-title"><span data-l="ru">Права на результаты</span><span data-l="en">Rights to the Results</span></h2>
+    </div>
+    <div class="consent-body">
+      <div class="cn-text"><p data-l="ru" class="ipm-text">Заявляя об участии в Конкурсе, Участник понимает и соглашается, что исключительное право на все результаты интеллектуальной деятельности, созданные Участником самостоятельно или совместно с другими участниками в ходе проведения Конкурса, включая программы для ЭВМ, их исходный и объектный код, подготовительные материалы и документацию (далее - Результаты), переходит к Организатору с момента создания таких Результатов без выплаты Участнику какой-либо компенсации.</p><p data-l="en" class="ipm-text">By declaring participation in the Challenge, the Participant understands and agrees that the exclusive right to all results of intellectual activity created by the Participant independently or jointly with other participants during the Challenge, including computer programs, their source and object code, preparatory materials and documentation (hereinafter – the Results), passes to the Organiser from the moment such Results are created, without payment of any compensation to the Participant.</p></div>
+    </div>
+    <div class="consent-foot">
+      <label class="cbox"><input type="checkbox" id="ip1"> <span><span data-l="ru">Понимаю и соглашаюсь</span><span data-l="en">I understand and agree</span></span></label>
+      <div class="consent-actions">
+        <button type="button" class="btn btn-primary" id="ipm-ok" disabled><span data-l="ru">Согласен(на), далее</span><span data-l="en">I agree, next</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button type="button" class="btn btn-ghost" id="ipm-cancel"><span data-l="ru">Отмена</span><span data-l="en">Cancel</span></button>
       </div>
     </div>
   </div>
@@ -1624,7 +1945,11 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 
 
 
-  /* consent pop-up: opens from "Registration & submission"; official template; unlocks the form */
+  /* consent pop-up: opens from "Registration & submission"; official template; unlocks the form
+     —— 业务逻辑与 index.html 一致：
+        点「同意，继续填表」后先把姓名+地址 POST 到 /api/register 保存，
+        服务端确认（201 ok）才解锁表单；409 duplicate（同名同址已登记）也放行；
+        校验失败按服务端错误码显示当前语言的完整说明；记录持久化到 localStorage */
   var cm=document.getElementById('consent');
   function consentRec(){try{var v=localStorage.getItem('ta-consent-v3');return v?JSON.parse(v):(window.__taConsent||null)}catch(e){return window.__taConsent||null}}
   function consentOk(){return !!consentRec()}
@@ -1665,9 +1990,11 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   document.getElementById('consent-ok').addEventListener('click',function(){
     var okBtn=document.getElementById('consent-ok'),msg=document.getElementById('cn-msg');
     if(okBtn._busy)return;
+    /* IP 条款还没接受时，先回到 IP 弹窗（landing 页特有流程） */
+    if(!window.__taIP){closeConsent();openIP();return}
     trimFields();
     var name=document.getElementById('cn-name').value.trim(),addr=document.getElementById('cn-addr').value.trim();
-    var r={name:name,addr:addr,date:today(),ts:new Date().toISOString(),v:'05.11.2026'};
+    var r={name:name,addr:addr,ip:true,ipDate:window.__taIP,date:today(),ts:new Date().toISOString(),v:'05.11.2026'};
     function isR(){return root.getAttribute('data-lang')!=='en'}
     function finish(){okBtn._busy=false;okBtn.disabled=false;cnSync()}
     function proceed(){
@@ -1741,14 +2068,23 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
         finish();
       });
   });
+  /* IP 弹窗（landing 页特有）：先接受知识产权条款，再进入同意书 */
+  var ipm=document.getElementById('ipm');
+  function openIP(){document.getElementById('ip1').checked=false;document.getElementById('ipm-ok').disabled=true;ipm.hidden=false;document.documentElement.classList.add('modal-open');setTimeout(function(){document.getElementById('ip1').focus({preventScroll:true})},50)}
+  function closeIP(){ipm.hidden=true;document.documentElement.classList.remove('modal-open')}
+  document.getElementById('ip1').addEventListener('change',function(){document.getElementById('ipm-ok').disabled=!this.checked});
+  document.getElementById('ipm-cancel').addEventListener('click',closeIP);
+  ipm.addEventListener('keydown',function(e){if(e.key==='Escape')closeIP()});
+  document.getElementById('ipm-ok').addEventListener('click',function(){window.__taIP=today();closeIP();openConsent();});
+  function startSignIn(){window.__taIP=null;['c1','c2'].forEach(function(id){document.getElementById(id).checked=false});cnSync();openIP()}
   /* 明确「取消」的三条路径都记一笔，之后不再自动弹窗 */
   document.getElementById('consent-later').addEventListener('click',function(){markDismissed();closeConsent()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!cm.hidden){markDismissed();closeConsent()}});
   cm.addEventListener('click',function(e){var t=e.target.closest('[data-close-consent]');if(t){if(t.tagName!=='A')markDismissed();closeConsent()}});
-  document.addEventListener('click',function(e){var t=e.target.closest('[data-open-consent]');if(t){e.preventDefault();openConsent();return}
-    var a=e.target.closest('a[href="#apply"]');if(a&&!consentOk()){e.preventDefault();openConsent()}});
+  document.addEventListener('click',function(e){var t=e.target.closest('[data-open-consent]');if(t){e.preventDefault();startSignIn();return}
+    var a=e.target.closest('a[href="#apply"]');if(a&&!consentOk()){e.preventDefault();startSignIn()}});
   unlock();
-  /* 首次进入（本地既没有同意记录、也没有取消记录）时自动打开同意书。
+  /* 首次进入（本地既没有同意记录、也没有取消记录）时自动打开流程（先 IP 条款、再同意书）。
      不依赖 load 事件：外链字体等资源慢/被墙时 load 可能延迟几十秒，弹窗就迟迟不出来 */
   (function(){
     var q=location.search,force=/(^|[?&])consent=force(&|$)/.test(q);
@@ -1758,7 +2094,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
       return;
     }
     var done=false;
-    function pop(){if(done)return;done=true;if(cm.hidden)openConsent(true)}
+    function pop(){if(done)return;done=true;if(cm.hidden&&ipm.hidden)startSignIn()}
     function later(){setTimeout(pop,120)}
     if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',later)}
     else{later()}
@@ -1783,56 +2119,39 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   lvRender();
 
 
-  /* application form */
-  var mem=document.getElementById('af-members'),sizeIn=document.getElementById('af-size');
+  /* application form: one participant per form */
+  var sizeIn=document.getElementById('af-size');
   function isRu(){return root.getAttribute('data-lang')!=='en'}
-  function esc(v){return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
-  function memRow(v){v=v||{};var ru=isRu(),d=document.createElement('div');d.className='af-row';
-    d.innerHTML='<span class="af-n"></span>'+
-    '<input data-k="n" placeholder="'+(ru?'Имя':'Name')+'" value="'+esc(v.n)+'" aria-label="'+(ru?'Имя':'Name')+'">'+
-    '<input data-k="s" placeholder="'+(ru?'Фамилия':'Surname')+'" value="'+esc(v.s)+'" aria-label="'+(ru?'Фамилия':'Surname')+'">'+
-    '<input data-k="u" placeholder="'+(ru?'Вуз':'University')+'" value="'+esc(v.u)+'" aria-label="'+(ru?'Вуз':'University')+'">'+
-    '<input data-k="f" placeholder="'+(ru?'Факультет':'Faculty')+'" value="'+esc(v.f)+'" aria-label="'+(ru?'Факультет':'Faculty')+'">'+
-    '<input data-k="c" placeholder="@telegram / +7… / e-mail" value="'+esc(v.c)+'" aria-label="Contact">'+
-    '<button type="button" class="af-del" aria-label="'+(ru?'Удалить участника':'Remove member')+'">×</button>';
-    d.querySelector('.af-del').addEventListener('click',function(){if(mem.children.length>1){d.remove();sizeIn.value=mem.children.length;renum();buildMail()}});
-    d.querySelectorAll('input').forEach(function(x){x.addEventListener('input',buildMail)});return d;}
-  function rows(){return Array.prototype.map.call(mem.children,function(r){var o={};r.querySelectorAll('input').forEach(function(x){o[x.dataset.k]=x.value.trim()});return o})}
-  function renum(){var one=mem.children.length<=1;Array.prototype.forEach.call(mem.children,function(r,i){r.querySelector('.af-n').textContent=i+1;r.querySelector('.af-del').disabled=one})}
-  function sync(){var n=Math.max(1,Math.min(20,parseInt(sizeIn.value,10)||1));var cur=rows();
-    while(mem.children.length<n)mem.appendChild(memRow(cur[mem.children.length]));
-    while(mem.children.length>n)mem.removeChild(mem.lastChild);renum();buildMail();}
-  function relabel(){var cur=rows();mem.innerHTML='';cur.forEach(function(v){mem.appendChild(memRow(v))});renum();buildMail()}
-  function buildMail(){var ru=isRu(),team=document.getElementById('af-team').value.trim()||(ru?'[название команды]':'[team name]'),
-    tr=document.getElementById('af-track').value,list=rows(),size=list.length,c=consentRec();
+  var REQ=['af-team','af-name','af-surname','af-uni','af-fac','af-phone','af-email'];
+  function v(id){return document.getElementById(id).value.trim()}
+  function buildMail(){var ru=isRu(),c=consentRec(),P=function(id,r,e){return v(id)||(ru?r:e)};
     var t=(ru?'Заявка на конкурс Tech Arena Arts & Design 2026':'Application · Tech Arena Arts & Design 2026')+'\n\n'+
-      (ru?'Название команды: ':'Team name: ')+team+'\n'+(ru?'Размер команды: ':'Team size: ')+size+'\n'+(ru?'Трек: ':'Track: ')+(tr==='1'?'Track 01 · UX':'Track 02 · Forms')+'\n\n'+(ru?'Участники:':'Team members:')+'\n';
-    list.forEach(function(m,i){t+=(i+1)+'. '+[(m.n||(ru?'Имя':'Name'))+' '+(m.s||(ru?'Фамилия':'Surname')),m.u||(ru?'Вуз':'University'),m.f||(ru?'Факультет':'Faculty'),m.c||'TG / '+(ru?'телефон':'phone')+' / e-mail'].join(', ')+'\n'});
-    t+='\n'+(ru?'Согласие на обработку персональных данных (версия от 05.11.2026) принято на сайте: ':'Personal data consent (version of 05.11.2026) accepted on the website by: ')+(c?c.name+', '+c.date:(ru?'[не принято]':'[not accepted]'));
-    t+='\n'+(ru?'Каждый участник команды принял согласие на сайте: ':'Every team member accepted the consent on the website: ')+(document.getElementById('af-consent').checked?(ru?'да':'yes'):(ru?'нет':'no'));
+      (ru?'Название команды: ':'Team name: ')+P('af-team','[название команды]','[team name]')+'\n'+
+      (ru?'Размер команды: ':'Team size: ')+(Math.max(1,parseInt(sizeIn.value,10)||1))+'\n'+
+      (ru?'Трек: ':'Track: ')+(document.getElementById('af-track').value==='1'?'Track 01 · UX':'Track 02 · Forms')+'\n\n'+
+      (ru?'Участник:':'Participant:')+'\n'+
+      (ru?'Имя и фамилия: ':'Name: ')+P('af-name','Имя','Name')+' '+P('af-surname','Фамилия','Surname')+'\n'+
+      (ru?'Вуз: ':'University: ')+P('af-uni','Вуз','University')+'\n'+
+      (ru?'Факультет: ':'Faculty: ')+P('af-fac','Факультет','Faculty')+'\n'+
+      (ru?'Телефон: ':'Phone: ')+P('af-phone','+7 …','+7 …')+'\n'+
+      (ru?'Электронная почта: ':'Email: ')+P('af-email','name@example.com','name@example.com')+'\n\n'+
+      (ru?'Согласие на обработку персональных данных (версия от 05.11.2026) и условие о правах на результаты приняты на сайте: ':'Personal data consent (version of 05.11.2026) and the rights-to-results clause accepted on the website by: ')+(c?c.name+', '+c.date:(ru?'[не принято]':'[not accepted]'));
     document.getElementById('af-preview').textContent=t;
-    document.getElementById('af-send').href='mailto:techarenaartdesign@163.com?subject='+encodeURIComponent('Tech Arena 2026 — '+(ru?'заявка':'application')+' — '+team)+'&body='+encodeURIComponent(t);return t;}
-  sizeIn.addEventListener('input',sync);
-  ['af-team','af-track'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){document.getElementById('af-team').classList.remove('err');buildMail()})});
-  document.getElementById('af-consent').addEventListener('change',buildMail);
-  document.getElementById('af-add').addEventListener('click',function(){if(mem.children.length<20){mem.appendChild(memRow());sizeIn.value=mem.children.length;renum();buildMail()}});
+    document.getElementById('af-send').href='mailto:techarenaartdesign@163.com?subject='+encodeURIComponent('Tech Arena 2026 — '+(ru?'заявка':'application')+' — '+(v('af-team')||'')+' — '+(v('af-name')+' '+v('af-surname')).trim())+'&body='+encodeURIComponent(t);return t;}
+  REQ.concat(['af-size','af-track']).forEach(function(id){document.getElementById(id).addEventListener('input',function(){this.classList.remove('err');document.getElementById('af-msg').textContent='';buildMail()})});
   document.getElementById('app-form').addEventListener('submit',function(e){e.preventDefault()});
   document.getElementById('af-send').addEventListener('click',function(e){var m=document.getElementById('af-msg'),ru=isRu();
-    trimFields();
     if(!consentOk()){e.preventDefault();openConsent();return}
-    if(!document.getElementById('af-team').value.trim()){e.preventDefault();document.getElementById('af-team').classList.add('err');document.getElementById('af-team').focus();
-      m.textContent=ru?'Укажите название команды — оно нужно и при участии в одиночку.':'Enter a team name — it is needed even if you take part alone.';return}
-    if(!document.getElementById('af-consent').checked){e.preventDefault();m.textContent=ru?'Подтвердите, что каждый участник принял согласие.':'Please confirm that every member has accepted the consent.';return}
+    var miss=REQ.filter(function(id){return !v(id)});
+    var em=v('af-email');if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))miss.push('af-email');
+    REQ.forEach(function(id){document.getElementById(id).classList.toggle('err',miss.indexOf(id)>-1)});
+    if(miss.length){e.preventDefault();document.getElementById(miss[0]).focus();m.textContent=ru?'Заполните все поля со звёздочкой и проверьте адрес почты.':'Please fill in all fields marked * and check the email address.';return}
     buildMail();m.textContent='';});
-  document.getElementById('af-copy').addEventListener('click',function(){trimFields();var t=buildMail(),m=document.getElementById('af-msg');
+  document.getElementById('af-copy').addEventListener('click',function(){var t=buildMail(),m=document.getElementById('af-msg');
     function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('af-preview'));var s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent=isRu()?'Текст выделен, нажмите Ctrl+C':'Text selected, press Ctrl+C'}
     try{navigator.clipboard.writeText(t).then(function(){m.textContent=isRu()?'Текст заявки скопирован':'Application text copied'},sel)}catch(e){sel()}});
-  var savedLang=store('ta-lang');
-  setLang(savedLang==='en'?'en':'ru');
-  sync();
-  document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){relabel();cnSync();
-    ['cn-msg','af-msg','copied'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=''})})});
-
+  buildMail();
+  document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){buildMail();cnSync()})});
 
   /* links: put the real addresses here */
   var LINKS={lri:'#top',admin:''};
@@ -1841,42 +2160,53 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   document.querySelectorAll('#admin-link,[data-admin-link]').forEach(function(a){
     if(LINKS.admin){a.href=LINKS.admin;a.target='_blank';a.rel='noopener';return}
     a.addEventListener('click',function(e){e.preventDefault();var ru=root.getAttribute('data-lang')!=='en';
-      var saved=store('ta-admin-token')||'';
-      var inp=window.prompt(ru?'Админ-токен (ADMIN_TOKEN воркера):':'Admin token (worker ADMIN_TOKEN):',saved);
-      if(inp===null)return;var t=inp.trim();
-      if(!t){store('ta-admin-token','');return}
-      store('ta-admin-token',t);
-      /* 令牌只放在 Authorization 头里，不再拼进 URL（URL 会进浏览器历史和访问日志） */
-      var win=window.open('','_blank');
-      fetch('/api/users?limit=200',{headers:{Authorization:'Bearer '+t}})
-        .then(function(r){return r.json().then(function(d){return{status:r.status,data:d||{}}},function(){return{status:r.status,data:{}}})},function(){return{status:0,data:{}}})
-        .then(function(x){
-          if(x.status!==200){
-            if(win)win.close();
-            if(x.status===401)store('ta-admin-token','');
-            window.alert(x.status===0?(ru?'Сеть недоступна.':'Network unavailable.'):(ru?'Неверный токен.':'Invalid token.'));
-            return;
-          }
-          var rows=(x.data&&x.data.rows)||[],total=(x.data&&x.data.total)||rows.length;
-          var h='<!doctype html><meta charset="utf-8"><title>Registrations</title>'
-            +'<style>body{font:14px/1.55 system-ui,-apple-system,sans-serif;margin:26px;color:#151515}'
-            +'h1{font-size:18px;margin:0 0 14px}table{border-collapse:collapse;width:100%}'
-            +'td,th{border:1px solid #dcdcdc;padding:6px 9px;text-align:left;vertical-align:top}'
-            +'th{background:#f4f4f4;font-weight:600}button{margin-top:16px;padding:8px 14px;font:inherit;cursor:pointer}</style>'
-            +'<h1>Registrations: '+rows.length+' of '+total+'</h1><table><thead><tr><th>#</th><th>Name</th><th>Address</th><th>IP</th><th>Created</th></tr></thead><tbody>';
-          rows.forEach(function(r){h+='<tr><td>'+esc(r.id)+'</td><td>'+esc(r.username)+'</td><td>'+esc(r.address)+'</td><td>'+esc(r.ip)+'</td><td>'+esc(r.created_at)+'</td></tr>'});
-          h+='</tbody></table><button id="dl">Download CSV</button>';
-          if(!win){alert('Popup blocked');return}
-          win.document.open();win.document.write(h);win.document.close();
-          win.document.getElementById('dl').addEventListener('click',function(){
-            fetch('/api/export.csv',{headers:{Authorization:'Bearer '+t}})
-              .then(function(r){return r.blob()})
-              .then(function(b){var a=win.document.createElement('a');a.href=URL.createObjectURL(b);a.download='registrations.csv';win.document.body.appendChild(a);a.click();a.remove()})
-              .catch(function(){win.alert('Download failed')});
-          });
-        });
-    });
-  });
+      var t=document.querySelector('.admin-toast');if(!t){t=document.createElement('div');t.className='admin-toast';t.setAttribute('role','status');document.body.appendChild(t)}
+      t.textContent=ru?'Ссылка на админ-панель появится, когда будет готов её адрес':'The admin panel link will appear once its address is ready';t.hidden=false;clearTimeout(t._h);t._h=setTimeout(function(){t.hidden=true},3500)})});
+
+
+  /* ================================================================
+     REGISTRATION BUTTONS — FOR BACKEND
+     Two states for every element with class "reg-cta":
+       ACTIVE   (red)  : class="btn btn-primary reg-cta"
+       INACTIVE (grey) : class="btn btn-primary reg-cta is-locked" + aria-disabled="true"
+     How the state is chosen (first match wins):
+       1) <html data-reg="open">   or <html data-reg="closed">   (set server-side)
+       2) window.REG_STATE = 'open' | 'closed'                  (inline script before this one)
+       3) REG_CONFIG.state below: 'auto' | 'open' | 'closed'
+          'auto' = closed until REG_CONFIG.openAt, then opens by itself (no reload needed)
+     From JS at runtime: window.setRegistration('open' | 'closed' | 'auto')
+     ================================================================ */
+  var REG_CONFIG={state:'open',openAt:'2026-11-09T00:00:00+03:00'};
+  (function(){var OPEN=Date.parse(REG_CONFIG.openAt),forced=null;
+    function mode(){var a=root.getAttribute('data-reg');if(forced)return forced;if(a==='open'||a==='closed')return a;
+      if(window.REG_STATE==='open'||window.REG_STATE==='closed')return window.REG_STATE;return REG_CONFIG.state}
+    function locked(){var m=mode();if(m==='open')return false;if(m==='closed')return true;return Date.now()<OPEN}
+    window.setRegistration=function(m){forced=(m==='open'||m==='closed')?m:null;apply()};
+    function apply(){var l=locked();root.classList.toggle('reg-locked',l);root.classList.toggle('reg-ended',l&&Date.now()>=OPEN);
+      document.querySelectorAll('.reg-cta').forEach(function(b){b.classList.toggle('is-locked',l);if(l){b.setAttribute('aria-disabled','true');b.title=root.getAttribute('data-lang')==='en'?'Registration opens on 9 November':'Регистрация откроется 9 ноября'}else{b.removeAttribute('aria-disabled');b.removeAttribute('title')}})}
+    apply();setInterval(apply,30000);
+    document.addEventListener('click',function(e){if(!locked())return;
+      var t=e.target.closest('.reg-cta,[data-open-consent],a[href="#apply"]');if(!t)return;
+      e.preventDefault();e.stopImmediatePropagation();
+      var ru=root.getAttribute('data-lang')!=='en';
+      var m=document.querySelector('.admin-toast');if(!m){m=document.createElement('div');m.className='admin-toast';m.setAttribute('role','status');document.body.appendChild(m)}
+      var before=Date.now()<OPEN;m.textContent=before?(ru?'Регистрация откроется 9 ноября в 00:00 (МСК)':'Registration opens on 9 November at 00:00 (Moscow time)'):(ru?'Регистрация закрыта':'Registration is closed');m.hidden=false;clearTimeout(m._h);m._h=setTimeout(function(){m.hidden=true},3500)},true);
+  })();
+
+  /* hero parallax */
+  (function(){var art=document.querySelector('.hero-art');if(!art||!window.matchMedia||matchMedia('(prefers-reduced-motion: reduce)').matches||!matchMedia('(pointer:fine)').matches)return;
+    var hero=document.querySelector('.hero')||art;
+    hero.addEventListener('pointermove',function(e){var r=art.getBoundingClientRect();var x=(e.clientX-(r.left+r.width/2))/r.width,y=(e.clientY-(r.top+r.height/2))/r.height;
+      art.style.setProperty('--px',(Math.max(-1,Math.min(1,x))*-10).toFixed(2));art.style.setProperty('--py',(Math.max(-1,Math.min(1,y))*-8).toFixed(2))});
+    hero.addEventListener('pointerleave',function(){art.style.setProperty('--px',0);art.style.setProperty('--py',0)});
+  })();
+  document.addEventListener('click',function(e){var t=e.target.closest('[data-open-terms]');if(!t)return;e.preventDefault();
+    var d=document.getElementById('terms');if(!d)return;d.open=true;setTimeout(function(){d.scrollIntoView({behavior:'smooth',block:'start'})},50)});
+
+  document.addEventListener('click',function(e){var t=e.target.closest('[data-open-rule]');if(!t)return;e.preventDefault();
+    var d=document.getElementById(t.dataset.openRule);if(!d)return;d.open=true;setTimeout(function(){d.scrollIntoView({behavior:'smooth',block:'start'})},30)});
+  var savedLang=store('ta-lang');
+  setLang(savedLang==='en'?'en':'ru');
 })();
 </script>
 
