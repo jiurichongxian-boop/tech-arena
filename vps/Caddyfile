@@ -1,0 +1,30 @@
+# Tech Arena 报名站 Caddy 反向代理（自动签发/续期 Let's Encrypt 证书）
+#
+# 安装 Caddy（Debian/Ubuntu）:
+#   sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+#   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+#   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+#   sudo apt update && sudo apt install caddy
+#
+# 部署：sudo cp Caddyfile /etc/caddy/Caddyfile && sudo systemctl reload caddy
+# 把下面的域名换成你的真实域名，DNS A 记录先指到本机公网 IP
+
+# 主域 + www：www 自动 301 到主域，两个主机名共用一张证书
+# DNS 记录都要建（Cloudflare 后台把两条记录都设为 "DNS only" 灰云）
+your-domain.ru, www.your-domain.ru {
+	@www host www.your-domain.ru
+	redir @www https://your-domain.ru{uri} 301
+
+	# 全部反代到本机 node 服务
+	reverse_proxy 127.0.0.1:8788
+
+	# Caddy 默认会加 X-Forwarded-For，server.js 里 TRUST_PROXY=1 即可拿到真实 IP
+
+	# 压缩（可选，页面是内联大文件，压缩能显著提速）
+	encode gzip zstd
+
+	header {
+		# 服务端已发安全头，这里不重复改写；如需强制 HTTPS 跳转 Caddy 默认已做
+		-Server
+	}
+}

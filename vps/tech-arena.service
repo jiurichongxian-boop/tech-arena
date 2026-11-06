@@ -1,0 +1,35 @@
+# Tech Arena 报名站 systemd 服务
+# 安装：sudo cp tech-arena.service /etc/systemd/system/
+#       sudo systemctl daemon-reload && sudo systemctl enable --now tech-arena
+[Unit]
+Description=Tech Arena registration site (node + sqlite)
+After=network.target
+
+[Service]
+Type=simple
+# 部署目录，按实际路径修改
+WorkingDirectory=/opt/tech-arena
+# node 路径用 `which node` 确认；必须 Node 24+（内置 node:sqlite）
+ExecStart=/usr/bin/node server.js
+Environment=PORT=8788
+Environment=HOST=127.0.0.1
+Environment=TRUST_PROXY=1
+# !!! 换成强随机令牌：openssl rand -hex 24
+Environment=ADMIN_TOKEN=CHANGE_ME_STRONG_TOKEN
+# 若前端与 API 不同域才需要；同源部署留空
+# Environment=ALLOW_ORIGIN=https://your-domain.ru
+
+Restart=always
+RestartSec=3
+User=www-data
+Group=www-data
+
+# 加固：只允许写 data/ 目录
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/tech-arena/data
+PrivateTmp=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
