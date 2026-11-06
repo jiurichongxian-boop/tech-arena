@@ -94,7 +94,22 @@ await check('地址超长', reg({ username: 'Сидоров', address: 'ул. '.
 await check('JSON 非法', new Request('https://x.dev/api/register', { method: 'POST', headers: { 'CF-Connecting-IP': '4.4.4.4' }, body: '{oops' }), 400);
 await check('未授权', new Request('https://x.dev/api/users'), 401);
 await check('Bearer 读名单', new Request('https://x.dev/api/users', { headers: { Authorization: 'Bearer testtoken' } }), 200, (t) => t.includes('Иванов') && t.includes('"ip":"1.1.1.1"'));
-await check('CSV 导出', new Request('https://x.dev/api/export.csv?token=testtoken'), 200, (t) => t.includes('id,username,address,ip,created_at') && t.includes('Иванов'));
+await check('CSV 导出', new Request('https://x.dev/api/export.csv', { headers: { Authorization: 'Bearer testtoken' } }), 200, (t) => t.includes('id,username,address,ip,created_at') && t.includes('Иванов'));
+await check('URL 里的 token 默认无效', new Request('https://x.dev/api/export.csv?token=testtoken'), 401);
+await check('错误 token 无效', new Request('https://x.dev/api/users', { headers: { Authorization: 'Bearer wrong' } }), 401);
+await check('校验长度不一致的 token', new Request('https://x.dev/api/users', { headers: { Authorization: 'Bearer testtoken-x' } }), 401);
+await check('方法不允许', new Request('https://x.dev/api/register', { method: 'GET' }), 405);
+await check('跨域预检默认拒绝', new Request('https://x.dev/api/register', { method: 'OPTIONS' }), 405);
+await check('配置接口', new Request('https://x.dev/api/config'), 200, (t) => t.includes('turnstileSiteKey'));
+
+{
+  const res = await worker.fetch(new Request('https://x.dev/'), env);
+  const csp = res.headers.get('content-security-policy') || '';
+  const ok = csp.includes("default-src 'self'") && res.headers.get('x-frame-options') === 'DENY'
+    && res.headers.get('referrer-policy') === 'no-referrer' && (await res.text()) === 'asset-ok';
+  console.log(`${ok ? 'PASS' : 'FAIL'}  页面安全响应头  [${res.status}] ${csp.slice(0, 40)}`);
+  ok ? pass++ : fail++;
+}
 
 for (let i = 0; i < 10; i++) {
   await worker.fetch(reg({ username: 'Спамер ' + i, address: 'ул. Спама, д. ' + i }, '9.9.9.9'), env);

@@ -165,8 +165,9 @@ Secret 和 D1 绑定在控制台的 Settings 里配置一次即可，之后 push
 - **`database_id` 还是占位符就 deploy** → 报 `Couldn't find a D1 DB with that name`。先把真实 id 填进去。
 - **`wrangler dev` 端口冲突** → `npx wrangler dev --port 8790`；macOS 上 8787 常被占用。
 - **改完前端不生效** → 静态资源是随 Worker 一起发布的，必须重新 `npm run deploy`，不是改完文件就自动上线。
-- **`?token=` 会出现在访问日志里** → 只适合内部小工具。要更稳妥就换成 `Authorization: Bearer <token>`，  
-  接口已经同时支持这两种方式。
+- **`?token=` 默认已关闭** → 后台接口只认 `Authorization: Bearer <token>`。URL 里的令牌会进浏览器历史、
+  Referer 和 Cloudflare 访问日志，确实需要临时用（例如 curl 调试）时，给 Worker 加变量
+  `ALLOW_QUERY_TOKEN=1` 才放行。
 - **免费额度**：Workers 每天 10 万请求、D1 每天 500 万行读，这个注册页远远用不满。
 - **数据备份**：`npm run db:sql` 看最近 20 条；全量导出 CSV 走 `/api/export.csv?token=...`。
 - **删除测试数据**：  
@@ -174,7 +175,66 @@ Secret 和 D1 绑定在控制台的 Settings 里配置一次即可，之后 push
 
 ---
 
-## 六、这次改了哪些文件
+## 六、接口安全（本次加固）
+
+### 现在的默认行为
+
+| 接口 | 谁能调 | 防护 |
+| --- | --- | --- |
+| `POST /api/register` | 任何人（这是公开报名表） | 8 KB 请求体上限、字段校验、同 IP 每小时 10 次、姓名+地址唯一索引、可选的 Turnstile 人机校验 |
+| `GET /api/users` | 只有带 `Authorization: Bearer <ADMIN_TOKEN>` 的人 | 令牌比较不提前返回（避免逐字节试探），其余一律 401 |
+| `GET /api/export.csv` | 同上 | 同上 |
+| `GET /api/config` | 任何人 | 只返回公开的 Turnstile site key（没有就是空串） |
+| `GET /api/health` | 任何人 | 只返回 `ok` 和时间戳 |
+
+另外：`/api/*` 以外的响应都带 `Content-Security-Policy`、`X-Frame-Options: DENY`、
+`Referrer-Policy: no-referrer`、`Permissions-Policy`、`Strict-Transport-Security`；
+500 错误不再把 `err.message` 回给调用方（只写进 `wrangler tail`）。
+
+> 注意：`wrangler.jsonc` 里 `assets.run_worker_first` 现在是 `true`。之前只写了 `["/api/*"]`，
+> 那样静态页由资源层直接返回、**根本不经过 Worker**，所以安全响应头加不上。
+
+### 生成一个足够强的后台令牌
+
+```powershell
+# PowerShell
+-join ((1..64) | ForEach-Object { '{0:x}' -f (Get-Random -Max 16) })
+```
+
+```bash
+# macOS / Linux / Git Bash
+openssl rand -hex 32
+```
+
+然后 `npx wrangler secret put ADMIN_TOKEN` 粘贴进去。**不要**把令牌写进 `wrangler.jsonc`、
+前端代码或 GitHub，因为它会进版本历史和构建日志。
+
+### 建议在控制台再补三件事
+
+1. **Turnstile 人机校验**（最有效的一招，挡住脚本刷单）
+   - 控制台 → `Turnstile` → `Add widget`，域名填你的站点（`techarena.design` 和 `*.workers.dev` 都加上）
+   - 拿到 Site Key 和 Secret Key
+   - `npx wrangler secret put TURNSTILE_SECRET`（粘贴 Secret Key）
+   - 在 `wrangler.jsonc` 里加 `"vars": { "TURNSTILE_SITE_KEY": "你的 Site Key" }`，然后 `npm run deploy`
+   - 配好后：前端从 `/api/config` 拿到 site key，同意书弹窗里自动出现校验框；服务端在写库前调用
+     `siteverify`，失败返回 403。**没配 secret 时这一整段自动跳过**，现有部署不受影响。
+2. **WAF 速率限制**（挡住换 IP 的刷子）
+   - 控制台 → `Security` → `WAF` → `Rate limiting rules`，对 `URI Path equals /api/register`
+     设「每个 IP 每分钟 5 次」，动作 `Block`，持续 10 分钟
+   - 顺手打开 `Security` → `Bots` → `Bot Fight Mode`
+3. **后台接口再上一道身份验证**
+   - `Zero Trust` → `Access` → `Applications`，把 `/api/users` 和 `/api/export.csv` 加进去，
+     策略只允许你自己的邮箱。这样即使令牌泄露，陌生人也进不来。
+
+### 前端后台入口的变化
+
+页脚的「管理员入口」不再打开 `/api/users?token=...`，而是先用 `Authorization` 头请求数据，
+再把结果渲染成一张表格（附「Download CSV」按钮）。令牌只留在 `localStorage['ta-admin-token']`，
+不会出现在地址栏、浏览器历史和 Referer 里。
+
+---
+
+## 七、这次改了哪些文件
 
 | 文件                       | 改动                                                                                 |
 | ------------------------ | ---------------------------------------------------------------------------------- |
@@ -184,3 +244,7 @@ Secret 和 D1 绑定在控制台的 Settings 里配置一次即可，之后 push
 | `worker/.dev.vars`       | 本地开发用的 `ADMIN_TOKEN`（已 gitignore）                                                  |
 | `demo/public/index.html` | 去掉写死的 `?token=demo-token`，改成点链接时询问令牌并记住；离线文案改为通用提示                                 |
 | `.gitignore`             | 忽略 `node_modules/`、`.wrangler/`、`.dev.vars`、`demo/data/`                           |
+| `worker/src/index.js`    | 鉴权换成令牌直比+定长时间比较、默认关闭 `?token=`、去掉放宽的 CORS、加安全响应头、500 不回显细节、接入 Turnstile |
+| `worker/wrangler.jsonc`  | `assets.run_worker_first` 改为 `true`，让静态页也经过 Worker 才能加 CSP 等响应头                    |
+| `demo/server.js`         | 本地 mock 同步 Bearer 鉴权，补 `/api/config`                                                |
+| `demo/public/index.html` | 后台入口改用 `Authorization` 请求并渲染表格；同意书弹窗支持 Turnstile（配了 site key 才出现）              |

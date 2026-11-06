@@ -7,10 +7,9 @@
 	"assets": {
 		"directory": "../demo/public",
 		"binding": "ASSETS",
-		// 关键：/api/* 先交给 Worker，其余走静态资源
-		"run_worker_first": [
-			"/api/*"
-		]
+		// 所有请求都先进 Worker：这样才能给静态页加上 CSP 等安全响应头，
+		// 页面请求由 Worker 内部转给 ASSETS 处理
+		"run_worker_first": true
 	},
 	"d1_databases": [
 		{
@@ -24,5 +23,6 @@
 	},
 	"routes": [
 		{ "pattern": "techarena.design", "custom_domain": true }
-	]
+	],
+	"vars": { "TURNSTILE_SITE_KEY": "0x4AAAAAAF2N9DY0NAP8G0EJ" }
 }

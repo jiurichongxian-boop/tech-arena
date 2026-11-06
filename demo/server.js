@@ -152,6 +152,13 @@ async function register(req, res) {
   });
 }
 
+function adminOk(req, url) {
+  const h = req.headers['authorization'] || '';
+  const bearer = h.startsWith('Bearer ') ? h.slice(7).trim() : '';
+  // 本地开发方便，也接受 ?token=（线上 Worker 默认已关闭这种用法）
+  return bearer === ADMIN_TOKEN || url.searchParams.get('token') === ADMIN_TOKEN;
+}
+
 function serveStatic(req, res, url) {
   let rel = decodeURIComponent(url.pathname);
   if (rel === '/' || rel === '') rel = '/index.html';
@@ -178,17 +185,19 @@ http.createServer((req, res) => {
 
   if (url.pathname === '/api/health') return send(res, 200, { ok: true, count: users.length });
 
+  if (url.pathname === '/api/config') return send(res, 200, { ok: true, turnstileSiteKey: '' });
+
   if (url.pathname === '/api/register' && req.method === 'POST') {
     return register(req, res).catch((e) => send(res, 500, { ok: false, error: 'server-error', message: String(e.message) }));
   }
 
   if (url.pathname === '/api/users' && req.method === 'GET') {
-    if (url.searchParams.get('token') !== ADMIN_TOKEN) return send(res, 401, { ok: false, error: 'unauthorized' });
+    if (!adminOk(req, url)) return send(res, 401, { ok: false, error: 'unauthorized' });
     return send(res, 200, { ok: true, total: users.length, rows: users.slice().reverse() });
   }
 
   if (url.pathname === '/api/export.csv' && req.method === 'GET') {
-    if (url.searchParams.get('token') !== ADMIN_TOKEN) return send(res, 401, { ok: false, error: 'unauthorized' });
+    if (!adminOk(req, url)) return send(res, 401, { ok: false, error: 'unauthorized' });
     const csvCell = (v) => (/[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v));
     const lines = ['id,username,address,ip,created_at'];
     for (const u of users.slice().reverse()) {
