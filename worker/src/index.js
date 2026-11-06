@@ -97,16 +97,12 @@ const RULES = {
   username(v) {
     const s = String(v || '').trim().replace(/\s+/g, ' ');
     if (!s) return { code: 'name-required', message: 'Please enter your full name: surname and first name.' };
-    if (s.length < 2) return { code: 'name-too-short', message: 'Name is too short: at least 2 characters. Enter surname and first name.' };
-    if (s.length > 80) return { code: 'name-too-long', message: 'Name is too long: 80 characters maximum.' };
     if (!/\p{L}/u.test(s)) return { code: 'name-no-letters', message: 'Name must contain letters, not only digits or symbols.' };
     return null;
   },
   address(v) {
     const s = String(v || '').trim().replace(/\s+/g, ' ');
     if (!s) return { code: 'address-required', message: 'Please enter your residential address.' };
-    if (s.length < 5) return { code: 'address-too-short', message: 'Address is too short: at least 5 characters.' };
-    if (s.length > 200) return { code: 'address-too-long', message: 'Address is too long: 200 characters maximum.' };
     return null;
   }
 };
