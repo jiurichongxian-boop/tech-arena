@@ -19,27 +19,21 @@ class Stmt {
   async all() {
     const s = this.sql;
 
-    if (s.includes('AS u') && s.includes('AS e') && s.includes('AS p')) {
-      const [u, e, p] = this.args;
-      return {
-        results: [{
-          u: rows.filter((x) => x.username.toLowerCase() === String(u).toLowerCase()).length,
-          e: rows.filter((x) => x.email.toLowerCase() === String(e).toLowerCase()).length,
-          p: rows.filter((x) => x.phone === p).length
-        }]
-      };
+    if (s.includes('dup_key = ?')) {
+      const [k] = this.args;
+      return { results: [{ n: rows.filter((x) => x.dup_key === k).length }] };
     }
 
-    if (s.includes('COUNT(*) AS n') && s.includes('ip_hash')) {
+    if (s.includes('COUNT(*) AS n') && s.includes('ip = ?')) {
       const [ip, since] = this.args;
-      return { results: [{ n: rows.filter((x) => x.ip_hash === ip && x.created_at > since).length }] };
+      return { results: [{ n: rows.filter((x) => x.ip === ip && x.created_at > since).length }] };
     }
 
     if (s.includes('COUNT(*) AS n')) {
       return { results: [{ n: rows.length }] };
     }
 
-    if (s.startsWith('SELECT id, surname, username, phone, email, created_at')) {
+    if (s.startsWith('SELECT id, username, address, ip, created_at')) {
       const ordered = [...rows].reverse();
       const sliced = s.includes('LIMIT') ? ordered.slice(this.args[1], this.args[1] + this.args[0]) : ordered;
       return { results: sliced };
@@ -49,9 +43,9 @@ class Stmt {
   }
   async run() {
     if (this.sql.includes('INSERT INTO users')) {
-      const [surname, username, email, phone, ip_hash, ua, created_at] = this.args;
+      const [username, address, dup_key, ip, created_at] = this.args;
       const id = rows.length + 1;
-      rows.push({ id, surname, username, email, phone, ip_hash, ua, created_at });
+      rows.push({ id, username, address, dup_key, ip, created_at });
       return { success: true, meta: { last_row_id: id } };
     }
     throw new Error('unhandled run: ' + this.sql);
@@ -83,26 +77,29 @@ const reg = (body, ip = '1.1.1.1') =>
     body: JSON.stringify(body)
   });
 
-const valid = { surname: '张', username: 'zhangsan', phone: '13800138000', email: 'zhang@example.com' };
+const valid = { username: 'Иванов Иван', address: 'ул. Ленина, д. 1, Москва' };
 
 await check('健康检查', new Request('https://x.dev/api/health'), 200, (t) => t.includes('"ok":true'));
 await check('静态透传', new Request('https://x.dev/index.html'), 200, (t) => t === 'asset-ok');
-await check('正常注册', reg(valid), 201, (t) => t.includes('"username":"zhangsan"'));
-await check('用户名重复', reg({ ...valid, email: 'other@example.com', phone: '13900139000' }), 409, (t) => t.includes('已被占用'));
-await check('邮箱重复', reg({ ...valid, username: 'lisi', phone: '13900139000' }), 409, (t) => t.includes('邮箱已注册'));
-await check('手机号重复', reg({ ...valid, username: 'lisi', email: 'li@example.com' }), 409, (t) => t.includes('手机号已注册'));
-await check('手机号非法', reg({ ...valid, username: 'wangwu', email: 'w@example.com', phone: '123' }, '2.2.2.2'), 400, (t) => t.includes('11 位'));
-await check('用户名非法', reg({ ...valid, username: '1ab', email: 'w2@example.com', phone: '13700137000' }, '2.2.2.2'), 400, (t) => t.includes('字母开头'));
-await check('邮箱非法', reg({ ...valid, username: 'wangwu', phone: '13700137000', email: 'nope' }, '2.2.2.2'), 400, (t) => t.includes('邮箱格式'));
-await check('姓为空', reg({ ...valid, surname: '', username: 'wangwu', phone: '13700137000', email: 'w3@example.com' }, '2.2.2.2'), 400, (t) => t.includes('请填写姓'));
+await check('正常登记', reg(valid), 201, (t) => t.includes('"username":"Иванов Иван"') && t.includes('"address"'));
+await check('姓名+地址重复', reg(valid), 409, (t) => t.includes('duplicate'));
+await check('同名不同地址可登记', reg({ ...valid, address: 'ул. Тверская, д. 2, Москва' }), 201);
+await check('同地址不同姓名可登记', reg({ ...valid, username: 'Петров Пётр', address: 'ул. Ленина, д. 1, Москва' }), 201);
+await check('姓名大小写不敏感去重', reg({ username: 'иванов иван', address: valid.address.toUpperCase() }), 409);
+await check('姓名为空', reg({ username: '  ', address: valid.address }), 400, (t) => t.includes('name-required') && t.includes('full name'));
+await check('地址为空', reg({ username: 'Сидоров', address: '' }), 400, (t) => t.includes('address-required') && t.includes('residential address'));
+await check('地址太短', reg({ username: 'Сидоров', address: 'д.1' }), 400, (t) => t.includes('address-too-short') && t.includes('at least 5 characters'));
+await check('姓名全是数字', reg({ username: '12345', address: 'ул. Ленина, д. 1' }, '3.3.3.3'), 400, (t) => t.includes('name-no-letters') && t.includes('digits or symbols'));
+await check('地址超长', reg({ username: 'Сидоров', address: 'ул. '.repeat(60) }), 400, (t) => t.includes('address-too-long'));
+await check('JSON 非法', new Request('https://x.dev/api/register', { method: 'POST', headers: { 'CF-Connecting-IP': '4.4.4.4' }, body: '{oops' }), 400);
 await check('未授权', new Request('https://x.dev/api/users'), 401);
-await check('Bearer 读名单', new Request('https://x.dev/api/users', { headers: { Authorization: 'Bearer testtoken' } }), 200, (t) => t.includes('zhangsan'));
-await check('CSV 导出', new Request('https://x.dev/api/export.csv?token=testtoken'), 200, (t) => t.includes('surname,username') && t.includes('张'));
+await check('Bearer 读名单', new Request('https://x.dev/api/users', { headers: { Authorization: 'Bearer testtoken' } }), 200, (t) => t.includes('Иванов') && t.includes('"ip":"1.1.1.1"'));
+await check('CSV 导出', new Request('https://x.dev/api/export.csv?token=testtoken'), 200, (t) => t.includes('id,username,address,ip,created_at') && t.includes('Иванов'));
 
 for (let i = 0; i < 10; i++) {
-  await worker.fetch(reg({ surname: '刷', username: 'bot' + i, email: `b${i}@x.com`, phone: '1360013600' + i }, '9.9.9.9'), env);
+  await worker.fetch(reg({ username: 'Спамер ' + i, address: 'ул. Спама, д. ' + i }, '9.9.9.9'), env);
 }
-await check('限流触发', reg({ surname: '刷', username: 'botX', email: 'bx@x.com', phone: '13600136099' }, '9.9.9.9'), 429, (t) => t.includes('rate-limited'));
+await check('限流触发', reg({ username: 'Спамер X', address: 'ул. Спама, д. 99' }, '9.9.9.9'), 429, (t) => t.includes('rate-limited'));
 
 console.log(`\n通过 ${pass} / 失败 ${fail}`);
 process.exit(fail ? 1 : 0);

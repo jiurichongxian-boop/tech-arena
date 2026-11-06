@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Tech Arena Arts &amp; Design 2026</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<script>
+/* 首帧前先定语言，避免英文用户先看到俄文再被切换（也保证动态生成的成员行 placeholder 用对语言） */
+(function(){try{var l=localStorage.getItem('ta-lang')==='en'?'en':'ru';document.documentElement.setAttribute('data-lang',l);document.documentElement.lang=l}catch(e){}})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -512,6 +516,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 .consent{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(6,3,5,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .modal-open body{overflow:hidden}
 .consent-card{width:min(940px,100%);max-height:100%;display:flex;flex-direction:column;border-radius:28px;background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 40px 120px -20px rgba(255,20,50,.45);overflow:hidden}
+.consent-card:focus{outline:none}
 .consent-top{padding:30px 34px 18px;border-bottom:1px solid var(--line);background:radial-gradient(circle at 100% 0%,rgba(255,40,70,.18),transparent 50%)}
 .consent-kicker{font:600 11px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .consent-top h2{font:900 clamp(26px,3.6vw,44px)/1.05 var(--f-display);margin-top:10px;text-wrap:balance}
@@ -1452,7 +1457,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 </footer>
 
 <div class="consent" id="consent" role="dialog" aria-modal="true" aria-labelledby="consent-title" hidden>
-  <div class="consent-card">
+  <div class="consent-card" tabindex="-1">
     <div class="consent-top">
       <span class="consent-kicker"><span data-l="ru">Регистрация и подача · шаг 1 из 2</span><span data-l="en">Registration &amp; submission · step 1 of 2</span></span>
       <h2 id="consent-title"><span data-l="ru">Согласие на обработку персональных данных</span><span data-l="en">Consent to Process Personal Data</span></h2>
@@ -1460,8 +1465,8 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     </div>
     <div class="consent-body">
       <div class="cn-fields">
-        <label class="af-f"><span><span data-l="ru">Фамилия, имя, отчество *</span><span data-l="en">Full name *</span></span><input id="cn-name" type="text" autocomplete="name"></label>
-        <label class="af-f"><span><span data-l="ru">Адрес места жительства *</span><span data-l="en">Residential address *</span></span><input id="cn-addr" type="text" autocomplete="street-address"></label>
+        <label class="af-f"><span><span data-l="ru">Фамилия, имя, отчество *</span><span data-l="en">Full name *</span></span><input id="cn-name" type="text" autocomplete="name"><small class="af-hint"><span data-l="ru">Фамилия и имя, от 2 до 80 символов</span><span data-l="en">Surname and first name, 2–80 characters</span></small></label>
+        <label class="af-f"><span><span data-l="ru">Адрес места жительства *</span><span data-l="en">Residential address *</span></span><input id="cn-addr" type="text" autocomplete="street-address"><small class="af-hint"><span data-l="ru">От 5 до 200 символов</span><span data-l="en">5–200 characters</span></small></label>
       </div>
       <div class="cn-text" data-l="ru">
         <p>Я, <b class="cn-who">[фамилия, имя, отчество]</b>, проживающий (ая) по адресу: <b class="cn-where">[адрес места жительства]</b>, в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» свободно, своей волей и в своем интересе предоставляю конкретное, предметное, информированное, сознательное и однозначное согласие оператору персональных данных – Обществу с ограниченной ответственностью «Техкомпания Хуавэй» (далее – Общество) (адрес местонахождения – 121614, г. Москва, ул. Крылатская, дом 17, корп. 2) на обработку моих персональных данных в целях моего участия в мероприятии «2026 Tech Arena Arts &amp; Design · Student Innovative Challenge», проводимом Обществом.</p>
@@ -1601,27 +1606,142 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   var cm=document.getElementById('consent');
   function consentRec(){try{var v=localStorage.getItem('ta-consent-v3');return v?JSON.parse(v):(window.__taConsent||null)}catch(e){return window.__taConsent||null}}
   function consentOk(){return !!consentRec()}
+  /* 「取消」也算处理过：记一笔，避免每次打开页面都自动弹窗 */
+  var DISMISS_KEY='ta-consent-dismissed-v1';
+  function consentDismissed(){try{return !!localStorage.getItem(DISMISS_KEY)}catch(e){return false}}
+  function markDismissed(){try{localStorage.setItem(DISMISS_KEY,new Date().toISOString())}catch(e){}}
   function today(){var d=new Date();return ('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear()}
+  /* 去掉首尾空格：单个字段在失焦时立即清理，提交/复制前再兜底清一遍（服务端也会 trim） */
+  function trimField(el){
+    if(!el)return;
+    var tag=el.tagName;
+    if(tag!=='INPUT'&&tag!=='TEXTAREA')return;
+    if(tag==='INPUT'&&el.type&&el.type!=='text')return;
+    var v=el.value.trim();
+    if(v!==el.value){el.value=v;
+      try{el.dispatchEvent(new Event('input',{bubbles:true}))}catch(e){}
+    }
+  }
+  function trimFields(){
+    Array.prototype.forEach.call(document.querySelectorAll('input[type="text"],input:not([type]),textarea'),trimField);
+  }
+  document.addEventListener('focusout',function(e){trimField(e.target)},true);
   function cnSync(){var n=document.getElementById('cn-name').value.trim(),a=document.getElementById('cn-addr').value.trim(),ru=root.getAttribute('data-lang')!=='en';
     document.querySelectorAll('.cn-who').forEach(function(x){x.textContent=n||(x.closest('[data-l="en"]')?'[full name]':'[фамилия, имя, отчество]')});
     document.querySelectorAll('.cn-where').forEach(function(x){x.textContent=a||(x.closest('[data-l="en"]')?'[residential address]':'[адрес места жительства]')});
     document.querySelectorAll('.cn-today').forEach(function(x){x.textContent=today()});
     document.getElementById('consent-ok').disabled=!(n&&a&&document.getElementById('c1').checked&&document.getElementById('c2').checked);}
-  function openConsent(){cnSync();cm.hidden=false;document.documentElement.classList.add('modal-open');setTimeout(function(){document.getElementById('cn-name').focus({preventScroll:true});cm.querySelector('.consent-card').scrollTop=0},50)}
-  function closeConsent(){cm.hidden=true;document.documentElement.classList.remove('modal-open')}
+  function openConsent(skipFocus){cnSync();var m0=document.getElementById('cn-msg');if(m0)m0.textContent='';cm.hidden=false;document.documentElement.classList.add('modal-open');setTimeout(function(){var card=cm.querySelector('.consent-card');
+      if(skipFocus){if(card)card.focus({preventScroll:true})}
+      else{var f=document.getElementById('cn-name');if(f&&document.activeElement!==f)f.focus({preventScroll:true})}
+      if(card)card.scrollTop=0},50)}
+  function closeConsent(){cm.hidden=true;document.documentElement.classList.remove('modal-open');
+    var b=document.getElementById('consent-ok');if(b)b._busy=false;}
   function unlock(){var ok=consentOk();document.getElementById('reg-lock').hidden=ok;document.getElementById('reg-mail').hidden=!ok;document.getElementById('app-form').hidden=!ok;}
   ['cn-name','cn-addr'].forEach(function(id){document.getElementById(id).addEventListener('input',cnSync)});
   ['c1','c2'].forEach(function(id){document.getElementById(id).addEventListener('change',cnSync)});
-  document.getElementById('consent-ok').addEventListener('click',function(){var r={name:document.getElementById('cn-name').value.trim(),addr:document.getElementById('cn-addr').value.trim(),date:today(),ts:new Date().toISOString(),v:'05.11.2026'};
-    try{localStorage.setItem('ta-consent-v3',JSON.stringify(r))}catch(e){}window.__taConsent=r;closeConsent();unlock();
-    var ap=document.getElementById('apply');if(ap)ap.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(function(){var t=document.getElementById('af-team');if(t)t.focus({preventScroll:true})},600);if(typeof buildMail==='function')buildMail();});
-  document.getElementById('consent-later').addEventListener('click',closeConsent);
-  cm.addEventListener('keydown',function(e){if(e.key==='Escape')closeConsent()});
-  cm.addEventListener('click',function(e){if(e.target.closest('[data-close-consent]'))closeConsent()});
+  document.getElementById('consent-ok').addEventListener('click',function(){
+    var okBtn=document.getElementById('consent-ok'),msg=document.getElementById('cn-msg');
+    if(okBtn._busy)return;
+    trimFields();
+    var name=document.getElementById('cn-name').value.trim(),addr=document.getElementById('cn-addr').value.trim();
+    var r={name:name,addr:addr,date:today(),ts:new Date().toISOString(),v:'05.11.2026'};
+    function isR(){return root.getAttribute('data-lang')!=='en'}
+    function finish(){okBtn._busy=false;okBtn.disabled=false;cnSync()}
+    function proceed(){
+      msg.textContent='';
+      try{localStorage.setItem('ta-consent-v3',JSON.stringify(r))}catch(e){}
+      window.__taConsent=r;closeConsent();unlock();
+      var ap=document.getElementById('apply');if(ap)ap.scrollIntoView({behavior:'smooth',block:'start'});
+      setTimeout(function(){var t=document.getElementById('af-team');if(t)t.focus({preventScroll:true})},600);if(typeof buildMail==='function')buildMail();
+    }
+    /* 服务端只返回错误码/英文文案，界面按当前语言显示 */
+    function dupText(withHint){
+      return isR()?('Эта запись уже зарегистрирована: имя и адрес совпадают.'+(withHint?' Форма открыта ниже.':''))
+                  :('This registration already exists: the name and address are the same.'+(withHint?' The form is unlocked below.':''));
+    }
+    /* 字段错误码 → 完整要求说明（服务端只给 code，文案在前端按语言给） */
+    var FIELD_TEXT={
+      en:{
+        'name-required':'Please enter your full name: surname and first name.',
+        'name-too-short':'Name is too short: at least 2 characters. Enter surname and first name.',
+        'name-too-long':'Name is too long: 80 characters maximum.',
+        'name-no-letters':'Name must contain letters: digits or symbols only are not accepted.',
+        'address-required':'Please enter your residential address.',
+        'address-too-short':'Address is too short: at least 5 characters.',
+        'address-too-long':'Address is too long: 200 characters maximum.'
+      },
+      ru:{
+        'name-required':'Укажите полностью фамилию и имя.',
+        'name-too-short':'Слишком короткое имя: не менее 2 символов. Укажите фамилию и имя.',
+        'name-too-long':'Слишком длинное имя: не более 80 символов.',
+        'name-no-letters':'Имя должно содержать буквы: только цифры и символы не принимаются.',
+        'address-required':'Укажите адрес места жительства.',
+        'address-too-short':'Адрес слишком короткий: не менее 5 символов.',
+        'address-too-long':'Адрес слишком длинный: не более 200 символов.'
+      }
+    };
+    function failText(x){
+      var code=(x&&x.data&&x.data.error)||'',e=(x&&x.data&&x.data.errors)||{};
+      if(code==='validation'){
+        var dict=isR()?FIELD_TEXT.ru:FIELD_TEXT.en;
+        if(e.username&&dict[e.username])return dict[e.username];
+        if(e.address&&dict[e.address])return dict[e.address];
+        return isR()?'Проверьте введённые данные.':'Please check the entered data.';
+      }
+      if(code==='rate-limited')return isR()?'Слишком много отправок с этой сети, попробуйте позже.':'Too many submissions from this network, please try again later.';
+      if(code==='body-too-large')return isR()?'Данные слишком большие.':'Payload too large.';
+      return isR()?'Не удалось сохранить согласие, попробуйте ещё раз.':'Could not save the consent, please try again.';
+    }
+    okBtn._busy=true;okBtn.disabled=true;
+    document.getElementById('cn-name').classList.remove('err');
+    document.getElementById('cn-addr').classList.remove('err');
+    msg.textContent=isR()?'Отправляем…':'Submitting…';
+    var ctrl=(typeof AbortController==='function')?new AbortController():null;
+    if(ctrl)setTimeout(function(){ctrl.abort()},15000);
+    fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:name,address:addr}),signal:ctrl?ctrl.signal:undefined})
+      .then(function(res){return res.json().then(function(d){return{status:res.status,data:d||{}}},function(){return{status:res.status,data:{}}})})
+      .then(function(x){
+        var dup=x.status===409&&x.data.error==='duplicate';
+        if((x.status===201&&x.data.ok)||dup){
+          if(dup){msg.textContent=dupText(true);setTimeout(function(){proceed();finish()},1600);return}
+          proceed();finish();return}
+        msg.textContent=failText(x);
+        var fe=(x&&x.data&&x.data.errors)||{};
+        document.getElementById('cn-name').classList.toggle('err',!!fe.username);
+        document.getElementById('cn-addr').classList.toggle('err',!!fe.address);
+        finish();
+      })
+      .catch(function(e){
+        msg.textContent=(e&&e.name==='AbortError')
+          ?(isR()?'Сервер не ответил, попробуйте ещё раз.':'The server did not respond, please try again.')
+          :(isR()?'Сеть недоступна, согласие не сохранено. Попробуйте ещё раз.':'Network unavailable, consent was not saved. Please try again.');
+        finish();
+      });
+  });
+  /* 明确「取消」的三条路径都记一笔，之后不再自动弹窗 */
+  document.getElementById('consent-later').addEventListener('click',function(){markDismissed();closeConsent()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!cm.hidden){markDismissed();closeConsent()}});
+  cm.addEventListener('click',function(e){var t=e.target.closest('[data-close-consent]');if(t){if(t.tagName!=='A')markDismissed();closeConsent()}});
   document.addEventListener('click',function(e){var t=e.target.closest('[data-open-consent]');if(t){e.preventDefault();openConsent();return}
     var a=e.target.closest('a[href="#apply"]');if(a&&!consentOk()){e.preventDefault();openConsent()}});
   unlock();
+  /* 首次进入（本地既没有同意记录、也没有取消记录）时自动打开同意书。
+     不依赖 load 事件：外链字体等资源慢/被墙时 load 可能延迟几十秒，弹窗就迟迟不出来 */
+  (function(){
+    var q=location.search,force=/(^|[?&])consent=force(&|$)/.test(q);
+    if(force){try{localStorage.removeItem('ta-consent-v3');localStorage.removeItem(DISMISS_KEY)}catch(e){}window.__taConsent=null}
+    if(!force&&(consentOk()||consentDismissed())){
+      console.info('[consent] auto-open skipped —',{consent:consentOk(),dismissed:consentDismissed(),reset:'add ?consent=force to the URL'});
+      return;
+    }
+    var done=false;
+    function pop(){if(done)return;done=true;if(cm.hidden)openConsent(true)}
+    function later(){setTimeout(pop,120)}
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',later)}
+    else{later()}
+    window.addEventListener('load',later); /* 兜底：DOMContentLoaded 已经触发过时也能执行 */
+  })();
 
   /* grading levels */
   var LV={"t1": {"general": ["По каждому критерию жюри ставит уровень от A до E и даёт письменный комментарий. Итог складывается из баллов по всем критериям. Нажмите на букву, чтобы увидеть, что означает уровень.", "For each criterion the jury assigns a level from A to E and writes a comment. The total is the sum of points across criteria. Click a letter to see what each level means."], "rule": ["Правило против завышения: «новое» значит новое для рынка, а не для команды. Если жюри не может сформулировать отличие от ближайшего существующего паттерна, оценка новизны снижается. Движение оценивается в «Эстетике»: все переходы в едином ритме и с одной кривой, например 250–400 мс и ease-out на входе.", "Anti-inflation rule: \"novel\" means novel to the market, not to the team. If a judge cannot articulate what differs from the closest existing pattern, the innovativeness score drops. Motion is judged under Aesthetics: transitions follow one timing and curve vocabulary, e.g. 250–400 ms with ease-out on enter."], "crit": [[["Новизна", "Innovativeness"], 25, ["25–21", "20–16", "15–11", "10–6", "5–0"], [["Взаимодействие, сценарий или технический подход, которого нет в серийных смартфонах и который не является прямой комбинацией известных паттернов. Жюри может назвать это новым паттерном.", "Introduces an interaction, workflow or technical approach that does not exist in current production smartphones and is not a direct recombination of known patterns. A reviewer could name it as a new pattern."], ["Новое сочетание существующих паттернов для новой задачи.", "A novel recombination of existing patterns applied to a new problem domain."], ["Известный паттерн, хорошо применённый: следование конвенциям с локальными улучшениями.", "A known pattern applied well; convention-following with local improvements."], ["Вариация распространённого паттерна, собственного вклада не видно.", "Variant of a common pattern; no distinct contribution visible."], ["Повторяет стандартную реализацию.", "Reproduces a standard implementation; convention-identical."]]], [["Ценность для пользователя и привлекательность", "User value &amp; attractiveness"], 25, ["25–21", "20–16", "15–11", "10–6", "5–0"], [["Решена конкретная потребность: жюри может назвать, кому это полезно и почему человек изменит поведение.", "A concrete user need is addressed; the judge can name who benefits and why they would change behaviour because of it."], ["Реальная потребность, но выигрыш по сравнению с альтернативами скромный.", "Addresses a real need, but the incremental benefit over existing alternatives is modest."], ["Полезно, но только в узком контексте или для нишевой аудитории.", "Useful, but only within a narrow context or for a niche segment."], ["Ценность нужно объяснять: обычный пользователь не поймёт её сам.", "The value case requires explanation; a typical user would not get it unprompted."], ["Решение в поиске проблемы: ценность не сформулирована или противоречит демо.", "Solution searching for a problem; the value statement is absent or contradicted by the demo itself."]]], [["Эстетика", "Aesthetics"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Последовательный продуманный язык дизайна на всех экранах (шрифт, цвет, движение, иконки), который можно распространить на всё устройство.", "Consistent, deliberate design language across all screens (type, colour, motion, iconography); the language could extend to the rest of the device."], ["В целом целостно, отдельные несоответствия не мешают пониманию.", "Coherent overall; isolated inconsistencies that do not interrupt understanding."], ["Приемлемо: стандартные компоненты, собственного языка нет.", "Adequate; stock component styling, no distinct language attempted."], ["Смешение стилей, сбитая иерархия, движение и визуал из разных систем.", "Mixed styles, misaligned hierarchy, motion and visuals from different vocabularies."], ["Визуальный хаос или уровень заглушек.", "Visually chaotic or placeholder-level expression."]]], [["Реализуемость и практичность", "Feasibility &amp; practicality"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Работает в реальном времени на массовом железе без особых условий.", "Runs in real time on mainstream hardware with no special conditions."], ["Реализуемо известными инженерными усилиями; небольшой разрыв между демо и реальностью.", "Feasible with known engineering effort; small gaps between demo and real conditions."], ["Реализуемо только со значительной доработкой; ключевые допущения названы, но не проверены.", "Feasible only with significant additional engineering; key assumptions stated but unverified."], ["Требует ресурсов, которых у платформы нет (например, вычислительной мощности) при реальном использовании.", "Requires resources the platform cannot provide (computing power) at realistic usage levels."], ["Только концепт-демо, путь к устройству не продуман.", "Concept demo only; no thoughts on a path to device."]]], [["Подача и качество презентации", "Presentation &amp; quality of expression"], 10, ["10–9", "8–7", "6–5", "4–3", "2–0"], [["Демо доказывает идею само: пояснения не нужны, пограничные случаи показаны, а не спрятаны.", "The demo carries its own argument; no narration needed; edge cases are handled visibly, not hidden."], ["Понятно, но в двух-трёх местах нужно устное пояснение.", "Clear, but relies on spoken explanation at two or three points."], ["Понятно с усилием: некоторые сценарии требуют ведущего.", "Understandable with effort; some flows require a presenter to keep the audience oriented."], ["Запутанная навигация или визуал, идея доходит только через ведущего.", "Confusing navigation or visuals; the idea only lands via the presenter."], ["Невозможно понять даже с пояснениями.", "Cannot be followed even with narration."]]]]}, "t2": {"general": ["По каждому критерию жюри ставит уровень от A до E и даёт письменный комментарий. Итог складывается из баллов по всем критериям. Нажмите на букву, чтобы увидеть, что означает уровень.", "For each criterion the jury assigns a level from A to E and writes a comment. The total is the sum of points across criteria. Click a letter to see what each level means."], "rule": ["У каждого критерия есть контрольный вопрос (он указан в карточке критерия выше). Ответ на него определяет уровень. Например, для новизны: если ближайший существующий продукт можно назвать одной фразой, оценка снижается.", "Every criterion has a deciding question (shown on the criterion card above). The answer sets the level. For innovativeness: if the closest existing product can be named in one sentence, the score drops."], "crit": [[["Новизна", "Innovativeness"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Создаёт новый паттерн: прямых аналогов в продаже нет, и если убрать решение, рынку нечем его заменить.", "Establishes a new pattern. No direct precedent in shipping products; if removed, nothing on the market substitutes for it."], ["Новое сочетание: существующие части в новой связи.", "Novel recombination: existing pieces, new relationship between them."], ["Известная концепция с локальным улучшением.", "Known concept, executed with local improvement."], ["Косметическая вариация стандартного паттерна, по структуре как у продуктов в продаже.", "Cosmetic variation of a standard pattern; identical in structure to something shipping today."], ["Повторение без отличий от конвенции.", "Reproduction; zero delta from convention."]]], [["Реализуемость и практичность", "Feasibility &amp; practicality"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Работает вживую на массовом железе, без контролируемых условий и скрытых допущений.", "Runs live on current mainstream hardware, no controlled conditions, no unstated assumptions."], ["Небольшие явно названные пробелы: корпус-прототип, лабораторный свет, одна модель устройства.", "Small, explicitly declared gaps (prototype casing, lab lighting, one device model)."], ["Правдоподобный инженерный путь, но ключевые затраты (батарея, вычисления, задержки) не оценены.", "Believable engineering path, but key resource costs unstated or underestimated (battery, compute, latency)."], ["Требует железа или возможностей ОС, которых у платформы нет.", "Requires hardware or OS capability that the platform does not offer."], ["Концепт-видео без рабочего пути от демо к устройству.", "Concept video; no working path from demo to device."]]], [["Ценность и понимание сценария", "User value &amp; scenario insight"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Конкретный сценарий из наблюдаемого поведения: жюри узнаёт эту проблему из своей жизни.", "Specific scenario grounded in observed behaviour; the judge recognises the friction from their own life."], ["Реальный, но узкий сценарий, польза для отдельного сегмента.", "Real scenario, but narrow; benefit limited to a segment."], ["Правдоподобный, но общий сценарий («продуктивность», «удобство»): инсайт заявлен, но не показан.", "Plausible scenario, generic (\"productivity\", \"convenience\"); insight asserted, not demonstrated."], ["Ценность существует только в объяснении автора.", "Value requires the presenter&#39;s explanation to exist at all."], ["Технология в поиске сценария, пользовательского момента нет.", "Technology in search of a scenario; no user moment visible."]]], [["Подача и качество презентации", "Presentation &amp; quality of expression"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Самоочевидно: жюри понимает замысел за 15 секунд без пояснений.", "Self-evident: the judge understands the intent within 15 seconds of watching, without narration."], ["Понятно с коротким пояснением, показ отрепетирован и завершён.", "Clear with brief explanation; the flow is rehearsed and complete."], ["Понятно, но требует постоянных комментариев ведущего.", "Understandable, but depends on continuous presenter narration to be legible."], ["Путаная последовательность: жюри восстанавливает историю по вопросам.", "Confusing sequencing; the judge reconstructs the story afterwards from Q&amp;A."], ["Демо ломается посреди показа.", "Demo breaks down mid-flow; the jury is left to imagine the experience."]]], [["Глубина технической проработки", "Depth of technical thinking"], 20, ["20–17", "16–13", "12–9", "8–5", "4–0"], [["Видна решённая сложная задача: неочевидный компромисс, изящная работа с ограничениями, измеренный результат.", "The judge can see a solved hard problem: a non-obvious trade-off, elegant constraint handling, a measured result."], ["Одна-две сложные задачи решены, остальная сложность честно признана.", "One or two hard problems clearly addressed; remaining complexity acknowledged honestly."], ["Стандартная реализация: технология — средство, а не вклад.", "Standard implementation; technology is a means, not a contribution."], ["Технический подход непрозрачен, вопросы «как» обходятся.", "Technical approach is opaque; questions about \"how\" are deflected."], ["Нет свидетельств технической глубины, результат «как по волшебству».", "No evidence of technical depth; outcomes presented as if by magic."]]]]}};
@@ -1676,16 +1796,20 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   document.getElementById('af-add').addEventListener('click',function(){if(mem.children.length<20){mem.appendChild(memRow());sizeIn.value=mem.children.length;renum();buildMail()}});
   document.getElementById('app-form').addEventListener('submit',function(e){e.preventDefault()});
   document.getElementById('af-send').addEventListener('click',function(e){var m=document.getElementById('af-msg'),ru=isRu();
+    trimFields();
     if(!consentOk()){e.preventDefault();openConsent();return}
     if(!document.getElementById('af-team').value.trim()){e.preventDefault();document.getElementById('af-team').classList.add('err');document.getElementById('af-team').focus();
       m.textContent=ru?'Укажите название команды — оно нужно и при участии в одиночку.':'Enter a team name — it is needed even if you take part alone.';return}
     if(!document.getElementById('af-consent').checked){e.preventDefault();m.textContent=ru?'Подтвердите, что каждый участник принял согласие.':'Please confirm that every member has accepted the consent.';return}
     buildMail();m.textContent='';});
-  document.getElementById('af-copy').addEventListener('click',function(){var t=buildMail(),m=document.getElementById('af-msg');
+  document.getElementById('af-copy').addEventListener('click',function(){trimFields();var t=buildMail(),m=document.getElementById('af-msg');
     function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('af-preview'));var s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent=isRu()?'Текст выделен, нажмите Ctrl+C':'Text selected, press Ctrl+C'}
     try{navigator.clipboard.writeText(t).then(function(){m.textContent=isRu()?'Текст заявки скопирован':'Application text copied'},sel)}catch(e){sel()}});
+  var savedLang=store('ta-lang');
+  setLang(savedLang==='en'?'en':'ru');
   sync();
-  document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){relabel();cnSync()})});
+  document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){relabel();cnSync();
+    ['cn-msg','af-msg','copied'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=''})})});
 
 
   /* links: put the real addresses here */
@@ -1695,10 +1819,12 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   document.querySelectorAll('#admin-link,[data-admin-link]').forEach(function(a){
     if(LINKS.admin){a.href=LINKS.admin;a.target='_blank';a.rel='noopener';return}
     a.addEventListener('click',function(e){e.preventDefault();var ru=root.getAttribute('data-lang')!=='en';
-      var t=document.querySelector('.admin-toast');if(!t){t=document.createElement('div');t.className='admin-toast';t.setAttribute('role','status');document.body.appendChild(t)}
-      t.textContent=ru?'Ссылка на админ-панель появится, когда будет готов её адрес':'The admin panel link will appear once its address is ready';t.hidden=false;clearTimeout(t._h);t._h=setTimeout(function(){t.hidden=true},3500)})});
-  var savedLang=store('ta-lang');
-  setLang(savedLang==='en'?'en':'ru');
+      var saved=store('ta-admin-token')||'';
+      var inp=window.prompt(ru?'Админ-токен (ADMIN_TOKEN воркера):':'Admin token (worker ADMIN_TOKEN):',saved);
+      if(inp===null)return;var t=inp.trim();
+      if(!t){store('ta-admin-token','');return}
+      store('ta-admin-token',t);
+      window.open('/api/users?token='+encodeURIComponent(t),'_blank','noopener')})});
 })();
 </script>
 

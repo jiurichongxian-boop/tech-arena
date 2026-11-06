@@ -24,21 +24,22 @@ const MIME = {
 };
 
 let users = [];
-const seen = { username: new Set(), email: new Set(), phone: new Set() };
+const seenPairs = new Set();
 const hits = new Map();
+
+const pairKey = (username, address) =>
+  String(username || '').trim().toLowerCase() + '|' + String(address || '').trim().toLowerCase();
 
 function load() {
   users = [];
-  for (const k of Object.keys(seen)) seen[k].clear();
+  seenPairs.clear();
   if (!fs.existsSync(DB_FILE)) return;
   const lines = fs.readFileSync(DB_FILE, 'utf8').split('\n').filter(Boolean);
   for (const line of lines) {
     try {
       const u = JSON.parse(line);
       users.push(u);
-      seen.username.add(u.username.toLowerCase());
-      seen.email.add(u.email.toLowerCase());
-      seen.phone.add(u.phone);
+      seenPairs.add(pairKey(u.username, u.address));
     } catch (e) {}
   }
 }
@@ -76,80 +77,66 @@ function send(res, code, data) {
   res.end(body);
 }
 
+// 与 worker/src/index.js 保持一致
 const RULES = {
-  surname(v) {
-    const s = String(v || '').trim();
-    if (!s) return '请填写姓';
-    if (s.length > 20) return '姓不能超过 20 个字符';
-    if (/[0-9]/.test(s)) return '姓不能包含数字';
-    return '';
-  },
   username(v) {
-    const s = String(v || '').trim();
-    if (!s) return '请填写用户名';
-    if (!/^[A-Za-z][A-Za-z0-9_]{2,19}$/.test(s)) {
-      return '需字母开头，3–20 位，只能用字母、数字、下划线';
-    }
-    return '';
+    const s = String(v || '').trim().replace(/\s+/g, ' ');
+    if (!s) return { code: 'name-required', message: 'Please enter your full name: surname and first name.' };
+    if (s.length < 2) return { code: 'name-too-short', message: 'Name is too short: at least 2 characters. Enter surname and first name.' };
+    if (s.length > 80) return { code: 'name-too-long', message: 'Name is too long: 80 characters maximum.' };
+    if (!/\p{L}/u.test(s)) return { code: 'name-no-letters', message: 'Name must contain letters: digits or symbols only are not accepted.' };
+    return null;
   },
-  phone(v) {
-    const s = String(v || '').replace(/[\s-]/g, '');
-    if (!s) return '请填写手机号';
-    if (!/^1[3-9]\d{9}$/.test(s)) return '请填写 11 位手机号';
-    return '';
-  },
-  email(v) {
-    const s = String(v || '').trim();
-    if (!s) return '请填写邮箱';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s)) return '邮箱格式不正确';
-    if (s.length > 120) return '邮箱过长';
-    return '';
+  address(v) {
+    const s = String(v || '').trim().replace(/\s+/g, ' ');
+    if (!s) return { code: 'address-required', message: 'Please enter your residential address.' };
+    if (s.length < 5) return { code: 'address-too-short', message: 'Address is too short: at least 5 characters.' };
+    if (s.length > 200) return { code: 'address-too-long', message: 'Address is too long: 200 characters maximum.' };
+    return null;
   }
 };
 
 async function register(req, res) {
   const ip = (req.headers['cf-connecting-ip'] || req.socket.remoteAddress || '').replace(/^::ffff:/, '');
-  if (rateLimited(ip)) return send(res, 429, { ok: false, error: 'rate-limited', message: '提交太频繁，请稍后再试' });
+  if (rateLimited(ip)) return send(res, 429, { ok: false, error: 'rate-limited', message: 'Too many submissions from this network, please try again later.' });
 
   let body;
   try {
     body = JSON.parse(await readBody(req));
   } catch (e) {
-    return send(res, 400, { ok: false, error: 'bad-json', message: '请求格式错误' });
+    return send(res, 400, { ok: false, error: 'bad-json', message: 'Invalid JSON body.' });
   }
 
   const fields = {};
   const errors = {};
   let firstError = '';
 
-  for (const key of ['surname', 'username', 'phone', 'email']) {
-    const raw = key === 'phone' ? String(body[key] || '').replace(/[\s-]/g, '') : String(body[key] || '').trim();
+  for (const key of ['username', 'address']) {
+    const raw = String(body[key] || '').trim().replace(/\s+/g, ' ').slice(0, 220);
     fields[key] = raw;
-    const msg = RULES[key](raw);
-    if (msg) { errors[key] = msg; firstError = firstError || msg; }
+    const err = RULES[key](raw);
+    if (err) { errors[key] = err.code; firstError = firstError || err.message; }
   }
 
   if (Object.keys(errors).length) {
     return send(res, 400, { ok: false, error: 'validation', message: firstError, errors });
   }
 
-  if (seen.username.has(fields.username.toLowerCase())) {
-    return send(res, 409, { ok: false, error: 'duplicate', message: '这个用户名已被占用', errors: { username: '这个用户名已被占用' } });
-  }
-  if (seen.email.has(fields.email.toLowerCase())) {
-    return send(res, 409, { ok: false, error: 'duplicate', message: '这个邮箱已注册过', errors: { email: '这个邮箱已注册过' } });
-  }
-  if (seen.phone.has(fields.phone)) {
-    return send(res, 409, { ok: false, error: 'duplicate', message: '这个手机号已注册过', errors: { phone: '这个手机号已注册过' } });
+  // 去重：姓名 + 居住地址 都相同才算重复
+  if (seenPairs.has(pairKey(fields.username, fields.address))) {
+    return send(res, 409, {
+      ok: false,
+      error: 'duplicate',
+      message: 'This entry already exists: the name and residential address are the same.',
+      errors: { username: 'name-address-duplicate' }
+    });
   }
 
   const user = {
     id: users.length ? users[users.length - 1].id + 1 : 1,
-    surname: fields.surname,
     username: fields.username,
-    phone: fields.phone,
-    email: fields.email,
-    ip_hash: crypto.createHash('sha256').update(ip + ADMIN_TOKEN).digest('hex').slice(0, 16),
+    address: fields.address,
+    ip,
     created_at: new Date().toISOString()
   };
 
@@ -157,13 +144,11 @@ async function register(req, res) {
   await fsp.appendFile(DB_FILE, JSON.stringify(user) + '\n', 'utf8');
 
   users.push(user);
-  seen.username.add(user.username.toLowerCase());
-  seen.email.add(user.email.toLowerCase());
-  seen.phone.add(user.phone);
+  seenPairs.add(pairKey(user.username, user.address));
 
   return send(res, 201, {
     ok: true,
-    user: { id: user.id, surname: user.surname, username: user.username, phone: user.phone, email: user.email }
+    user: { id: user.id, username: user.username, address: user.address }
   });
 }
 
@@ -202,11 +187,26 @@ http.createServer((req, res) => {
     return send(res, 200, { ok: true, total: users.length, rows: users.slice().reverse() });
   }
 
+  if (url.pathname === '/api/export.csv' && req.method === 'GET') {
+    if (url.searchParams.get('token') !== ADMIN_TOKEN) return send(res, 401, { ok: false, error: 'unauthorized' });
+    const csvCell = (v) => (/[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v));
+    const lines = ['id,username,address,ip,created_at'];
+    for (const u of users.slice().reverse()) {
+      lines.push([u.id, u.username, u.address, u.ip, u.created_at].map(csvCell).join(','));
+    }
+    res.writeHead(200, {
+      'Content-Type': 'text/csv; charset=utf-8',
+      'Content-Disposition': 'attachment; filename="registrations.csv"',
+      'Cache-Control': 'no-store'
+    });
+    return res.end('\uFEFF' + lines.join('\r\n'));
+  }
+
   if (url.pathname.startsWith('/api/')) return send(res, 404, { ok: false, error: 'not-found' });
 
   serveStatic(req, res, url);
 }).listen(PORT, () => {
   load();
   console.log(`demo running  http://localhost:${PORT}`);
-  console.log(`已载入 ${users.length} 条记录`);
+  console.log(`loaded ${users.length} records`);
 });
