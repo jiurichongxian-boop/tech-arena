@@ -185,8 +185,6 @@ http.createServer((req, res) => {
 
   if (url.pathname === '/api/health') return send(res, 200, { ok: true, count: users.length });
 
-  if (url.pathname === '/api/config') return send(res, 200, { ok: true, turnstileSiteKey: '' });
-
   if (url.pathname === '/api/register' && req.method === 'POST') {
     return register(req, res).catch((e) => send(res, 500, { ok: false, error: 'server-error', message: String(e.message) }));
   }

@@ -517,8 +517,6 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 .modal-open body{overflow:hidden}
 .consent-card{width:min(940px,100%);max-height:100%;display:flex;flex-direction:column;border-radius:28px;background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 40px 120px -20px rgba(255,20,50,.45);overflow:hidden}
 .consent-card:focus{outline:none}
-.cn-ts{display:flex;justify-content:center}
-.cn-ts:not(:empty){margin:0 0 14px}
 .consent-top{padding:30px 34px 18px;border-bottom:1px solid var(--line);background:radial-gradient(circle at 100% 0%,rgba(255,40,70,.18),transparent 50%)}
 .consent-kicker{font:600 11px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .consent-top h2{font:900 clamp(26px,3.6vw,44px)/1.05 var(--f-display);margin-top:10px;text-wrap:balance}
@@ -1494,7 +1492,6 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     <div class="consent-foot">
       <label class="cbox"><input type="checkbox" id="c1"> <span><span data-l="ru">Я прочитал(а) текст и даю согласие на обработку моих персональных данных на условиях выше</span><span data-l="en">I have read the text and give my consent to process my personal data on the terms above</span></span></label>
       <label class="cbox"><input type="checkbox" id="c2"> <span><span data-l="ru">Принимаю <a href="#rules" data-close-consent>правила участия</a></span><span data-l="en">I accept the <a href="#rules" data-close-consent>rules of participation</a></span></span></label>
-      <div class="cn-ts" id="cn-ts"></div>
       <div class="consent-actions">
         <button type="button" class="btn btn-primary" id="consent-ok" disabled><span data-l="ru">Согласен(на), перейти к форме</span><span data-l="en">I agree, continue to the form</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         <button type="button" class="btn btn-ghost" id="consent-later"><span data-l="ru">Отмена</span><span data-l="en">Cancel</span></button>
@@ -1516,8 +1513,6 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     var tt=document.getElementById('theme-toggle');tt.setAttribute('aria-label',l==='ru'?'Сменить тему':'Switch theme');
     document.querySelectorAll('#mail,#mail-link').forEach(function(ml){ml.href='mailto:techarenaartdesign@163.com?subject='+encodeURIComponent('Tech Arena Arts & Design 2026 — '+(l==='ru'?'заявка':'application'));});
     updateStatus();
-    /* 人机校验控件语言跟随页面：语言变了就销毁重建（Turnstile 无改语言的 API） */
-    if(tsRequired&&tsLangShown&&tsLangShown!==tsLang())tsRender();
   }
   document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.setLang);store('ta-lang',b.dataset.setLang)})});
 
@@ -1696,13 +1691,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
       }
       if(code==='rate-limited')return isR()?'Слишком много отправок с этой сети, попробуйте позже.':'Too many submissions from this network, please try again later.';
       if(code==='body-too-large')return isR()?'Данные слишком большие.':'Payload too large.';
-      if(code==='turnstile-required')return isR()?'Подтвердите, что вы не робот.':'Please complete the human verification.';
-      if(code==='turnstile-failed')return isR()?'Проверка не пройдена, попробуйте ещё раз.':'Verification failed, please try again.';
       return isR()?'Не удалось сохранить согласие, попробуйте ещё раз.':'Could not save the consent, please try again.';
-    }
-    if(tsRequired&&!tsToken){
-      msg.textContent=isR()?'Подтвердите, что вы не робот: поставьте галочку ниже.':'Please complete the human verification below.';
-      return;
     }
     okBtn._busy=true;okBtn.disabled=true;
     document.getElementById('cn-name').classList.remove('err');
@@ -1710,7 +1699,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     msg.textContent=isR()?'Отправляем…':'Submitting…';
     var ctrl=(typeof AbortController==='function')?new AbortController():null;
     if(ctrl)setTimeout(function(){ctrl.abort()},15000);
-    fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:name,address:addr,turnstileToken:tsToken}),signal:ctrl?ctrl.signal:undefined})
+    fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:name,address:addr}),signal:ctrl?ctrl.signal:undefined})
       .then(function(res){return res.json().then(function(d){return{status:res.status,data:d||{}}},function(){return{status:res.status,data:{}}})})
       .then(function(x){
         var dup=x.status===409&&x.data.error==='duplicate';
@@ -1718,7 +1707,6 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
           if(dup){msg.textContent=dupText(true);setTimeout(function(){proceed();finish()},1600);return}
           proceed();finish();return}
         msg.textContent=failText(x);
-        if(String((x&&x.data&&x.data.error)||'').indexOf('turnstile')===0)tsReset();
         var fe=(x&&x.data&&x.data.errors)||{};
         document.getElementById('cn-name').classList.toggle('err',!!fe.username);
         document.getElementById('cn-addr').classList.toggle('err',!!fe.address);
@@ -1738,41 +1726,6 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
   document.addEventListener('click',function(e){var t=e.target.closest('[data-open-consent]');if(t){e.preventDefault();openConsent();return}
     var a=e.target.closest('a[href="#apply"]');if(a&&!consentOk()){e.preventDefault();openConsent()}});
   unlock();
-  /* 人机校验：只有 Worker 配了 TURNSTILE_SITE_KEY 才加载，没配就完全不出现。
-     控件语言跟随页面语言（RU/EN），切换语言时销毁重建 —— Turnstile 没有改语言的 API */
-  var tsRequired=false,tsToken='',tsWidget=null,tsSiteKey='',tsLangShown='';
-  function tsReset(){tsToken='';try{if(tsWidget!=null&&window.turnstile)window.turnstile.reset(tsWidget)}catch(e){}}
-  function tsLang(){return root.getAttribute('data-lang')==='en'?'en':'ru'}
-  function tsRender(){
-    if(!tsRequired||!tsSiteKey||!window.turnstile)return;
-    var host=document.getElementById('cn-ts');
-    if(!host)return;
-    var lang=tsLang();
-    try{
-      if(tsWidget!=null){try{window.turnstile.remove(tsWidget)}catch(e){}tsWidget=null}
-      host.innerHTML='';tsToken='';
-      tsWidget=window.turnstile.render('#cn-ts',{sitekey:tsSiteKey,theme:'auto',language:lang,
-        callback:function(t){tsToken=t},
-        'error-callback':function(){tsToken=''},
-        'expired-callback':function(){tsToken=''},
-        'timeout-callback':function(){tsToken=''}});
-      tsLangShown=lang;
-    }catch(e){}
-  }
-  (function(){
-    var host=document.getElementById('cn-ts');
-    if(!host)return;
-    fetch('/api/config').then(function(r){return r.json()}).then(function(c){
-      if(!c||!c.turnstileSiteKey)return;
-      tsRequired=true;tsSiteKey=c.turnstileSiteKey;
-      if(window.turnstile){tsRender();return}
-      var sc=document.createElement('script');
-      sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-      sc.async=true;sc.defer=true;
-      sc.onload=tsRender;
-      document.head.appendChild(sc);
-    }).catch(function(){});
-  })();
   /* 首次进入（本地既没有同意记录、也没有取消记录）时自动打开同意书。
      不依赖 load 事件：外链字体等资源慢/被墙时 load 可能延迟几十秒，弹窗就迟迟不出来 */
   (function(){

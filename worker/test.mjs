@@ -100,13 +100,14 @@ await check('错误 token 无效', new Request('https://x.dev/api/users', { head
 await check('校验长度不一致的 token', new Request('https://x.dev/api/users', { headers: { Authorization: 'Bearer testtoken-x' } }), 401);
 await check('方法不允许', new Request('https://x.dev/api/register', { method: 'GET' }), 405);
 await check('跨域预检默认拒绝', new Request('https://x.dev/api/register', { method: 'OPTIONS' }), 405);
-await check('配置接口', new Request('https://x.dev/api/config'), 200, (t) => t.includes('turnstileSiteKey'));
+await check('配置接口已移除', new Request('https://x.dev/api/config'), 404);
 
 {
   const res = await worker.fetch(new Request('https://x.dev/'), env);
   const csp = res.headers.get('content-security-policy') || '';
   const ok = csp.includes("default-src 'self'") && res.headers.get('x-frame-options') === 'DENY'
-    && res.headers.get('referrer-policy') === 'no-referrer' && (await res.text()) === 'asset-ok';
+    && res.headers.get('referrer-policy') === 'no-referrer' && !csp.includes('challenges.cloudflare.com')
+    && (await res.text()) === 'asset-ok';
   console.log(`${ok ? 'PASS' : 'FAIL'}  页面安全响应头  [${res.status}] ${csp.slice(0, 40)}`);
   ok ? pass++ : fail++;
 }

@@ -1,7 +1,6 @@
 const MAX_BODY = 8 * 1024;
 const RATE_LIMIT = 10;
 const RATE_WINDOW_MS = 60 * 60 * 1000;
-const TURNSTILE_VERIFY = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json; charset=utf-8',
@@ -13,12 +12,12 @@ const JSON_HEADERS = {
 const SECURITY_HEADERS = {
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+    "script-src 'self' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob:",
-    "connect-src 'self' https://challenges.cloudflare.com",
-    "frame-src https://challenges.cloudflare.com",
+    "connect-src 'self'",
+    "frame-src 'none'",
     "object-src 'none'",
     "base-uri 'none'",
     "form-action 'self'",
@@ -112,26 +111,6 @@ const RULES = {
   }
 };
 
-/* 仅在配置了 TURNSTILE_SECRET 时启用：没配置就完全跳过，不影响现有部署 */
-async function verifyTurnstile(request, env, token) {
-  if (!env.TURNSTILE_SECRET) return { ok: true };
-  if (!token) return { ok: false, error: 'turnstile-required' };
-
-  const form = new FormData();
-  form.append('secret', env.TURNSTILE_SECRET);
-  form.append('response', String(token));
-  const ip = request.headers.get('CF-Connecting-IP');
-  if (ip) form.append('remoteip', ip);
-
-  try {
-    const res = await fetch(TURNSTILE_VERIFY, { method: 'POST', body: form });
-    const data = await res.json().catch(() => ({}));
-    return data && data.success ? { ok: true } : { ok: false, error: 'turnstile-failed' };
-  } catch {
-    return { ok: false, error: 'turnstile-failed' };
-  }
-}
-
 async function handleRegister(request, env) {
   const raw = await request.text();
   if (raw.length > MAX_BODY) return json({ ok: false, error: 'body-too-large', message: 'Payload too large.' }, 413);
@@ -162,17 +141,6 @@ async function handleRegister(request, env) {
 
   if (Object.keys(errors).length) {
     return json({ ok: false, error: 'validation', message: firstError, errors }, 400);
-  }
-
-  const ts = await verifyTurnstile(request, env, body.turnstileToken);
-  if (!ts.ok) {
-    return json({
-      ok: false,
-      error: ts.error,
-      message: ts.error === 'turnstile-required'
-        ? 'Human verification is required.'
-        : 'Human verification failed, please try again.'
-    }, 403);
   }
 
   const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
@@ -275,10 +243,6 @@ async function handleApi(request, env, url, cors) {
 
     if (p === '/api/health') {
       res = m === 'GET' ? json({ ok: true, ts: new Date().toISOString() }) : methodNotAllowed('GET');
-    } else if (p === '/api/config') {
-      res = m === 'GET'
-        ? json({ ok: true, turnstileSiteKey: env.TURNSTILE_SITE_KEY || '' }, 200, { 'Cache-Control': 'public, max-age=300' })
-        : methodNotAllowed('GET');
     } else if (p === '/api/register') {
       res = m === 'POST' ? await handleRegister(request, env) : methodNotAllowed('POST');
     } else if (p === '/api/users') {
