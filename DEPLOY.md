@@ -223,6 +223,7 @@ openssl rand -hex 32
 页脚的「管理员入口」不再打开 `/api/users?token=...`，而是先用 `Authorization` 头请求数据，
 再把结果渲染成一张表格（附「Download CSV」按钮）。令牌只留在 `localStorage['ta-admin-token']`，
 不会出现在地址栏、浏览器历史和 Referer 里。
+curl -s https://techarena.design/api/export.csv -H "Authorization: Bearer 2813fc0d6a0094ef52026bae586d8eea3a4318d237c172ba" -o registrations.csv
 
 ---
 
