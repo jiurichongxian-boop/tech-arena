@@ -2048,12 +2048,13 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     };
     function failText(x){
       var code=(x&&x.data&&x.data.error)||'',e=(x&&x.data&&x.data.errors)||{},dict=ru?FIELD_TEXT.ru:FIELD_TEXT.en;
-      if(code==='validation'){
+      if(code==='validation' || code==='duplicate'){
         if(e.username&&dict[e.username])return dict[e.username];
         if(e.address&&dict[e.address])return dict[e.address];
         return ru?'Проверьте введённые данные.':'Please check the entered data.';
       }
       if(code==='rate-limited')return ru?'Слишком много отправок с этой сети, попробуйте позже.':'Too many submissions from this network, please try again later.';
+      if(code==='body-too-large')return ru?'Данные слишком большие.':'Payload too large.';
       if(code==='body-too-large')return ru?'Данные слишком большие.':'Payload too large.';
       return ru?'Не удалось сохранить согласие, попробуйте ещё раз.':'Could not save the consent, please try again.';
     }
