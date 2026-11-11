@@ -636,6 +636,14 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 @media (max-width:480px){.hp-grid{grid-template-columns:1fr 1fr}.hp1{grid-column:1/-1}.hp b{font-size:18px}.hp1 b{font-size:26px}}
 .hero-prizes + .hero-actions{margin-top:6px}
 .hero-lead{font-size:clamp(16px,1.25vw,18px)}
+.rl-important{color:var(--accent);border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 12px 12px 0;padding:14px 18px;margin:0 0 16px}
+.rl-important b{display:block;font-weight:800;letter-spacing:.04em;margin-bottom:6px}
+.rl-important p{margin:0 0 4px;color:var(--accent)}.rl-important p:last-child{margin:0}
+.rl-important a{color:var(--accent);font-weight:700;text-decoration:underline}
+@media (max-width:440px){header .nav{gap:8px}header .nav-tools{gap:6px}header .reg-cta{padding:0 12px;font-size:13px}header .icon-btn{width:34px;height:34px}}
+@media (max-width:400px){header .nav{gap:6px}header .brand-logo{height:16px}header .ta-logo img{height:15px}header .brand-sep{margin:0 -2px}}
+@media (max-width:380px){header .icon-btn{display:none}}
+@media (max-width:340px){header .brand-logo{height:13px}header .ta-logo img{height:12px}header .reg-cta{padding:0 10px;font-size:12px}}
 /* round 3 */
 .pr-label{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:36px 0 0;font-size:17px}
 .pr-label .ex-tag{font:700 12px/1 var(--f-mono);letter-spacing:.12em;padding:7px 11px;border-radius:999px;background:var(--accent);color:#fff}
@@ -740,7 +748,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
         <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
       <a class="btn btn-primary btn-sm reg-cta" href="#apply">
-        <span class="long"><span data-l="ru">Регистрация</span><span data-l="en">Registration</span></span><span class="short"><span data-l="ru">Заявка</span><span data-l="en">Apply</span></span>
+        <span class="long"><span data-l="ru">Регистрация</span><span data-l="en">Registration</span></span><span class="short"><span data-l="ru">Регистрация</span><span data-l="en">Registration</span></span>
         <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -1485,7 +1493,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
     <div class="rules">
       <details class="rl"><summary><span data-l="ru">1. Кто может участвовать</span><span data-l="en">1. Who can take part</span></summary><div data-l="ru" class="rl-b"><p>Студенты московских дизайн-вузов (бакалавриат, специалитет, магистратура, аспирантура и др.). Участие индивидуальное или командой, размер команды не ограничен. Один участник может состоять только в одной команде.</p><p><b>Обратите внимание:</b> даже если вы участвуете в одиночку, у вас должно быть название команды.</p></div><div data-l="en" class="rl-b"><p>Students of Moscow design universities (bachelor, specialist, master, PhD programmes, etc.). Individually or in teams; team size is not limited. A participant may be a member of one team only.</p><p><b>Please mind:</b> when participating alone, you still need to have a team name.</p></div></details>
       <details class="rl"><summary><span data-l="ru">2. Как подать заявку</span><span data-l="en">2. How to apply</span></summary><div data-l="ru" class="rl-b"><p>Нажмите «Регистрация и подача», примите согласие на обработку персональных данных и заполните форму заявки. Согласие принимает каждый участник команды.</p><p>После регистрации вы получите письмо. Вся важная информация будет приходить на этот адрес.</p></div><div data-l="en" class="rl-b"><p>Click "Registration &amp; submission", accept the personal data consent and fill in the application form. Every team member accepts the consent.</p><p>After registration you will receive an email. All relevant information will be sent by that email.</p></div></details>
-      <details class="rl" id="submit-rules"><summary><span data-l="ru">3. Технические требования к работам</span><span data-l="en">3. Technical Requirements for Competition Submissions</span></summary><div data-l="ru" class="rl-b"><p>Одна команда присылает одно письмо: описание идеи, анализ реализуемости и визуализацию. Файлы тяжелее 20 МБ — ссылкой на Яндекс Диск.</p>
+      <details class="rl" id="submit-rules"><summary><span data-l="ru">3. Технические требования к работам</span><span data-l="en">3. Technical Requirements for Competition Submissions</span></summary><div data-l="ru" class="rl-b"><div class="rl-important"><b>ВАЖНО!</b><p>Все тексты в презентациях и описаниях проектов должны быть переведены на английский язык.</p><p>Для перевода используйте бесплатную версию <a href="https://chat.deepseek.com/" target="_blank" rel="noopener">DeepSeek</a>.</p></div><p>Одна команда присылает одно письмо: описание идеи, анализ реализуемости и визуализацию. Файлы тяжелее 20 МБ — ссылкой на Яндекс Диск.</p>
 <h4>Что входит в заявку</h4><ol>
 <li><b>Описание идеи</b> — PDF, 1 страница.</li>
 <li><b>Анализ реализуемости</b> — PDF, до 0,5 страницы.</li>
@@ -1524,7 +1532,7 @@ footer{padding-block:48px 56px;border-top:1px solid var(--line);margin-top:96px}
 <li>Все тексты на русском или английском языке.</li>
 <li>Видео без водяных знаков сервисов и посторонней музыки, на которую у вас нет прав.</li>
 <li>На изображениях не должно быть чужих логотипов и брендов.</li>
-<li>Организаторы могут скачать копии файлов для оценки и архива конкурса.</li></ul></div><div data-l="en" class="rl-b"><p>Each team sends one email with the design statement, the feasibility analysis and the visualisation. Files over 20 MB go as a Yandex Disk link.</p>
+<li>Организаторы могут скачать копии файлов для оценки и архива конкурса.</li></ul></div><div data-l="en" class="rl-b"><div class="rl-important"><b>IMPORTANT!</b><p>All texts in presentations and project descriptions must be in English.</p><p>For translation, use the free version of <a href="https://chat.deepseek.com/" target="_blank" rel="noopener">DeepSeek</a>.</p></div><p>Each team sends one email with the design statement, the feasibility analysis and the visualisation. Files over 20 MB go as a Yandex Disk link.</p>
 <h4>What the submission includes</h4><ol>
 <li><b>Design statement</b> — PDF, 1 page.</li>
 <li><b>Feasibility analysis</b> — PDF, up to 0.5 page.</li>
